@@ -1,0 +1,637 @@
+{% doc %}
+  Tartan picker — Horizon theme block wrapper.
+
+  Ported from Prestige, where the picker was a `tartan_picker` case in
+  `sections/main-product.liquid` + `snippets/product-info.liquid`. Horizon uses
+  theme blocks instead, so the same settings live here and the block is
+  automatically offered anywhere `@theme` blocks are accepted — including quick
+  add — with no edit to `sections/product-information.liquid`.
+
+  `snippets/tartan-picker.liquid` is byte-identical to the source and does all
+  the work; this file only supplies `product` and `form_id`.
+{% enddoc %}
+
+{% liquid
+  assign product_resource = closest.product
+  if request.visual_preview_mode and product_resource == blank
+    assign product_resource = collections.all.products.first
+  endif
+
+  # Matches the form id built in blocks/buy-buttons.liquid.
+  assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
+%}
+
+{% unless product_resource == blank %}
+  {% render 'xx-tartan-theme-vars' %}
+  {% render 'tartan-picker',
+    product: product_resource,
+    block: block,
+    form_id: product_form_id
+  %}
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Tartan picker",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Lets shoppers choose a tartan from your library. Tartan data is set in Theme settings > Tartan picker."
+    },
+    {
+      "type": "header",
+      "content": "Show on"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Show the picker on",
+      "default": "all",
+      "options": [
+        {
+          "value": "all",
+          "label": "All products"
+        },
+        {
+          "value": "tags",
+          "label": "Products with tags"
+        },
+        {
+          "value": "types",
+          "label": "Product types"
+        },
+        {
+          "value": "vendors",
+          "label": "Vendors"
+        },
+        {
+          "value": "collections",
+          "label": "Products in collections"
+        },
+        {
+          "value": "products",
+          "label": "Selected products"
+        },
+        {
+          "value": "metafield",
+          "label": "Products with a true metafield"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "include_tags",
+      "label": "Tags",
+      "default": "tartan-picker",
+      "info": "Comma separated. Used with Products with tags."
+    },
+    {
+      "type": "select",
+      "id": "tag_match",
+      "label": "Tag match",
+      "default": "any",
+      "options": [
+        {
+          "value": "any",
+          "label": "Any tag"
+        },
+        {
+          "value": "all",
+          "label": "All tags"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "product_types",
+      "label": "Product types",
+      "info": "Comma separated, e.g. Kilt, Trews"
+    },
+    {
+      "type": "text",
+      "id": "vendors",
+      "label": "Vendors",
+      "info": "Comma separated"
+    },
+    {
+      "type": "text",
+      "id": "collection_handles",
+      "label": "Collection handles",
+      "info": "Comma separated, e.g. kilts, wedding"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Products",
+      "limit": 50
+    },
+    {
+      "type": "text",
+      "id": "metafield_key",
+      "label": "Metafield (namespace.key)",
+      "default": "custom.show_tartan_picker",
+      "info": "True/false product metafield"
+    },
+    {
+      "type": "text",
+      "id": "exclude_tags",
+      "label": "Hide on products with tags",
+      "info": "Comma separated. Always wins over the rules above."
+    },
+    {
+      "type": "header",
+      "content": "Tartans offered"
+    },
+    {
+      "type": "select",
+      "id": "tartan_scope",
+      "label": "Tartans shown",
+      "default": "all",
+      "options": [
+        {
+          "value": "all",
+          "label": "All tartans"
+        },
+        {
+          "value": "groups",
+          "label": "Tartans in groups"
+        },
+        {
+          "value": "product_groups",
+          "label": "Groups from product tags"
+        },
+        {
+          "value": "product_metafield",
+          "label": "Tartans listed in a product metafield"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "scope_groups",
+      "label": "Groups",
+      "info": "Comma separated. Matches the tartan groups field."
+    },
+    {
+      "type": "text",
+      "id": "scope_tag_prefix",
+      "label": "Product tag prefix",
+      "default": "tartan-group:",
+      "info": "e.g. tag a product tartan-group:wedding"
+    },
+    {
+      "type": "text",
+      "id": "scope_metafield_key",
+      "label": "Product metafield (namespace.key)",
+      "default": "custom.tartans",
+      "info": "List of tartan metaobjects, or comma separated tartan handles"
+    },
+    {
+      "type": "header",
+      "content": "Block content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Choose your tartan"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search your clan or surname (e.g. MacDonald, Stewart)"
+    },
+    {
+      "type": "select",
+      "id": "inline_source",
+      "label": "Swatches in block",
+      "default": "popular",
+      "options": [
+        {
+          "value": "popular",
+          "label": "Popular tartans"
+        },
+        {
+          "value": "first",
+          "label": "First tartans"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "inline_count",
+      "label": "Number of swatches",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "browse_text",
+      "label": "Browse button text",
+      "default": "Browse all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_total",
+      "label": "Show tartan count on button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Selection and cart"
+    },
+    {
+      "type": "text",
+      "id": "property_name",
+      "label": "Cart property name",
+      "default": "Tartan"
+    },
+    {
+      "type": "checkbox",
+      "id": "store_handle",
+      "label": "Save tartan ID as hidden property",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "required",
+      "label": "Tartan is required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "required_message",
+      "label": "Required message",
+      "default": "Please choose your tartan"
+    },
+    {
+      "type": "checkbox",
+      "id": "guard_payment_button",
+      "label": "Block Buy it now until a tartan is chosen",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remember_selection",
+      "label": "Remember last tartan",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "url_param",
+      "label": "Preselect from URL (?tartan=handle)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colourways"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_colourways",
+      "label": "Show Modern / Ancient / Weathered",
+      "default": true,
+      "info": "For library tartans drawn from their threadcount. Ancient and Weathered colours are approximations."
+    },
+    {
+      "type": "select",
+      "id": "default_colourway",
+      "label": "Default colourway",
+      "default": "modern",
+      "options": [
+        {
+          "value": "modern",
+          "label": "Modern"
+        },
+        {
+          "value": "ancient",
+          "label": "Ancient"
+        },
+        {
+          "value": "weathered",
+          "label": "Weathered"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Pricing"
+    },
+    {
+      "type": "select",
+      "id": "price_mode",
+      "label": "Tartan pricing",
+      "default": "surcharge_display",
+      "options": [
+        {
+          "value": "none",
+          "label": "No pricing"
+        },
+        {
+          "value": "surcharge_display",
+          "label": "Show surcharge text only"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Browse modal"
+    },
+    {
+      "type": "text",
+      "id": "modal_title",
+      "label": "Title",
+      "default": "Browse all tartans"
+    },
+    {
+      "type": "select",
+      "id": "default_view",
+      "label": "Default view",
+      "default": "grid",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "list",
+          "label": "List"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_popular_filter",
+      "label": "Show popular filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_filter",
+      "label": "Show category filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colour_filter",
+      "label": "Show colour filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_availability_filter",
+      "label": "Show availability filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_alphabet",
+      "label": "Show A–Z jump",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preview",
+      "label": "Show preview panel",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_surcharge",
+      "label": "Show surcharge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "no_results_text",
+      "label": "No results text",
+      "default": "No tartans match your search."
+    },
+    {
+      "type": "text",
+      "id": "request_text",
+      "label": "Custom request link text",
+      "default": "Don't see your clan? Request a custom tartan"
+    },
+    {
+      "type": "url",
+      "id": "request_url",
+      "label": "Custom request link"
+    },
+    {
+      "type": "header",
+      "content": "Swatch appearance"
+    },
+    {
+      "type": "select",
+      "id": "swatch_shape",
+      "label": "Shape",
+      "default": "rounded",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "circle",
+          "label": "Circle"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "swatch_size",
+      "label": "Block swatch size",
+      "min": 32,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Fill"
+        },
+        {
+          "value": "contain",
+          "label": "Fit"
+        },
+        {
+          "value": "tile",
+          "label": "Repeat pattern"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "tile_size",
+      "label": "Pattern tile size",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Zoom on preview image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Block sizing and spacing"
+    },
+    {
+      "type": "paragraph",
+      "content": "Default values keep the theme's look. Mobile is up to 699px wide, desktop is 700px and wider."
+    },
+    {
+      "type": "checkbox",
+      "id": "sk_custom_padding",
+      "label": "Use custom padding",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Block sizing – desktop"
+    },
+    {
+      "type": "range",
+      "id": "sk_text_size_d",
+      "label": "Text size",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "sk_padding_top_d",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "info": "Used when \"Use custom padding\" is on"
+    },
+    {
+      "type": "range",
+      "id": "sk_padding_bottom_d",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "sk_margin_top_d",
+      "label": "Margin top",
+      "min": -100,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "sk_margin_bottom_d",
+      "label": "Margin bottom",
+      "min": -100,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Block sizing – mobile"
+    },
+    {
+      "type": "range",
+      "id": "sk_text_size_m",
+      "label": "Text size",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "sk_padding_top_m",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "info": "Used when \"Use custom padding\" is on"
+    },
+    {
+      "type": "range",
+      "id": "sk_padding_bottom_m",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "sk_margin_top_m",
+      "label": "Margin top",
+      "min": -100,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "sk_margin_bottom_m",
+      "label": "Margin bottom",
+      "min": -100,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tartan picker",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

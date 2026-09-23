@@ -228,6 +228,82 @@ cannot be expressed as settings and goes in one namespaced stylesheet,
 
 ---
 
+## 4b. Tartan system (ported from Prestige)
+
+Full reference: [TARTAN-PICKER.md](TARTAN-PICKER.md), copied across with the code.
+Source: `D:\ecommerece_wala\theme-prestige\Prestige V10.0.2`.
+
+### Files copied verbatim
+
+| File | Purpose |
+|---|---|
+| `sections/tartan-data.liquid` | JSON endpoint, fetched as `/?section_id=tartan-data&page=N`. Never added to a template. |
+| `snippets/tartan-picker.liquid` | Block markup, visibility rules, config |
+| `snippets/tartan-finder-app.liquid` | Finder app markup |
+| `assets/tartan-picker.js` | `<tartan-picker>` element — search, validation, browse modal |
+| `assets/tartan-picker.css` | Styles, read from the host theme's colour variables |
+| `assets/tartan-library.json` | 500-tartan library (85KB; compact rows + `fields` header) |
+| `docs/TARTAN-PICKER.md` | Documentation |
+| `docs/tools/` | `rank_tartans.py`, `build_tartan_library.py`, `map_tartan_products.py` + CSVs |
+
+`sections/tartan-finder.liquid` was copied then **minimally adapted** — see below.
+`prune_sliders.py` was in the source `docs/tools/` but is not part of the tartan
+toolchain, so it was not kept.
+
+### Where this theme differs from the port instructions
+
+The wiring steps written for Prestige do not all apply, because **Horizon uses
+theme blocks** (files in `blocks/`, surfaced by `{% content_for 'blocks' %}`)
+rather than a monolithic product section with a `{% case block.type %}` switch.
+
+| Instruction | What was actually done | Why |
+|---|---|---|
+| Add a `tartan_picker` block to the main product section schema | Created **`blocks/tartan-picker.liquid`** carrying the same 71 settings | Horizon has no `main-product.liquid`; `sections/product-information.liquid` declares `{"type": "@theme"}` and picks up any block file automatically |
+| Add `when 'tartan_picker'` to `snippets/product-info.liquid` and to its allowed-blocks list | **Not needed** | No such switch exists. `@theme` means the block is offered on the product template *and* in quick add with no edit to either file |
+| Map `tartan-picker.css` colour variables to this theme's | **`snippets/xx-tartan-theme-vars.liquid`** | The CSS stays byte-identical to the source so the port remains diffable; all 6 Prestige variables it reads are aliased in one place. Scoped to the picker/finder roots, not `:root`, so a section with a custom `background_color` recolours the picker through `contrast-override.liquid` |
+| Check cart templates show line-item properties and hide `_`-prefixed ones | **Already correct, no change** | `snippets/cart-products.liquid:254–281` already skips any property whose first character is `_`, and that snippet backs both the drawer and the cart page |
+| Load the script on index/collection/search/page | Added to `layout/theme.liquid` | Same conditional as the source. Needed because quick add injects the picker's markup into a modal and a `<script>` arriving that way never executes |
+| Add the `Tartan picker` settings group | Appended to `config/settings_schema.json` (8 settings, pure insertion — 80 lines added, 0 changed) | As instructed |
+
+**`sections/tartan-finder.liquid` — the one adapted file.** Its wrapper was
+Prestige-only and threw a hard `MissingTemplate` error on Horizon. Changed, with
+a `PORT NOTE` comment in the file recording each swap:
+
+* `color_scheme` setting + `.color-scheme--*` classes → `background_color` + `{% render 'contrast-override' %}` (Horizon has no colour schemes)
+* `.section-spacing` / `.container--<size>` / `.section-stack` → `.section section--<width>`
+* `{% render 'section-header' %}` → inline heading markup (no such snippet in Horizon)
+
+Everything below the wrapper — the whole finder app and 30 of its 34 settings — is untouched.
+
+### Theme check
+
+**0 errors, 7 warnings** (was 0 errors, 6 warnings).
+
+The one new warning is `ExcessiveSettingsCount` on `blocks/tartan-picker.liquid`:
+58 non-header settings against a limit of 40. That is inherent to the ported block
+— the source carries the same 71 settings — and the only ways to clear it are to
+drop features or to split the block, both of which would diverge from the source.
+**Flagged deliberately rather than silenced**; say the word if you want it split
+into "Tartan picker" + "Tartan picker (browse modal)" to get back to 6.
+
+### Data source
+
+`tartan_data_source` defaults to **`library_metaobjects`**. With no metaobjects and
+no collection configured, `tartan-data.liquid` returns
+`{"page":1,"pages":1,"total":0,"items":[]}` and the JS falls back to
+`assets/tartan-library.json` — 500 tartans, drawn in the browser from
+threadcounts, **no store data and no images required**. That is the path to get
+working first; metaobjects layer on top, matched by handle.
+
+Library verified as valid JSON: 500 items, `v` / `source` / `fields` / `items`.
+
+### Not ported
+
+The optional `sk2-*` presentation layer was **not** copied — it depends on that
+build's own design tokens. See §7.
+
+---
+
 ## 5. Action needed in Admin
 
 Things that cannot be done in code. Nothing here is faked or silently skipped.
@@ -266,6 +342,76 @@ Things that cannot be done in code. Nothing here is faked or silently skipped.
    nothing has been verified live yet. A store connection (`shopify theme dev`) is
    required before the "verify in the browser" step of any page.
 
+### Tartan system
+
+10. **None of the tartan store data travels with the theme.** If this is a
+    different store from the Prestige build, everything below has to be recreated.
+    The 500-tartan library needs none of it and works on its own — do that first.
+11. **`tartan` metaobject definition** — Settings → Custom data → Metaobjects →
+    Add definition. Type handle `tartan`. **Storefront access must be on** or
+    Liquid cannot read it. Fields (only `name` is required; keys must match
+    exactly):
+
+    | Key | Type |
+    |---|---|
+    | `name` | Single line text |
+    | `image` | File (allow images **and** other files, so SVG works) |
+    | `svg_code` | Multi-line text |
+    | `image_url` | URL |
+    | `color` | Color |
+    | `category` | Single line text |
+    | `colours` | List of single line text |
+    | `keywords` | List of single line text |
+    | `groups` | List of single line text |
+    | `popular` | True or false |
+    | `availability` | Single line text |
+    | `surcharge` | Decimal |
+    | `description` | Multi-line text |
+    | `hidden` | True or false |
+
+12. **Metaobject entries**, if you want images, prices or descriptions beyond the
+    library. A metaobject sharing a handle with a library tartan overrides it;
+    `hidden: true` removes one. For bulk loads, upload images to Content → Files
+    first, then import with a CSV app.
+13. **Alternative — a tartan collection.** Only if you pick the `collection`
+    source: one product per tartan, attributes from tags (`category:`, `colour:`,
+    `keyword:`, `group:`, `availability:`, `hex:`, `popular`), surcharge from the
+    `tartan.surcharge` metafield.
+14. **Product tagging for the picker.** The block's default visibility rule is
+    *Products with tags → `tartan-picker`*. Products must carry that tag, or the
+    rule must be changed in the theme editor. `no-tartan` always hides it.
+15. **Product tagging for "Shop kilts in this tartan".** Tag products
+    `<tartan name> tartan`, e.g. `MacDonald tartan`. Then rebuild the library
+    (`map_tartan_products.py` → `build_tartan_library.py`) and bump **Cache
+    version** in theme settings.
+16. **Add the block and the section.** The picker is not in `templates/product.json`
+    yet — add it via Customize → Product → Add block → Tartan picker, below the
+    variant picker. The finder goes on a page via Add section → Tartan finder
+    (the source used `/pages/find-your-tartan`).
+17. **Bump Cache version** after any tartan data change. Shoppers cache the list
+    for *Browser cache time* (default 60 min); the theme editor always loads fresh.
+
+---
+
+## 7. Source theme also contains a full SCOTKILT build
+
+While locating the tartan files, the source theme
+(`theme-prestige/Prestige V10.0.2`) turned out to contain an `sk2-*` section set
+that already implements **the entire `pages.html` mock**, not just the tartan
+features:
+
+`sk2-hero` · `sk2-trending-tartans` · `sk2-kilt-types` · `sk2-popular-kilts` ·
+`sk2-shop-by-tartan` · `sk2-featured-split` · `sk2-why-scotkilt` ·
+`sk2-kilt-finder` · `sk2-size-guide` · `sk2-brand-story` · `sk2-reviews` ·
+`sk2-faq` · `sk2-seo-content` · `sk2-newsletter` — every home band in §2.2 —
+plus `sk2-collection`, `sk2-product`, `sk2-cat-faq`, `sk2-cat-cta`,
+`sk2-cat-related`, `sk2-product-rail`, `sk2-tartan-finder`.
+
+That is ~5,000 lines already written against this exact mock. It materially
+changes the plan in §2, which assumed building from Horizon's native sections.
+**Porting vs. rebuilding is an open decision** — see the report. Nothing from
+`sk2-*` has been copied.
+
 ---
 
 ## 6. Change log
@@ -274,5 +420,7 @@ Things that cannot be done in code. Nothing here is faked or silently skipped.
 |---|---|---|
 | 2026-09-24 | Initial commit `671e930` — stock Horizon imported, repo created, pushed to `github.com/ayanrajpoot/horizon-scotkilt` | Baseline |
 | 2026-09-24 | Added `docs/DESIGN-TOKENS.md` and `docs/STORE-MAP.md`; recorded theme-check baseline (0 errors / 6 warnings, 358 files) | Audit before any edit, per the brief |
+| 2026-09-24 | Ported the tartan system from Prestige — 8 files verbatim, `sections/tartan-finder.liquid` wrapper adapted, new `blocks/tartan-picker.liquid` and `snippets/xx-tartan-theme-vars.liquid`, settings group appended, asset loading added to `layout/theme.liquid`. See §4b | Tartan picker, finder and 500-tartan library |
 
-*No theme files have been modified yet.*
+Nothing has been deleted. `config/settings_schema.json` and `layout/theme.liquid`
+are pure insertions; every other change is a new file.

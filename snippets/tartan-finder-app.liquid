@@ -1,0 +1,96 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+TARTAN FINDER APP (SCOTKILT)
+----------------------------------------------------------------------------------------------------------------------
+The <tartan-finder> custom element and its config — shared by `tartan-finder`
+(Prestige skin) and `sk2-tartan-finder` (SCOTKILT editorial skin), so both
+pages run exactly the same browser with the same settings and shop links.
+
+  {%- render 'tartan-finder-app', section: section, class: 'sk2-tf__app' -%}
+
+URL parameters on the page:
+- ?q=macdonald   prefill the search
+- ?tartan=handle open that tartan's preview
+
+Documentation: docs/TARTAN-PICKER.md
+{%- endcomment -%}
+
+{%- liquid
+  assign tartan_library_url = settings.tartan_library_url | strip
+  if tartan_library_url == blank
+    assign tartan_library_url = 'tartan-library.json' | asset_url
+  endif
+-%}
+
+<tartan-finder
+  id="tartan-finder-{{ section.id }}"
+  class="tartan-finder tartan-picker--{{ section.settings.swatch_shape }} {{ class }}"
+  style="--tp-tile-size: {{ section.settings.tile_size }}px; --tp-finder-height: {{ section.settings.height_desktop }}px; --tp-finder-height-mobile: {{ section.settings.height_mobile }};"
+  {{ section.shopify_attributes }}
+>
+  <script type="application/json" data-tartan-config>
+    {
+      "source": {{ settings.tartan_data_source | default: 'library_metaobjects' | json }},
+      "libraryUrl": {{ tartan_library_url | json }},
+      "enableColourways": {{ section.settings.enable_colourways | json }},
+      "defaultColourway": {{ section.settings.default_colourway | default: 'modern' | json }},
+      "dataUrl": {{ routes.root_url | append: '?section_id=tartan-data' | replace: '//?', '/?' | json }},
+      "cacheVersion": {{ settings.tartan_cache_version | append: '-' | append: settings.tartan_data_source | append: '-' | append: settings.tartan_metaobject_type | append: settings.tartan_collection.handle | json }},
+      "cacheMinutes": {{ settings.tartan_cache_minutes | default: 0 | json }},
+      "modalTitle": {{ section.settings.panel_title | json }},
+      "searchPlaceholder": {{ section.settings.search_placeholder | json }},
+      "defaultView": {{ section.settings.default_view | json }},
+      "showPopularFilter": {{ section.settings.show_popular_filter | json }},
+      "showCategoryFilter": {{ section.settings.show_category_filter | json }},
+      "showColourFilter": {{ section.settings.show_colour_filter | json }},
+      "showAvailabilityFilter": {{ section.settings.show_availability_filter | json }},
+      "showAlphabet": {{ section.settings.show_alphabet | json }},
+      "showPreview": true,
+      "showSurcharge": {{ section.settings.show_surcharge | json }},
+      "noResultsText": {{ section.settings.no_results_text | json }},
+      "emptyText": {{ section.settings.empty_text | json }},
+      "requestText": {{ section.settings.request_text | json }},
+      "requestUrl": {{ section.settings.request_url | json }},
+      "imageFit": {{ section.settings.image_fit | json }},
+      "enableZoom": {{ section.settings.enable_zoom | json }},
+      "urlParam": {{ section.settings.url_param | json }},
+      "scopeGroups": {{ section.settings.scope_groups | json }},
+      "restrictToGroups": {% if section.settings.scope_groups != blank %}true{% else %}false{% endif %},
+      "restrictToHandles": false,
+      "designMode": {{ request.design_mode | json }},
+      "shopLinks": [
+        {%- assign link_written = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'shop_link' and block.settings.label != blank -%}
+            {%- assign link_type = block.settings.link_type | default: 'url' -%}
+            {%- if link_type == 'url' and block.settings.url == blank -%}{%- continue -%}{%- endif -%}
+            {%- comment -%} Tagged links need a collection handle; older blocks kept it in the link. {%- endcomment -%}
+            {%- assign link_collection = block.settings.collection.handle -%}
+            {%- if link_collection == blank and block.settings.url contains '/collections/' -%}
+              {%- assign link_collection = block.settings.url | split: '/collections/' | last | split: '?' | first | split: '/' | first -%}
+            {%- endif -%}
+            {%- if link_written -%},{%- endif -%}
+            {
+              "label": {{ block.settings.label | json }},
+              "url": {{ block.settings.url | json }},
+              "style": {{ block.settings.style | json }},
+              "type": {{ link_type | json }},
+              "collection": {{ link_collection | json }},
+              "tagWord": {{ block.settings.tag_word | default: 'tartan' | json }},
+              "singleProduct": {{ block.settings.single_product | json }},
+              "hideWithoutProducts": {{ block.settings.hide_without_products | json }},
+              "display": {{ block.settings.display | default: 'carousel' | json }},
+              "limit": {{ block.settings.products_limit | default: 12 | json }}
+            }
+            {%- assign link_written = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+
+  <div class="tp-loading" data-tp-finder-loading>
+    <span class="tp-spinner"></span>
+    <span>Loading tartans…</span>
+  </div>
+</tartan-finder>

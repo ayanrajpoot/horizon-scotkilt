@@ -1,0 +1,501 @@
+rank,display_name,repo_slug,repo_name,score,orders,search_volume,in_stock
+1,Black Watch,CUSTOM:black-watch,(custom),100.0,974,11050,yes
+2,Royal Stewart,stuart-stewart,Stuart / Stewart,90.44,470,4690,yes
+3,MacDonald,macdonald,MacDonald,85.87,333,3090,yes
+4,Campbell,campbell,Campbell,84.71,206,6890,yes
+5,MacKenzie,mackenzie,Mackenzie,81.46,194,3330,yes
+6,Fraser,fraser-of-lovat,Fraser of Lovat,80.66,154,4580,yes
+7,Buchanan,buchanan,Buchanan,79.59,137,4510,yes
+8,MacGregor,macgregor-modern,"MacGregor, Modern",79.57,172,2660,yes
+9,Gordon,gordon,Gordon,78.16,141,2890,yes
+10,Anderson,anderson,Anderson,77.02,162,1550,yes
+11,Douglas,douglas,Douglas,76.52,126,2420,yes
+12,Wallace,wallace,Wallace,75.75,139,1570,yes
+13,Davidson,davidson,Davidson,74.6,148,1000,yes
+14,Cameron,cameron,Cameron,73.65,102,1830,yes
+15,Robertson,robertson,Robertson,72.82,109,1260,yes
+16,Pride of Scotland,pride-of-scotland,Pride of Scotland,72.24,202,260,yes
+17,MacKay,mackay,MacKay,71.61,113,840,yes
+18,MacLaren,maclaren,MacLaren,71.23,91,1250,yes
+19,Black Stewart,stuart-stewart-black,Stuart / Stewart Black,71.1,144,420,yes
+20,MacLeod of Lewis,macleod-of-lewis-vestiarium-scoticum,MacLeod of Lewis (Vestiarium Scoticum),70.89,142,410,yes
+21,Bruce,bruce,Bruce,70.58,83,1300,yes
+22,MacPherson,macpherson,MacPherson,69.25,67,1490,yes
+23,Murray,murray,Murray,68.74,99,530,yes
+24,Lindsay,lindsay,Lindsay,68.18,73,920,yes
+25,Heritage of Scotland,heritage-of-scotland,Heritage of Scotland,67.29,149,140,yes
+26,MacFarlane,macfarlane-red,MacFarlane Red,67.27,66,910,yes
+27,Farquharson,farquharson,Farquharson,67.17,75,660,yes
+28,Ferguson,ferguson,Ferguson,66.81,54,1270,yes
+29,Armstrong,armstrong,Armstrong,66.78,67,770,yes
+30,Johnstone,johnston-johnstone,Johnston / Johnstone,66.45,69,660,yes
+31,Gunn,gunn,Gunn,66.35,51,1280,yes
+32,Forbes,forbes,Forbes,66.22,70,600,yes
+33,Scottish National,scottish-national,Scottish National,66.09,144,110,yes
+34,Lamont,lamont,Lamont,66.01,62,750,yes
+35,Barclay Hunting,barclay,Barclay,65.94,93,290,yes
+36,Duncan,duncan,Duncan,65.93,57,890,yes
+37,Sutherland,sutherland,Sutherland,65.92,64,680,yes
+38,MacMillan,macmillan,MacMillan,65.77,61,730,yes
+39,Grant,grant,Grant,65.63,60,730,yes
+40,Smith,smith,Smith,65.42,71,470,yes
+41,Clark,clark,Clark,65.19,64,560,yes
+42,MacDuff,macduff,MacDuff,65.14,57,720,yes
+43,Scott,scott,Scott,63.87,48,760,yes
+44,Keith,keith,Keith,63.83,53,600,yes
+45,Isle of Skye,skye-isle-of,"Skye, Isle of",63.82,55,550,yes
+46,MacLachlan,maclachlan,MacLachlan,63.78,87,190,yes
+47,Munro,munro,Munro,63.73,52,610,yes
+48,MacLeod of Harris,macleod-of-assynt,MacLeod of Assynt,63.64,82,210,yes
+49,Stewart Dress,stuart-stewart-dress,Stuart / Stewart Dress,63.41,59,420,yes
+50,Henderson,henderson-mackendrick,Henderson / MacKendrick,63.41,46,740,yes
+51,Hunting Stewart,stuart-stewart-hunting,Stuart / Stewart Hunting,63.1,77,210,yes
+52,MacRae,macrae,MacRae,63.06,52,510,yes
+53,Ross,ross,Ross,62.99,40,910,yes
+54,Taylor,taylor,Taylor,62.72,55,410,yes
+55,Kerr,kerr,Kerr,62.53,41,760,yes
+56,Sinclair,sinclair,Sinclair,62.29,37,900,yes
+57,Maxwell,maxwell,Maxwell,62.28,54,380,yes
+58,MacLellan,maclellan,MacLellan,62.17,60,290,yes
+59,Dress Gordon,gordon-dress,Gordon Dress,62.15,52,400,yes
+60,MacKinnon,mackinnon,MacKinnon,62.08,50,430,yes
+61,US Army,us-army,U.S. Army,61.78,69,190,yes
+62,MacNeil of Barra,macneil-of-barra,MacNeil of Barra,61.43,43,510,yes
+63,MacNaughton,macnaughton,MacNaughton,61.38,63,210,yes
+64,Cunningham,cunningham,Cunningham,61.2,30,1080,yes
+65,Leslie,leslie-clan-tartan-tartan-number-1142-earliest-known-date-1842-the-vestarium-scoticum-see-products-available-copyright-blair-urquhart-comrie-2015,Leslie,61.0,54,270,yes
+66,MacDougall,macdougall,MacDougall,60.95,36,670,yes
+67,Brown Watch,brown-watch,Brown Watch,60.69,77,110,yes
+68,Clergy,clergy,Clergy,60.59,63,170,yes
+69,Baird,baird,Baird,60.59,40,480,yes
+70,Elliot,elliot,Elliot,60.49,46,340,yes
+71,Ailsa Pink,ailsa-pink,Ailsa Pink,60.48,116,40,yes
+72,Watson,watson,Watson,60.33,57,200,yes
+73,Wilson,wilson,Wilson,60.26,40,440,yes
+74,Shaw,shaw,Shaw,59.52,30,690,yes
+75,Blair,blair,Blair,59.32,43,290,yes
+76,Cornish,cornish-national,Cornish National,59.1,53,170,yes
+77,Mitchell,mitchell,Mitchell,58.97,38,350,yes
+78,Kennedy,kennedy,Kennedy,58.77,28,660,yes
+79,Gallagher,gallagher-ancient,Gallagher Ancient,58.49,47,190,yes
+80,MacCallum,maccallum,MacCallum,58.49,47,190,yes
+81,Cooper,cooper-couper,Cooper / Couper,58.25,42,230,yes
+82,Boyd,boyd,Boyd,58.15,30,480,yes
+83,Tara Murphy,murphy-tara,Murphy / Tara,58.13,38,280,yes
+84,MacLean,maclean,MacLean,57.94,36,1140,no
+85,Napier,napier,Napier,57.91,37,280,yes
+86,Campbell of Argyll,campbell-of-argyll,Campbell of Argyll,57.82,35,310,yes
+87,Montgomery,montgomery,Montgomery,57.65,28,490,yes
+88,Young,young,Young,57.48,37,250,yes
+89,County Donegal Irish,donegal-county,"Donegal, County",56.39,30,300,yes
+90,Fraser Hunting,fraser-hunting,Fraser Hunting,56.11,29,300,yes
+91,MacKintosh,mackintosh,MacKintosh,55.97,27,340,yes
+92,Morrison,morrison,Morrison,55.66,26,340,yes
+93,Robertson Hunting,robertson-hunting,Robertson Hunting,55.62,66,40,yes
+94,Scotland Forever,scotland-forever,Scotland Forever,55.54,38,140,yes
+95,Graham of Montrose,graham-of-montrose,Graham of Montrose,55.23,32,190,yes
+96,Macalister,macalister-clan,MacAlister (Clan),55.14,22,430,yes
+97,Burnett,burnett,Burnett,54.91,20,500,yes
+98,Muir,muir-moore,Muir / Moore,54.86,25,300,yes
+99,MacLean of Duart,maclean-of-duart,MacLean of Duart,54.34,27,220,yes
+100,Logan,logan,Logan,53.98,24,260,yes
+101,O'Sullivan,osullivan,O'Sullivan,53.91,22,310,yes
+102,Craig,craig,Craig,53.57,20,350,yes
+103,Brown,brown,Brown,53.49,16,560,yes
+104,Crawford,crawford,Crawford,53.49,16,560,yes
+105,Murray Of Atholl,murray-of-atholl,Murray of Atholl,53.47,20,340,yes
+106,O'Neill,oneill,O'Neill,53.39,18,420,yes
+107,Hay,hay,Hay,52.72,14,610,yes
+108,Ancient Hunter,hunter,Hunter,52.71,38,250,no
+109,MacIntyre,macintyre,MacIntyre,52.63,12,830,yes
+110,Davis,davis,Davis,52.31,20,250,yes
+111,Lockhart,lockhart,Lockhart,52.31,20,250,yes
+112,MacBean,macbean,MacBean,52.06,26,130,yes
+113,Guthrie,guthrie,Guthrie,51.89,15,420,yes
+114,MacEwan Ancient,macewen-macewan,MacEwen / MacEwan,51.66,22,170,yes
+115,Carmichael,carmichael,Carmichael,51.65,17,300,yes
+116,Burns,burns,Burns,51.45,13,510,yes
+117,Stevenson,stevenson,Stevenson,51.43,25,120,yes
+118,US Marine Corps,us-marine-corps,US Marine Corps,51.31,23,140,yes
+119,Malcolm,malcolm,Malcolm,51.26,17,270,yes
+120,Butler,butler,Butler,51.2,22,150,yes
+121,O Brien,obrien,O'Brien,51.06,22,550,no
+122,Galbraith,galbraith,Galbraith,50.98,15,330,yes
+123,Menzies,menzies,Menzies,50.81,28,300,no
+124,County Mayo,mayo-county,"Mayo, County",50.81,21,150,yes
+125,MacTavish,mactavish,MacTavish,50.75,14,360,yes
+126,Martin,martin,Martin,50.64,20,160,yes
+127,Weir,weir,Weir,50.57,27,80,yes
+128,MacQueen,macqueen,MacQueen,50.47,16,250,yes
+129,Rutherford,rutherford,Rutherford,50.41,18,190,yes
+130,Angus,angus,Angus,50.16,16,230,yes
+131,County Galway,galway-county,"Galway, County",50.04,22,110,yes
+132,Kincaid,kincaid-of-kincaid,Kincaid of Kincaid,49.8,12,390,yes
+133,Nova Scotia,nova-scotia,Nova Scotia,49.53,14,260,yes
+134,Hamilton tartan,hamilton,Hamilton,49.38,8,820,yes
+135,Dunbar,dunbar,Dunbar,49.29,21,380,no
+136,Wood,wood-clan-family,Wood (Clan/Family),49.06,17,150,yes
+137,Jones,jones,Jones,48.82,19,110,yes
+138,Ayrshire,ayrshire,Ayrshire,48.53,17,130,yes
+139,MacGillivray,macgillivray,MacGillivray,48.13,13,210,yes
+140,Ross Hunting,ross-hunting,Ross Hunting,48.12,31,30,yes
+141,Bell of Borders,bell-of-the-borders,Bell of the Borders,47.92,36,20,yes
+142,California State,california-state,California State,47.9,17,110,yes
+143,Thomson,thompson-thomson-mactavish,Thompson / Thomson / MacTavish,47.87,21,260,no
+144,Macthomas,macthomas,MacThomas,47.75,13,190,yes
+145,Buchanan Hunting,buchanan-hunting,Buchanan Hunting,47.73,16,120,yes
+146,MacPhie,macphie-macfie,MacPhie / Macfie,47.34,13,170,yes
+147,Macinnes,macinnes,MacInnes,47.0,9,340,yes
+148,MacBeth,macbeth,MacBeth,46.96,10,270,yes
+149,Doyle,doyle,Doyle,46.69,21,190,no
+150,Regan,regan,Regan,46.69,18,70,yes
+151,Rob Roy Macgregor,rob-roy-macgregor,Rob Roy Macgregor,46.64,26,30,yes
+152,MacLennan,maclennan,MacLennan,45.84,10,200,yes
+153,Kerry Irish County,kerry-county,"Kerry, County",45.72,16,70,yes
+154,Clare Irish County,clare-county,"Clare, County",45.71,13,110,yes
+155,Cameron of Erracht,cameron-of-erracht,Cameron of Erracht,45.69,12,130,yes
+156,Fletcher,fletcher,Fletcher,45.65,10,190,yes
+157,American National,american-national,American National,45.49,27,20,yes
+158,Williams,williams,Williams,45.45,10,180,yes
+159,Geddes,geddes,Geddes,45.08,19,40,yes
+160,MacPherson Hunting,macpherson-hunting,MacPherson Hunting,45.08,19,40,yes
+161,Mcclure,macclure,MacClure,45.01,10,160,yes
+162,Chisholm,chisholm,Chisholm,44.94,7,330,yes
+163,MacNab,macnab,MacNab,44.61,8,230,yes
+164,Forsyth,forsyth,Forsyth,43.9,8,190,yes
+165,Gray Hunting,gray-hunting,Gray Hunting,43.78,22,20,yes
+166,Irvine,irvine-clan-tartan-tartan-number-733-earliest-known-date-c-1889-scottish-tartans-society-notes-say-that-this-tartan-was-first-made-by-peter-macarthur-and-co-hamilton-mackinlay-a-tartan-collector-between-1930-and-1950-gives-the-earliest-date-as-1889-but-it-is-not-known-upon-what-evidence-the-name-irvine-derives-from-an-old-parish-name-in-dumfries-shire-and-from-irvine-in-ayrshire-william-de-irwyne-obtained-the-forest-of-drum-in-1324-and-is-thus-the-ancestor-of-the-irvines-of-drum-see-products-available-copyright-blair-urquhart-comrie-2015,Irvine,43.61,10,110,yes
+167,Innes,innes,Innes,43.59,7,230,yes
+168,Dunlop,dunlop,Dunlop,43.02,8,150,yes
+169,MacAlpine,macalpine,MacAlpine,42.64,74,0,yes
+170,Drummond,drummond,Drummond,42.58,6,240,yes
+171,Abel,abel-2015,Abel (2015),42.56,19,20,yes
+172,Cavan Irish County,cavan-county,"Cavan, County",41.93,10,70,yes
+173,MacArthur,macarthur,MacArthur,41.86,8,110,yes
+174,Cochrane,cochrane,Cochrane,41.68,5,270,yes
+175,Oliphant,oliphant,Oliphant,41.59,9,80,yes
+176,Allison,alison-allison,Alison / Allison,41.5,8,100,yes
+177,Macconnell,macconnell,MacConnell,41.44,11,50,yes
+178,Turnbull Dress,turnbull-dress,Turnbull Dress,41.44,11,50,yes
+179,Burns Check,burns-check,Burns Check,41.32,12,40,yes
+180,Campbell Dress,campbell-dress,Campbell Dress,41.11,8,90,yes
+181,Skene,skene,Skene,41.07,6,160,yes
+182,Dutch,dutch,Dutch,40.62,11,40,yes
+183,MacDonald Dress,macdonald-dress,MacDonald Dress,40.27,12,30,yes
+184,Cameron Hunting Muted,cameron-hunting,Cameron Hunting,39.65,7,80,yes
+185,Erskine,erskine-red,Erskine (Red),39.65,4,240,yes
+186,World Peace,world-peace,World Peace,39.57,11,30,yes
+187,Callaghan,callaghan,Callaghan,39.48,16,50,no
+188,Livingstone,livingstone,Livingstone,38.81,12,20,yes
+189,MacAulay,macaulay,MacAulay,38.78,4,190,yes
+190,Jewish,jewish,Jewish,38.78,3,320,yes
+191,Iron Horse,iron-horse,Iron Horse,38.75,47,0,yes
+192,Colquhoun,colquhoun,Colquhoun,38.61,4,690,no
+193,Macquarrie,macquarrie,MacQuarrie,38.58,7,60,yes
+194,Fowler,fowler,Fowler,38.58,7,60,yes
+195,Russell,russell,Russell,38.36,4,170,yes
+196,Stewart Ancient,stewart,Stewart,38.25,1,5260,no
+197,Scott Green,scott-green,Scott (Green),38.12,8,40,yes
+198,Kerr Hunting Ancient,kerr-hunting,Kerr Hunting,38.11,11,20,yes
+199,Strachan,strachan,Strachan,38.11,11,20,yes
+200,Cumming,cumming,Cumming,37.99,6,70,yes
+201,Carnegie,carnegie,Carnegie,37.89,4,150,yes
+202,Ramsay Blue Hunting,ramsay-blue-hunting,Ramsay Blue Hunting,37.58,41,0,yes
+203,Baker,baker,Baker,37.58,5,90,yes
+204,County Sligo,sligo-county,"Sligo, County",37.35,10,20,yes
+205,Flower Of Scotland,flower-of-scotland,Flower of Scotland,36.74,4,110,yes
+206,Phillips,phillips,Phillips,36.64,5,70,yes
+207,Gordon Red Weathered,gordon-red,Gordon Red,36.52,9,20,yes
+208,Mccormick,maccormick-name,MacCormick (Name),36.5,8,100,no
+209,Kirk,kirk,Kirk,36.38,4,100,yes
+210,Tipperary County,tipperary-county,"Tipperary, County",36.04,7,30,yes
+211,Flynn,flynn,Flynn,35.99,4,90,yes
+212,Stuart of Bute,stuart-of-bute,Stuart of Bute,35.95,3,150,yes
+213,Brodie Hunting Ancient,brodie-hunting,Brodie Hunting,35.92,6,40,yes
+214,Campbell of Cawdor Ancient,campbell-of-cawdor,Campbell of Cawdor,35.55,4,80,yes
+215,Pollock,pollock,Pollock,35.4,5,50,yes
+216,Buchan Ancient,buchan,Buchan,35.23,4,280,no
+217,Graham of Menteith,graham-of-menteith,Graham of Menteith,35.11,3,120,yes
+218,MacIntosh,macintosh-ancient,MacIntosh Ancient,34.71,3,410,no
+219,Tyrone County,tyrone-county,"Tyrone, County",34.57,7,20,yes
+220,Chisholm Hunting,chisholm-hunting,Chisholm Hunting,34.57,7,20,yes
+221,Home,hume-or-home,Hume or Home,34.57,7,20,yes
+222,Hayes,hayes,Hayes,34.48,4,60,yes
+223,Gillies,gillies,Gillies,34.44,3,100,yes
+224,Graham Dress,graham-dress,Graham Dress,34.05,27,0,yes
+225,Wallace Hunting,wallace-hunting,Wallace Hunting,33.73,26,0,yes
+226,MacFarlane Hunting,macfarlane-hunting-macgregor-hastie,MacFarlane Hunting (MacGregor Hastie),33.73,26,0,yes
+227,Macrae Hunting,macrae-hunting,MacRae Hunting,33.73,26,0,yes
+228,Forrester,forrester-foster,Forrester / Foster,33.61,3,80,yes
+229,Agnew,agnew,Agnew,33.61,3,80,yes
+230,GlasGow,glasgow,Glasgow,33.44,2,150,yes
+231,MacLaine of LochBuie Limited,maclaine-of-lochbuie,MacLaine of Lochbuie,33.41,6,20,yes
+232,Freemasons Universal,freemasons-universal,Freemasons' Universal,33.4,25,0,yes
+233,Sinclair Hunting,sinclair-hunting,Sinclair Hunting,33.4,25,0,yes
+234,Glenn,glenn,Glenn,32.99,4,40,yes
+235,Orkney,orkney,Orkney,32.71,23,0,yes
+236,MacKinlay,mackinlay,MacKinlay,32.71,23,0,yes
+237,MacDonald Lord of the Isles Hunting,macdonald-lord-of-the-isles-hunting,"MacDonald, Lord of the Isles Hunting",32.71,23,0,yes
+238,Booth,booth,Booth,32.54,3,60,yes
+239,Reid Green,reid-green,"Reid, Green",32.33,22,0,yes
+240,Gretna Green,gretna-green,Gretna Green,32.07,5,20,yes
+241,Drummond Of Perth,drummond-of-perth-clan,Drummond of Perth (Clan),32.07,5,20,yes
+242,Clergy Episcopal,episcopal-clergy,Episcopal Clergy,32.07,5,20,yes
+243,MacMillan Hunting,macmillan-hunting,MacMillan Hunting,31.95,21,0,yes
+244,Rankin,rankin,Rankin,31.94,4,30,yes
+245,Grey Stewart,stuart-stewart-authentic-grey,Stuart / Stewart Authentic Grey,31.87,3,50,yes
+246,County Antrim,antrim-county,"Antrim, County",31.87,3,50,yes
+247,Earl of St Andrews,st-andrews-earl-of,"St. Andrews, Earl of",31.87,3,50,yes
+248,Graham,graham,Graham,31.82,1,950,no
+249,Urquhart,urquhart,Urquhart,31.66,1,240,yes
+250,Allen 1996,allen-1996,Allen (1996),31.12,19,0,yes
+251,Holyrood,holyrood,Holyrood,31.05,3,40,yes
+252,Baxter,baxter,Baxter,30.95,3,150,no
+253,MacPhail Hunting,macphail-hunting,MacPhail Hunting,30.67,18,0,yes
+254,Jacobite,jacobite,Jacobite,30.6,2,70,yes
+255,County Limerick,limerick-county,"Limerick, County",30.48,4,20,yes
+256,Cunningham Hunting,cunningham-hunting,Cunningham Hunting,30.48,4,20,yes
+257,MacKinnon Hunting,mackinnon-hunting,MacKinnon Hunting,30.2,17,0,yes
+258,Macleod,macleod,MacLeod,30.19,0,3070,no
+259,MacDonald of ClanRanald Ancient,macdonald-of-clanranald,MacDonald of Clanranald,30.04,2,230,no
+260,Cockburn,cockburn,Cockburn,30.03,2,60,yes
+261,Grant Hunting Ancient,grant-hunting-clan-tartan-tartan-number-311-earliest-known-date-1819-this-sample-comes-from-the-macgregor-hastie-collection-which-forms-the-basis-of-the-cloth-archive-of-the-scottish-tartans-society-james-cant-notes-say-this-clan-had-no-hunting-tartan-of-its-own-until-about-1730-at-that-time-many-of-the-cadets-of-the-clan-were-officers-in-the-black-watch-and-they-adopted-the-tartan-of-the-watch-as-their-hunting-tartan-see-products-available-copyright-blair-urquhart-comrie-2015,Grant Hunting,30.03,2,60,yes
+262,Spens,spens-spence,Spens / Spence,29.99,3,30,yes
+263,Stirling,stirling,Stirling,29.99,3,30,yes
+264,Leslie Hunting,leslie-hunting,Leslie Hunting,29.7,16,0,yes
+265,Texas Blue Bonnet,texas-blue-bonnet,Texas Blue Bonnet,29.17,15,0,yes
+266,McCormick Festive,maccormick-festive,MacCormick Festive,29.17,15,0,yes
+267,Cumming Hunting,cumming-hunting,Cumming Hunting,29.17,15,0,yes
+268,Park,park,Park,28.75,1,110,yes
+269,Fitzpatrick,fitzpatrick,Fitzpatrick,28.75,1,110,yes
+270,Hamilton Green Hunting,hamilton-green-hunting,Hamilton Green Hunting,28.61,14,0,yes
+271,MacLean Of Duart Hunting,maclean-of-duart-hunting,MacLean of Duart Hunting,28.61,14,0,yes
+272,Marshall Ancient,marshall,Marshall,28.61,3,80,no
+273,Borthwick,borthwick,Borthwick,28.54,2,40,yes
+274,Bryant Ancient,bryant,Bryant,28.54,2,40,yes
+275,Snodgrass,snodgrass,Snodgrass,28.54,2,40,yes
+276,Patriot Ancient,patriot-the,"Patriot, The",28.53,3,20,yes
+277,All Ireland Blue,all-ireland-blue,All Ireland Blue,28.53,3,20,yes
+278,County Dublin,dublin-county,"Dublin, County",28.53,3,20,yes
+279,Cleland,cleland,Cleland,28.53,3,20,yes
+280,Cochrane Azure,cochrane-azure,Cochrane Azure,28.53,3,20,yes
+281,Thomson Blue,thomson-dress-blue,Thomson Dress (Blue),28.01,13,0,yes
+282,MacCulloch,macculloch,MacCulloch,28.01,13,0,yes
+283,Black Shadow,black-shadow,Black Shadow,27.99,4,40,no
+284,Hebridean Heather,hebridean-heather,Hebridean Heather,27.54,3,60,no
+285,Great Scot,great-scot,Great Scot,27.49,2,30,yes
+286,Spencer,spencer,Spencer,27.49,2,30,yes
+287,Todd,todd,Todd,27.49,2,30,yes
+288,Washington State,washington-state,Washington State,27.49,2,30,yes
+289,Ulster Scots,ulster-scots,Ulster Scots,27.36,12,0,yes
+290,Italian,italian,Italian,27.36,12,0,yes
+291,Rourke Frew,rourke-frew-ontario,Rourke-Frew (Ontario),27.36,12,0,yes
+292,Lennox,lennox,Lennox,27.36,12,0,yes
+293,Ramsay Red,ramsay-red,Ramsay (Red),27.36,12,0,yes
+294,Menzies Hunting Green,menzies-green,Menzies Green,27.36,12,0,yes
+295,MacDuff Hunting,macduff-hunting,MacDuff Hunting,27.36,12,0,yes
+296,Macnicol,nicolson-macnicol,Nicolson / MacNicol,27.07,5,20,no
+297,Duffy,duffy,Duffy,27.07,1,70,yes
+298,Kelly Dress,kelly-dress,Kelly Dress,26.66,11,0,yes
+299,Ogilvie Hunting,ogilvie-hunting,Ogilvie Hunting,26.66,11,0,yes
+300,Halliday,halliday,Halliday,26.5,1,60,yes
+301,Christmas,christmas,Christmas,26.12,0,1040,no
+302,Stuart,stewart-stuart,Stewart / Stuart,26.08,0,1030,no
+303,Campbell Hunting,campbell-hunting,Campbell Hunting,26.02,2,20,yes
+304,Ferguson of Balquhidder,ferguson-of-balquhidder,Ferguson of Balquhidder,26.02,2,20,yes
+305,Corrie,corrie,Corrie,26.02,2,20,yes
+306,Barclay Dress,barclay-dress,Barclay Dress,26.02,2,20,yes
+307,Fife Duke Of,fife-duke-of,"Fife, Duke Of",26.02,2,20,yes
+308,Duke of Rothesay,rothesay-duke-of,"Rothesay, Duke of",26.02,2,20,yes
+309,Colvin,colvin,Colvin,26.02,2,20,yes
+310,Laing,laing,Laing,25.9,10,0,yes
+311,Thomson Grey,thomson-dress-grey,Thomson Dress (Grey),25.9,10,0,yes
+312,Middleton,middleton,Middleton,25.9,10,0,yes
+313,Strathearn Muted,strathearn,Strathearn,25.07,9,0,yes
+314,Teylu Coleman Cornwall,teylu-coleman-cornwall,Teylu Coleman (Cornwall),25.07,9,0,yes
+315,MacLeod of Raasay,macleod-of-raasay-clan-tartan-tartan-number-1172-earliest-known-date-c-1815-20-the-thread-count-given-is-from-the-provost-macbean-collection-sample-which-is-very-similar-to-to-the-sample-in-the-collection-of-the-highland-society-of-london-k2-r18-k12-r2-k16-the-design-seems-likely-to-be-derived-from-the-vestiarium-scoticum-and-would-therefore-be-later-than-1829-see-products-available-copyright-blair-urquhart-comrie-2015,MacLeod of Raasay,25.07,9,0,yes
+316,Matheson Hunting,matheson-hunting,Matheson Hunting,25.07,9,0,yes
+317,Stirling Bannockburn,stirling-and-bannockburn,Stirling and Bannockburn,25.07,9,0,yes
+318,Turnbull Hunting,turnbull-hunting,Turnbull Hunting,25.07,9,0,yes
+319,Kilgour Muted Limited,kilgour,Kilgour,25.07,9,0,yes
+320,MacIntyre Hunting,macintyre-hunting-vs,MacIntyre Hunting (VS),25.07,9,0,yes
+321,Highland Granite,highland-granite,Highland Granite,25.03,2,60,no
+322,Bates Ancient,bates,Bates,25.0,1,40,yes
+323,Ferguson Dress,ferguson-dress-clan-tartan-tartan-number-92-earliest-known-date-1980-see-also-371-where-the-dark-blue-is-changed-to-black-these-are-problably-one-and-the-same-tartan-dark-blue-being-the-correct-colour-see-products-available-copyright-blair-urquhart-comrie-2015,Ferguson Dress,25.0,1,40,yes
+324,Bruce of Kinnaird Ancient,bruce-of-kinnaird,Bruce of Kinnaird,25.0,1,40,yes
+325,Army,tartan-army,Tartan Army,24.94,0,760,no
+326,Newfoundland,newfoundland,Newfoundland,24.37,1,130,no
+327,Rose Muted,rose,Rose,24.37,1,130,no
+328,Tweedside Hunting,tweedside-hunting,Tweedside Hunting,24.16,8,0,yes
+329,Webster,webster,Webster,24.16,8,0,yes
+330,Kidd Ancient,kidd,Kidd,24.16,8,0,yes
+331,Maclaine Of Lochbuie Coburn,maclaine-of-lochbuie-coburn,MacLaine of Lochbuie (Coburn),24.16,8,0,yes
+332,Norwegian Night,norwegian-night,Norwegian Night,24.16,8,0,yes
+333,Leinster,leinster,Leinster,23.95,1,30,yes
+334,MacGill Ancient,macgill,MacGill,23.95,1,30,yes
+335,Auld Lang Syne,auld-lang-syne,Auld Lang Syne,23.54,2,40,no
+336,Cranston,cranston,Cranston,23.54,2,40,no
+337,Christie,christie,Christie,23.39,1,100,no
+338,Hill,hill,Hill,23.39,1,100,no
+339,Thomson Camel,thomson-camel,Thomson Camel,23.13,7,0,yes
+340,Fort William,fort-william,Fort William,23.13,7,0,yes
+341,MacDuff Dress,macduff-dress,MacDuff Dress,23.13,7,0,yes
+342,Pennsylvania,pennsylvania,Pennsylvania,23.13,7,0,yes
+343,Notre Dame Marching Guard,notre-dame-marching-guard,Notre Dame Marching Guard,23.13,7,0,yes
+344,Erskine Black and White,erskine-black-and-white,Erskine (Black and White),23.13,7,0,yes
+345,Little of Morton Rigg,little-of-morton-rigg,Little of Morton Rigg,23.13,7,0,yes
+346,MacKintosh Hunting,mackintosh-hunting,MacKintosh Hunting,23.13,7,0,yes
+347,Harvey,harvey,Harvey,22.56,1,80,no
+348,Stewart Muted Blue,stewart-stuart-blue,Stewart / Stuart Blue,22.49,2,30,no
+349,County Louth,louth-county,"Louth, County",22.49,1,20,yes
+350,Wicklow County,wicklow-county,"Wicklow, County",22.49,1,20,yes
+351,County Kilkenny,kilkenny-county,"Kilkenny, County",22.49,1,20,yes
+352,Elphinstone,elphinstone,Elphinstone,22.49,1,20,yes
+353,Bisset Ancient,bisset,Bisset,22.49,1,20,yes
+354,County Monaghan,monaghan-county,"Monaghan, County",22.49,1,20,yes
+355,German National Ancient,german-national,German National,22.49,1,20,yes
+356,Faulds,faulds,Faulds,22.49,1,20,yes
+357,Grey Spirit,grey-spirit,Grey Spirit,22.49,1,20,yes
+358,Estes,estes,Estes,22.49,1,20,yes
+359,Cargill,cargill,Cargill,22.49,1,20,yes
+360,Highland Titles,highland-titles,Highland Titles,22.49,1,20,yes
+361,Hebridean Granite,hebridean-granite,Hebridean Granite,22.49,1,20,yes
+362,Dyer Ancient,dyer,Dyer,22.49,1,20,yes
+363,Connecticut State,connecticut-state-of,"Connecticut, State of",22.49,1,20,yes
+364,Stewart Of Appin Ancient,stewart-stuart-of-appin,Stewart / Stuart of Appin,22.49,1,20,yes
+365,Brooke,brooke,Brooke,22.49,1,20,yes
+366,Cook,cook,Cook,22.35,0,100,yes
+367,Pride Of,pride-the-tartan-of,"Pride, The Tartan of",22.24,0,370,no
+368,Dean Brae,dean-brae,Dean Brae,21.96,6,0,yes
+369,Taggart,taggart,Taggart,21.96,6,0,yes
+370,Irish Diaspora,irish-diaspora,Irish Diaspora,21.96,6,0,yes
+371,MacKillop,mackillop,MacKillop,21.96,6,0,yes
+372,Maccoll,maccoll,MacColl,21.96,6,0,yes
+373,Nisbet,nisbet,Nisbet,21.96,6,0,yes
+374,Roxburgh Red,roxburgh-red,Roxburgh Red,21.96,6,0,yes
+375,Nicolson Hunting Ancient,nicolson-green-hunting,Nicolson Green Hunting,21.96,6,0,yes
+376,Seton,seton,Seton,21.96,6,0,yes
+377,MacAulay Hunting,macaulay-hunting,MacAulay Hunting,21.96,6,0,yes
+378,Miller,miller,Miller,21.7,0,320,no
+379,Abercrombie,abercrombie,Abercrombie,21.52,0,80,yes
+380,Culloden,culloden,Culloden,21.5,1,60,no
+381,MacGowan,macgowan,MacGowan,21.5,1,60,no
+382,Aitken,aitken,Aitken,21.5,1,60,no
+383,Hamilton Hunting,hamilton-hunting,Hamilton Hunting,21.02,2,20,no
+384,Muirhead,muirhead,Muirhead,21.02,2,20,no
+385,Meath County,meath-county,"Meath, County",21.02,2,20,no
+386,Wexford County,wexford-county,"Wexford, County",21.02,2,20,no
+387,Macdonald Of Glencoe Muted,macdonald-of-glencoe,MacDonald of Glencoe,21.02,2,20,no
+388,Cairns of Finavon,cairns-of-finavon,Cairns of Finavon,21.02,2,20,no
+389,Grampian,grampian,Grampian,21.02,2,20,no
+390,Fletcher of Dunans,fletcher-of-dunans,Fletcher of Dunans,21.02,2,20,no
+391,Dundee,dundee,Dundee,21.02,2,20,no
+392,Ainslie,ainslie,Ainslie,21.02,2,20,no
+393,MacIver Ancient,maciver,MacIver,21.02,2,20,no
+394,Welsh National,welsh-national,Welsh National,20.82,1,50,no
+395,Haig Check,haig-check,Haig Check,20.62,5,0,yes
+396,Wylie,wylie-ancient,Wylie (Ancient),20.62,5,0,yes
+397,Inverness,inverness,Inverness,20.62,5,0,yes
+398,Stewart Old,stuart-stewart-old,Stuart / Stewart Old,20.62,5,0,yes
+399,American,american,American,20.12,0,210,no
+400,Stewart Dress Blue,stuart-stewart-dress-blue,Stuart / Stewart Dress Blue,20.07,9,0,no
+401,Alberta,alberta,Alberta,20.0,1,40,no
+402,Black Isle,black-isle,Black Isle,20.0,1,40,no
+403,Carrick,carrick,Carrick,20.0,1,40,no
+404,Hannay,hannay,Hannay,19.74,0,190,no
+405,Lyon,lyon,Lyon,19.74,0,190,no
+406,Colorado,colorado,Colorado,19.54,0,180,no
+407,Hello Kitty,hello-kitty,Hello Kitty,19.54,0,180,no
+408,Skye,skye,Skye,19.33,0,170,no
+409,Macdonald Of Isles,macdonald-of-the-isles,MacDonald of The Isles,19.33,0,170,no
+410,Princess Diana,princess-diana,Princess Diana,19.1,0,160,no
+411,Pride of Glencoe,pride-of-glencoe,Pride of Glencoe,19.03,4,0,yes
+412,Tweedside Red,tweedside-red,Tweedside Red,19.03,4,0,yes
+413,MacAlister of Skye,macalister-of-skye,MacAlister of Skye,19.03,4,0,yes
+414,Leonard Hunting,leonard-hunting,Leonard Hunting,19.03,4,0,yes
+415,Wotherspoon,wotherspoon,Wotherspoon,19.03,4,0,yes
+416,Rea,rea,Rea,19.03,4,0,yes
+417,Mactaggart,mactaggart,MacTaggart,19.03,4,0,yes
+418,Baillie (Highland Society),baillie-highland-society,Baillie (Highland Society),19.03,4,0,yes
+419,Ulster Red,ulster-red,Ulster (Red),19.03,4,0,yes
+420,Wemyss,wemyss,Wemyss,19.03,4,0,yes
+421,O'Farrell,ofarrell,O'Farrell,19.03,4,0,yes
+422,Gillespie,gillespie,Gillespie,18.86,0,150,no
+423,Maccullough,maccullough,MacCullough,18.6,0,140,no
+424,Buffalo,buffalo,Buffalo,18.33,0,130,no
+425,Aberdeen,aberdeen,Aberdeen,18.33,0,130,no
+426,Brodie,brodie-clan,Brodie (Clan),18.33,0,130,no
+427,Hunting,hunting-the,"Hunting, The",18.03,0,120,no
+428,St Andrews,st-andrews,St. Andrews,18.03,0,120,no
+429,Princess Mary,princess-mary,Princess Mary,17.91,0,30,yes
+430,Isle Of Harris,isle-of-harris,Isle of Harris,17.7,0,110,no
+431,Falkirk,falkirk,Falkirk,17.7,0,110,no
+432,Dunbroch,dunbroch,DunBroch,17.7,0,110,no
+433,Windsor,windsor,Windsor,17.7,0,110,no
+434,Galloway Hunting,galloway-hunting,Galloway Hunting,17.49,1,20,no
+435,Gow Hunting Weathered,gow-hunting,Gow Hunting,17.49,1,20,no
+436,County Longford,longford-county,"Longford, County",17.49,1,20,no
+437,Armagh County,armagh-county,"Armagh, County",17.49,1,20,no
+438,Chelsea,chelsea,Chelsea,17.49,1,20,no
+439,Hawaiian,hawaiian,Hawaiian,17.49,1,20,no
+440,Dundas,dundas,Dundas,17.49,1,20,no
+441,Carlisle,carlisle-ancient,Carlisle Ancient,17.49,1,20,no
+442,Buccleuch,buccleuch,Buccleuch,17.49,1,20,no
+443,Harvie,harvie,Harvie,17.49,1,20,no
+444,Crook,crook,Crook,17.49,1,20,no
+445,Crozier,crozier-crosser,Crozier / Crosser,17.49,1,20,no
+446,Buie,buie,Buie,17.49,1,20,no
+447,Heather Isle,heather-isle,Heather Isle,17.49,1,20,no
+448,Frame,frame,Frame,17.35,0,100,no
+449,Chinese Scottish,chinese-scottish,Chinese Scottish,17.09,3,0,yes
+450,MacNeil of Colonsay Ancient,macneil-of-colonsay,MacNeil of Colonsay,17.09,3,0,yes
+451,Tennant,tennant,Tennant,17.09,3,0,yes
+452,MacPhail Blue Bands - Limited,macphail-blue-bands,MacPhail (Blue Bands),17.09,3,0,yes
+453,Jardine Dress,jardine-dress,Jardine Dress,17.09,3,0,yes
+454,Royal Canadian Air Force,royal-canadian-air-force,Royal Canadian Air Force,17.09,3,0,yes
+455,MacLaine of LochBuie Hunting,maclaine-of-lochbuie-hunting,MacLaine of Lochbuie Hunting,17.09,3,0,yes
+456,Dalrymple of Castleton,dalrymple-of-castleton,Dalrymple of Castleton,17.09,3,0,yes
+457,MacRae Dress,mcrae-dress,"McRae, Dress",17.09,3,0,yes
+458,MacDonald of Sleat,macdonald-of-sleat,MacDonald of Sleat,17.09,3,0,yes
+459,Rose Hunting,rose-hunting,Rose Hunting,17.09,3,0,yes
+460,Melville,melville,Melville,17.09,3,0,yes
+461,Lochaber,lochaber,Lochaber,17.09,3,0,yes
+462,Stephenson,stephenson,Stephenson,16.96,6,0,no
+463,Wardlaw,wardlaw,Wardlaw,16.96,6,0,no
+464,Ontario,ontario,Ontario,16.96,6,0,no
+465,Hamilton Red Ancient,hamilton-red,"Hamilton, Red",16.96,6,0,no
+466,Sillitoe,sillitoe,Sillitoe,16.96,0,90,no
+467,Sound Of Iona,sound-of-iona,Sound of Iona,16.96,0,90,no
+468,Hose,hose,Hose,16.96,0,90,no
+469,Livingston,livingston,Livingston,16.52,0,80,no
+470,Macdougal,macdougal,MacDougal,16.52,0,80,no
+471,Bear,bear,Bear,16.52,0,80,no
+472,Brooks Brothers,brooks-brothers,Brooks Brothers,16.52,0,80,no
+473,Crichton,crichton-clan,Crichton (Clan),16.52,0,80,no
+474,Downs,downs,Downs,16.45,0,20,yes
+475,City Of Edinburgh,edinburgh-city-of,"Edinburgh, City of",16.02,0,70,no
+476,City Of Glasgow,glasgow-city-of,"Glasgow, City of",16.02,0,70,no
+477,Isle Of Man,isle-of-man,Isle of Man,16.02,0,70,no
+478,Maccarthy,mccarthy,McCarthy,16.02,0,70,no
+479,Macnamara,macnamara,MacNamara,16.02,0,70,no
+480,O Connor,oconnor,O'Connor,16.02,0,70,no
+481,Ogilvie,ogilvie,Ogilvie,16.02,0,70,no
+482,Royal Stuart,stewart-stuart-royal,"Stewart / Stuart, Royal",16.02,0,70,no
+483,Ball,ball,Ball,16.02,0,70,no
+484,Moran Family Ubique,moran-family-ubique,Moran Family Ubique,15.62,5,0,no
+485,Sutherland Old,sutherland-old-clan-tartan-tartan-number-930-earliest-known-date-1842-1618-the-earlier-date-refers-to-a-letter-from-gordon-earl-of-sutherland-instructing-murray-of-dulrossie-to-remove-the-red-and-white-lines-from-the-plaids-of-the-men-so-as-to-bring-their-dress-into-harmony-with-that-of-the-other-septs-this-sett-is-also-recorded-by-smibert-in-1850-smiberts-work-lends-greater-authority-to-the-accuracy-of-the-tartan-worn-by-the-city-of-nunawading-highland-pipe-band-australia-strathallan-1994-see-products-available-copyright-blair-urquhart-comrie-2015,Sutherland Old,15.62,5,0,no
+486,Heritage,heritage,Heritage,15.45,0,60,no
+487,Fraser Dress,fraser-dress,Fraser Dress,15.45,0,60,no
+488,Mackenzie Dress,mackenzie-dress,MacKenzie Dress,15.45,0,60,no
+489,Argyll,argyll,Argyll,15.45,0,60,no
+490,Austin,austin-clan,Austin Clan,15.45,0,60,no
+491,Balfour,balfour,Balfour,15.45,0,60,no
+492,Bishop,bishop,Bishop,15.45,0,60,no
+493,Caledonia,caledonia,Caledonia,15.45,0,60,no
+494,Cox,cox,Cox,15.45,0,60,no
+495,Devon,devon,Devon,15.45,0,60,no
+496,Dewar,dewar,Dewar,15.45,0,60,no
+497,Falconer,falconer,Falconer,15.45,0,60,no
+498,Fulton,fulton,Fulton,15.45,0,60,no
+499,Argyll Campbell,argyll-campbell,Argyll Campbell,14.78,0,50,no
+500,Macclellan,macclellan,MacClellan,14.78,0,50,no

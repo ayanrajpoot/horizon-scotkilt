@@ -1,0 +1,142 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+TARTAN DATA (SCOTKILT)
+----------------------------------------------------------------------------------------------------------------------
+
+Data endpoint for the tartan picker. It is never added to a template: the picker fetches it with the Section Rendering
+API (/?section_id=tartan-data&page=N) and reads the JSON inside the <script> tag.
+
+Source is set in Theme settings > Tartan picker:
+- metaobjects: one "tartan" metaobject per tartan (field list in docs/TARTAN-PICKER.md). With the verified library they
+  add details to library tartans with the same handle; hidden ones are sent as {"h":..., "hidden":true} to remove them.
+- collection: one product per tartan, extra data read from tags (category:, colour:, keyword:, group:...)
+
+Short JSON keys keep the payload small:
+h handle · n name · t thumbnail url · i large image url · v inline svg code · x fallback hex colour · c category
+cl colours · k search keywords · g groups · p popular · a availability · s surcharge · sf formatted surcharge
+d description
+{%- endcomment -%}
+
+{%- liquid
+  assign page_size = settings.tartan_page_size | default: 100
+  assign source = settings.tartan_data_source | default: 'metaobjects'
+  assign mo_type = settings.tartan_metaobject_type | default: 'tartan' | strip
+  assign tartan_collection = settings.tartan_collection
+-%}
+
+<script type="application/json" data-tartan-data>
+{%- if source == 'collection' and tartan_collection != blank -%}
+  {%- paginate tartan_collection.products by page_size -%}
+    {"page":{{ paginate.current_page }},"pages":{{ paginate.pages }},"total":{{ paginate.items }},"items":[
+    {%- for p in tartan_collection.products -%}
+      {%- liquid
+        assign cat = ''
+        assign avail = ''
+        assign hex = ''
+        assign cols = ''
+        assign kws = ''
+        assign grps = ''
+        assign popular = false
+
+        for tag in p.tags
+          assign tag_down = tag | downcase
+          assign tag_value = tag | split: ':' | last | strip
+
+          if tag_down == 'popular'
+            assign popular = true
+          elsif tag_down contains 'category:'
+            assign cat = tag_value
+          elsif tag_down contains 'colour:' or tag_down contains 'color:'
+            assign cols = cols | append: '|' | append: tag_value
+          elsif tag_down contains 'keyword:'
+            assign kws = kws | append: '|' | append: tag_value
+          elsif tag_down contains 'group:'
+            assign grps = grps | append: '|' | append: tag_value
+          elsif tag_down contains 'availability:'
+            assign avail = tag_value
+          elsif tag_down contains 'hex:'
+            assign hex = tag_value
+          endif
+        endfor
+
+        assign surcharge = p.metafields.tartan.surcharge.value | default: 0
+        assign img = p.featured_image
+        assign img_src = img.src | append: ''
+      -%}
+      {"h":{{ p.handle | json }},"n":{{ p.title | json }}
+      {%- if img != blank -%}
+        {%- if img_src contains '.svg' -%}
+          ,"t":{{ img_src | json }},"i":{{ img_src | json }}
+        {%- else -%}
+          ,"t":{{ img | image_url: width: 240 | json }},"i":{{ img | image_url: width: 1400 | json }}
+        {%- endif -%}
+      {%- endif -%}
+      ,"x":{{ hex | json }},"c":{{ cat | json }},"cl":{{ cols | remove_first: '|' | json }},"k":{{ kws | remove_first: '|' | json }},"g":{{ grps | remove_first: '|' | json }}
+      ,"p":{{ popular | json }},"a":{{ avail | json }}
+      ,"s":{{ surcharge | json }},"sf":{{ surcharge | times: 100 | money | json }}
+      ,"d":{{ p.description | strip_html | truncatewords: 60 | json }}}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+    ]}
+  {%- endpaginate -%}
+{%- elsif source contains 'metaobjects' and mo_type != blank and shop.metaobjects[mo_type].values.size > 0 -%}
+  {%- paginate shop.metaobjects[mo_type].values by page_size -%}
+    {"page":{{ paginate.current_page }},"pages":{{ paginate.pages }},"total":{{ paginate.items }},"items":[
+    {%- assign first_written = false -%}
+    {%- for t in shop.metaobjects[mo_type].values -%}
+      {%- liquid
+        assign img = t.image.value
+        assign surcharge = t.surcharge.value | default: 0
+        assign cols = t.colours.value | default: t.colors.value | join: '|'
+        assign kws = t.keywords.value | join: '|'
+        assign grps = t.groups.value | join: '|'
+        assign hex = t.color.value | append: ''
+        assign popular = false
+        if t.popular.value == true
+          assign popular = true
+        endif
+      -%}
+      {%- if first_written -%},{%- endif -%}{%- assign first_written = true -%}
+      {%- if t.hidden.value == true -%}
+        {"h":{{ t.system.handle | json }},"hidden":true}
+        {%- continue -%}
+      {%- endif -%}
+      {"h":{{ t.system.handle | json }},"n":{{ t.name.value | default: t.system.handle | json }}
+      {%- if img != blank -%}
+        {%- liquid
+          assign img_url = img.url | default: img.src | append: ''
+          assign is_svg = false
+          if img_url contains '.svg'
+            assign is_svg = true
+          endif
+          if img.media_type != 'image'
+            assign is_svg = true
+          endif
+        -%}
+        {%- if is_svg -%}
+          ,"t":{{ img_url | json }},"i":{{ img_url | json }}
+        {%- else -%}
+          ,"t":{{ img | image_url: width: 240 | json }},"i":{{ img | image_url: width: 1400 | json }}
+        {%- endif -%}
+      {%- elsif t.image_url.value != blank -%}
+        ,"t":{{ t.image_url.value | append: '' | json }},"i":{{ t.image_url.value | append: '' | json }}
+      {%- endif -%}
+      {%- if t.svg_code.value != blank -%},"v":{{ t.svg_code.value | json }}{%- endif -%}
+      ,"x":{{ hex | json }},"c":{{ t.category.value | append: '' | json }},"cl":{{ cols | json }},"k":{{ kws | json }},"g":{{ grps | json }}
+      ,"p":{{ popular | json }},"a":{{ t.availability.value | append: '' | json }}
+      ,"s":{{ surcharge | json }},"sf":{{ surcharge | times: 100 | money | json }}
+      ,"d":{{ t.description.value | append: '' | json }}}
+    {%- endfor -%}
+    ]}
+  {%- endpaginate -%}
+{%- else -%}
+  {"page":1,"pages":1,"total":0,"items":[]}
+{%- endif -%}
+</script>
+
+{% schema %}
+{
+  "name": "Tartan data",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,310 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+TARTAN PICKER (SCOTKILT)
+----------------------------------------------------------------------------------------------------------------------
+
+Renders the "Choose your tartan" product block. Data is loaded in the browser from the tartan-data section, the modal is
+built by assets/tartan-picker.js. Full documentation: docs/TARTAN-PICKER.md
+
+********************************************
+Supported variables
+********************************************
+
+* product: the product
+* block: the tartan_picker block
+* form_id: the ID of the product form the selection is attached to
+{%- endcomment -%}
+
+{%- liquid
+  assign bs = block.settings
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # Visibility rules
+  # ------------------------------------------------------------------------------------------------------------------
+  assign product_tags = product.tags | join: '|' | downcase | split: '|'
+  assign show_picker = false
+  if product == blank
+    assign bs_visibility = 'none'
+  else
+    assign bs_visibility = bs.visibility
+  endif
+
+  case bs_visibility
+    when 'all'
+      assign show_picker = true
+
+    when 'tags'
+      assign wanted_tags = bs.include_tags | downcase | split: ','
+      assign matched_count = 0
+      assign wanted_count = 0
+      for wanted in wanted_tags
+        assign wanted = wanted | strip
+        if wanted == blank
+          continue
+        endif
+        assign wanted_count = wanted_count | plus: 1
+        if product_tags contains wanted
+          assign matched_count = matched_count | plus: 1
+        endif
+      endfor
+      if bs.tag_match == 'all'
+        if wanted_count > 0 and matched_count == wanted_count
+          assign show_picker = true
+        endif
+      elsif matched_count > 0
+        assign show_picker = true
+      endif
+
+    when 'types'
+      assign product_type = product.type | downcase | strip
+      assign wanted_types = bs.product_types | downcase | split: ','
+      for wanted in wanted_types
+        assign wanted = wanted | strip
+        if wanted != blank and wanted == product_type
+          assign show_picker = true
+          break
+        endif
+      endfor
+
+    when 'vendors'
+      assign product_vendor = product.vendor | downcase | strip
+      assign wanted_vendors = bs.vendors | downcase | split: ','
+      for wanted in wanted_vendors
+        assign wanted = wanted | strip
+        if wanted != blank and wanted == product_vendor
+          assign show_picker = true
+          break
+        endif
+      endfor
+
+    when 'collections'
+      assign product_collections = product.collections | map: 'handle'
+      assign wanted_collections = bs.collection_handles | downcase | split: ','
+      for wanted in wanted_collections
+        assign wanted = wanted | strip
+        if wanted != blank and product_collections contains wanted
+          assign show_picker = true
+          break
+        endif
+      endfor
+
+    when 'products'
+      for listed_product in bs.products
+        if listed_product.id == product.id
+          assign show_picker = true
+          break
+        endif
+      endfor
+
+    when 'metafield'
+      assign mf_parts = bs.metafield_key | strip | split: '.'
+      if mf_parts.size == 2
+        assign mf_namespace = mf_parts[0]
+        assign mf_key = mf_parts[1]
+        assign mf_value = product.metafields[mf_namespace][mf_key].value
+        if mf_value == true or mf_value == 'true'
+          assign show_picker = true
+        endif
+      endif
+  endcase
+
+  if show_picker and bs.exclude_tags != blank
+    assign excluded_tags = bs.exclude_tags | downcase | split: ','
+    for excluded in excluded_tags
+      assign excluded = excluded | strip
+      if excluded != blank and product_tags contains excluded
+        assign show_picker = false
+        break
+      endif
+    endfor
+  endif
+
+  # Always visible in the theme editor so the block can be configured
+  if request.design_mode and product != blank
+    assign show_picker = true
+  endif
+-%}
+
+{%- if show_picker -%}
+{%- liquid
+
+  # ------------------------------------------------------------------------------------------------------------------
+  # Tartans offered on this product
+  # ------------------------------------------------------------------------------------------------------------------
+  assign scope_groups = ''
+  assign scope_handles = ''
+
+  case bs.tartan_scope
+    when 'groups'
+      assign scope_groups = bs.scope_groups
+
+    when 'product_groups'
+      assign prefix = bs.scope_tag_prefix | downcase | strip
+      if prefix != blank
+        for tag in product_tags
+          if tag contains prefix
+            assign group_name = tag | remove_first: prefix | strip
+            assign scope_groups = scope_groups | append: ',' | append: group_name
+          endif
+        endfor
+      endif
+
+    when 'product_metafield'
+      assign scope_parts = bs.scope_metafield_key | strip | split: '.'
+      if scope_parts.size == 2
+        assign scope_namespace = scope_parts[0]
+        assign scope_key = scope_parts[1]
+        assign scope_mf = product.metafields[scope_namespace][scope_key]
+        if scope_mf.type contains 'metaobject_reference'
+          for ref in scope_mf.value
+            assign scope_handles = scope_handles | append: ',' | append: ref.system.handle
+          endfor
+          if scope_mf.type == 'metaobject_reference'
+            assign scope_handles = scope_mf.value.system.handle
+          endif
+        elsif scope_mf.type contains 'product_reference'
+          for ref in scope_mf.value
+            assign scope_handles = scope_handles | append: ',' | append: ref.handle
+          endfor
+          if scope_mf.type == 'product_reference'
+            assign scope_handles = scope_mf.value.handle
+          endif
+        else
+          assign scope_handles = scope_mf.value | join: ','
+        endif
+      endif
+  endcase
+
+  assign property_name = bs.property_name | default: 'Tartan' | strip
+  assign picker_id = 'tartan-picker-' | append: form_id
+-%}
+
+{%- liquid
+  assign tartan_library_url = settings.tartan_library_url | strip
+  if tartan_library_url == blank
+    assign tartan_library_url = 'tartan-library.json' | asset_url
+  endif
+-%}
+
+{{- 'tartan-picker.css' | asset_url | stylesheet_tag -}}
+<script src="{{ 'tartan-picker.js' | asset_url }}" defer></script>
+
+<tartan-picker
+  id="{{ picker_id }}"
+  class="tartan-picker tartan-picker--{{ bs.swatch_shape }}"
+  form-id="{{ form_id }}"
+  style="--tp-swatch-size: {{ bs.swatch_size }}px; --tp-tile-size: {{ bs.tile_size }}px;"
+>
+  <script type="application/json" data-tartan-config>
+    {
+      "productId": {{ product.id | json }},
+      "source": {{ settings.tartan_data_source | default: 'library_metaobjects' | json }},
+      "libraryUrl": {{ tartan_library_url | json }},
+      "enableColourways": {{ bs.enable_colourways | json }},
+      "defaultColourway": {{ bs.default_colourway | default: 'modern' | json }},
+      "dataUrl": {{ routes.root_url | append: '?section_id=tartan-data' | replace: '//?', '/?' | json }},
+      "cacheVersion": {{ settings.tartan_cache_version | append: '-' | append: settings.tartan_data_source | append: '-' | append: settings.tartan_metaobject_type | append: settings.tartan_collection.handle | json }},
+      "cacheMinutes": {{ settings.tartan_cache_minutes | default: 0 | json }},
+      "label": {{ bs.label | json }},
+      "modalTitle": {{ bs.modal_title | json }},
+      "searchPlaceholder": {{ bs.search_placeholder | json }},
+      "inlineSource": {{ bs.inline_source | json }},
+      "inlineCount": {{ bs.inline_count | json }},
+      "scopeGroups": {{ scope_groups | json }},
+      "scopeHandles": {{ scope_handles | json }},
+      "restrictToHandles": {% if bs.tartan_scope == 'product_metafield' %}true{% else %}false{% endif %},
+      "restrictToGroups": {% if bs.tartan_scope == 'groups' or bs.tartan_scope == 'product_groups' %}true{% else %}false{% endif %},
+      "required": {{ bs.required | json }},
+      "requiredMessage": {{ bs.required_message | json }},
+      "guardPaymentButton": {{ bs.guard_payment_button | json }},
+      "rememberSelection": {{ bs.remember_selection | json }},
+      "urlParam": {{ bs.url_param | json }},
+      "priceMode": {{ bs.price_mode | json }},
+      "defaultView": {{ bs.default_view | json }},
+      "showPopularFilter": {{ bs.show_popular_filter | json }},
+      "showCategoryFilter": {{ bs.show_category_filter | json }},
+      "showColourFilter": {{ bs.show_colour_filter | json }},
+      "showAvailabilityFilter": {{ bs.show_availability_filter | json }},
+      "showAlphabet": {{ bs.show_alphabet | json }},
+      "showPreview": {{ bs.show_preview | json }},
+      "showSurcharge": {% if bs.price_mode != 'none' and bs.show_surcharge %}true{% else %}false{% endif %},
+      "noResultsText": {{ bs.no_results_text | json }},
+      "requestText": {{ bs.request_text | json }},
+      "requestUrl": {{ bs.request_url | json }},
+      "imageFit": {{ bs.image_fit | json }},
+      "enableZoom": {{ bs.enable_zoom | json }},
+      "showTotal": {{ bs.show_total | json }},
+      "designMode": {{ request.design_mode | json }}
+    }
+  </script>
+
+  <div class="tartan-picker__head">
+    <span class="tartan-picker__label" id="{{ picker_id }}-label">
+      {{- bs.label | escape -}}
+      {%- if bs.required -%}<span class="tartan-picker__required" aria-hidden="true"> *</span>{%- endif -%}
+    </span>
+
+    <button type="button" class="tartan-picker__browse link" data-tp-open>
+      {{- bs.browse_text | escape }} <span data-tp-total></span> <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  <div class="tartan-picker__selected" data-tp-selected hidden>
+    <span class="tartan-picker__selected-swatch tp-swatch" data-tp-selected-swatch></span>
+    <span class="tartan-picker__selected-info">
+      <span class="tartan-picker__selected-name" data-tp-selected-name></span>
+      <span class="tartan-picker__selected-meta" data-tp-selected-meta></span>
+      <span class="tartan-picker__colourways" role="group" aria-label="Colourway" data-tp-colourways hidden></span>
+    </span>
+    <button type="button" class="tartan-picker__change link" data-tp-open>Change</button>
+    <button type="button" class="tartan-picker__clear" data-tp-clear aria-label="Remove tartan">✕</button>
+  </div>
+
+  {%- if bs.show_search -%}
+    <div class="tartan-picker__search">
+      <input
+        type="search"
+        class="tartan-picker__search-input"
+        placeholder="{{ bs.search_placeholder | escape }}"
+        autocomplete="off"
+        role="combobox"
+        aria-expanded="false"
+        aria-autocomplete="list"
+        aria-controls="{{ picker_id }}-results"
+        aria-labelledby="{{ picker_id }}-label"
+        data-tp-search
+      >
+      <ul class="tartan-picker__dropdown" id="{{ picker_id }}-results" role="listbox" data-tp-dropdown hidden></ul>
+    </div>
+  {%- endif -%}
+
+  {%- if bs.inline_source != 'none' and bs.inline_count > 0 -%}
+    <div class="tartan-picker__grid" role="list" aria-labelledby="{{ picker_id }}-label" data-tp-grid>
+      {%- for i in (1..bs.inline_count) -%}
+        <span class="tp-swatch tp-swatch--loading" aria-hidden="true"></span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <p class="tartan-picker__error" role="alert" data-tp-error hidden>{{ bs.required_message | escape }}</p>
+
+  <input
+    class="tartan-picker__value"
+    type="text"
+    name="properties[{{ property_name | escape }}]"
+    form="{{ form_id }}"
+    tabindex="-1"
+    aria-hidden="true"
+    autocomplete="off"
+    data-tp-value
+  >
+
+  {%- if bs.store_handle -%}
+    <input type="hidden" name="properties[_{{ property_name | escape }} ID]" form="{{ form_id }}" disabled data-tp-handle>
+  {%- endif -%}
+
+  {%- if bs.enable_colourways -%}
+    <input type="hidden" name="properties[_{{ property_name | escape }} colourway]" form="{{ form_id }}" disabled data-tp-colourway>
+  {%- endif -%}
+</tartan-picker>
+{%- endif -%}

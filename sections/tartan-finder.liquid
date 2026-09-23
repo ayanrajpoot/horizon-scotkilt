@@ -1,0 +1,504 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+TARTAN FINDER (SCOTKILT)
+----------------------------------------------------------------------------------------------------------------------
+
+Full tartan library browser shown directly on a page (search, filters, A–Z, grid/list, preview). It uses the same data
+and script as the product Tartan picker. "Shop in this tartan" link blocks open a product or collection with
+?tartan=handle, which the product Tartan picker uses to preselect the tartan.
+
+URL parameters on the page itself:
+- ?q=macdonald   prefill the search
+- ?tartan=handle open that tartan's preview
+
+Documentation: docs/TARTAN-PICKER.md
+{%- endcomment -%}
+
+{%- comment -%}
+  PORT NOTE (Horizon): everything below the wrapper is verbatim from the source
+  theme. Only the wrapper is adapted, because the original one is Prestige-only:
+
+  - `color_scheme` / `.color-scheme--*`  ->  `background_color` + `contrast-override`
+    (Horizon has no colour schemes; see snippets/contrast-override.liquid)
+  - `.section-spacing` / `.container--<size>` / `.section-stack`  ->  `.section section--<width>`
+  - `{% render 'section-header' %}`  ->  inline heading markup (no such snippet in Horizon)
+
+  The matching schema settings were swapped the same way. Nothing was removed.
+{%- endcomment -%}
+
+{%- liquid
+  assign section_width = section.settings.section_width | default: 'page-width'
+-%}
+
+{{- 'tartan-picker.css' | asset_url | stylesheet_tag -}}
+<script src="{{ 'tartan-picker.js' | asset_url }}" defer></script>
+
+{%- render 'xx-tartan-theme-vars' -%}
+{%- render 'contrast-override',
+  background_color: section.settings.background_color,
+  section_id: section.id
+-%}
+
+<div
+  class="section section--{{ section_width }} color-custom-{{ section.id }} tartan-finder-section"
+  {% if section.settings.separate_section_with_border %}
+    style="border-block-start: var(--style-border-width) solid var(--color-border);"
+  {% endif %}
+>
+  {%- if section.settings.subheading != blank
+      or section.settings.title != blank
+      or section.settings.content != blank
+  -%}
+    <div class="tartan-finder-section__header">
+      {%- if section.settings.subheading != blank -%}
+        <p class="tartan-finder-section__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 class="tartan-finder-section__heading">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.content != blank -%}
+        <div class="tartan-finder-section__content">{{ section.settings.content }}</div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- render 'tartan-finder-app', section: section -%}
+</div>
+
+{% stylesheet %}
+  .tartan-finder-section {
+    display: grid;
+    gap: var(--gap-2xl);
+    padding-block: var(--padding-5xl);
+  }
+
+  .tartan-finder-section__header {
+    display: grid;
+    gap: var(--gap-xs);
+  }
+
+  .tartan-finder-section__subheading {
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground-muted);
+  }
+
+  .tartan-finder-section__heading {
+    font-family: var(--font-h2--family);
+    font-size: var(--font-size--h2);
+    font-weight: var(--font-h2--weight);
+    line-height: var(--font-h2--line-height);
+    margin: 0;
+  }
+
+  .tartan-finder-section__content {
+    max-width: var(--max-width--body-normal);
+    color: var(--color-foreground-subdued);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tartan finder",
+  "class": "shopify-section--tartan-finder",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "custom.overlay"
+    ]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows your whole tartan library on the page. Tartan data is set in Theme settings > Tartan picker."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "info": "Leave blank to inherit the page background. Text contrast is worked out automatically."
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "Separate section with border",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "default": "page-width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page"
+        },
+        {
+          "value": "full-width",
+          "label": "Full"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Clan tartan finder"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "Find your family tartan"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Search by surname, clan, region or colour.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Browser"
+    },
+    {
+      "type": "text",
+      "id": "panel_title",
+      "label": "Panel title",
+      "info": "Leave empty to hide the panel header"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search by surname, clan, region or colour"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Height on desktop",
+      "min": 500,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 780
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Height on mobile",
+      "min": 60,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 85,
+      "info": "Percentage of the screen height"
+    },
+    {
+      "type": "select",
+      "id": "default_view",
+      "label": "Default view",
+      "default": "grid",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "list",
+          "label": "List"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_popular_filter",
+      "label": "Show popular filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_filter",
+      "label": "Show category filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colour_filter",
+      "label": "Show colour filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_availability_filter",
+      "label": "Show availability filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_alphabet",
+      "label": "Show A–Z jump",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_surcharge",
+      "label": "Show surcharge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "url_param",
+      "label": "Update page link when a tartan is opened",
+      "default": true,
+      "info": "Lets shoppers share a link to a tartan (?tartan=handle)"
+    },
+    {
+      "type": "text",
+      "id": "scope_groups",
+      "label": "Only show tartans in groups",
+      "info": "Comma separated. Leave empty to show all tartans."
+    },
+    {
+      "type": "text",
+      "id": "no_results_text",
+      "label": "No results text",
+      "default": "No tartans match your search."
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Text when no tartans are uploaded",
+      "default": "Our tartan library is coming soon."
+    },
+    {
+      "type": "text",
+      "id": "request_text",
+      "label": "Custom request link text",
+      "default": "Don't see your clan? Request a custom tartan"
+    },
+    {
+      "type": "url",
+      "id": "request_url",
+      "label": "Custom request link"
+    },
+    {
+      "type": "header",
+      "content": "Colourways"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_colourways",
+      "label": "Show Modern / Ancient / Weathered",
+      "default": true,
+      "info": "For library tartans drawn from their threadcount. Ancient and Weathered colours are approximations."
+    },
+    {
+      "type": "select",
+      "id": "default_colourway",
+      "label": "Default colourway",
+      "default": "modern",
+      "options": [
+        {
+          "value": "modern",
+          "label": "Modern"
+        },
+        {
+          "value": "ancient",
+          "label": "Ancient"
+        },
+        {
+          "value": "weathered",
+          "label": "Weathered"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Swatches"
+    },
+    {
+      "type": "select",
+      "id": "swatch_shape",
+      "label": "Shape",
+      "default": "rounded",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "circle",
+          "label": "Circle"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Fill"
+        },
+        {
+          "value": "contain",
+          "label": "Fit"
+        },
+        {
+          "value": "tile",
+          "label": "Repeat pattern"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "tile_size",
+      "label": "Pattern tile size",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Zoom on preview image",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shop_link",
+      "name": "Shop in this tartan link",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shown in the tartan preview. The chosen tartan is added to the link (?tartan=handle) so the product's Tartan picker preselects it."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shop kilts in this tartan"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "default": "solid",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "link_type",
+          "label": "Link to",
+          "default": "url",
+          "options": [
+            {
+              "value": "url",
+              "label": "A fixed page or collection"
+            },
+            {
+              "value": "tagged",
+              "label": "Products tagged with the tartan"
+            }
+          ]
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection to search",
+          "info": "Tagged links only. Defaults to the collection in the link above, then to all products."
+        },
+        {
+          "type": "text",
+          "id": "tag_word",
+          "label": "Tag word",
+          "default": "tartan",
+          "info": "Tagged links look for “<tartan name> <tag word>”, e.g. “MacDonald tartan”."
+        },
+        {
+          "type": "checkbox",
+          "id": "single_product",
+          "label": "Go straight to the product when only one matches",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_without_products",
+          "label": "Hide when no products match",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "display",
+          "label": "Show as",
+          "default": "carousel",
+          "options": [
+            {
+              "value": "carousel",
+              "label": "Product carousel"
+            },
+            {
+              "value": "button",
+              "label": "Button"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "products_limit",
+          "label": "Products in the carousel",
+          "min": 4,
+          "max": 24,
+          "step": 2,
+          "default": 12
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tartan finder",
+      "blocks": [
+        {
+          "type": "shop_link",
+          "settings": {
+            "label": "Shop kilts in this tartan",
+            "style": "solid"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

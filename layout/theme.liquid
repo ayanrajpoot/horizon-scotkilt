@@ -29,6 +29,22 @@
       {%- render 'theme-editor' -%}
     {% endif %}
 
+    {%- comment -%}
+      SCOTKILT tartan picker. The block self-loads these on product templates, but
+      quick add injects the picker's markup into a modal, and a <script> arriving
+      that way never executes — so the asset is loaded up front on every template
+      quick add can be opened from. Ported from the source theme's layout.
+    {%- endcomment -%}
+    {%- if template.name == 'collection'
+        or template.name == 'search'
+        or template.name == 'index'
+        or template.name == 'page'
+    -%}
+      {{- 'tartan-picker.css' | asset_url | stylesheet_tag -}}
+      <script src="{{ 'tartan-picker.js' | asset_url }}" defer></script>
+      {%- render 'xx-tartan-theme-vars' -%}
+    {%- endif -%}
+
     {{ content_for_header }}
   </head>
 

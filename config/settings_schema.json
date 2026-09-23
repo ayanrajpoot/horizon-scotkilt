@@ -2116,5 +2116,85 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Tartan picker",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Data used by the Tartan picker block and Tartan finder section. See docs/TARTAN-PICKER.md for setup."
+      },
+      {
+        "type": "select",
+        "id": "tartan_data_source",
+        "label": "Tartan data source",
+        "default": "library_metaobjects",
+        "options": [
+          {
+            "value": "library_metaobjects",
+            "label": "Verified library + metaobjects (recommended)"
+          },
+          {
+            "value": "library",
+            "label": "Verified library only"
+          },
+          {
+            "value": "metaobjects",
+            "label": "Metaobjects only"
+          },
+          {
+            "value": "collection",
+            "label": "Collection of products"
+          }
+        ],
+        "info": "The tartan library (top 500 tartans by orders and search demand) is drawn in the browser. Metaobjects with the same handle add images, prices and details, or hide a tartan."
+      },
+      {
+        "type": "text",
+        "id": "tartan_library_url",
+        "label": "Library file URL",
+        "info": "Leave empty to use assets/tartan-library.json. Only needed if you host the library file somewhere else, e.g. Content > Files."
+      },
+      {
+        "type": "text",
+        "id": "tartan_metaobject_type",
+        "label": "Metaobject type handle",
+        "default": "tartan",
+        "info": "Used when the source is Metaobjects."
+      },
+      {
+        "type": "collection",
+        "id": "tartan_collection",
+        "label": "Tartan collection",
+        "info": "Used when the source is Collection. One product per tartan."
+      },
+      {
+        "type": "range",
+        "id": "tartan_page_size",
+        "label": "Tartans loaded per request",
+        "min": 50,
+        "max": 250,
+        "step": 50,
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "tartan_cache_minutes",
+        "label": "Browser cache time",
+        "min": 0,
+        "max": 240,
+        "step": 10,
+        "unit": "min",
+        "default": 60,
+        "info": "0 turns caching off."
+      },
+      {
+        "type": "text",
+        "id": "tartan_cache_version",
+        "label": "Cache version",
+        "default": "1",
+        "info": "Change this after uploading new tartans so shoppers see them immediately."
+      }
+    ]
   }
 ]

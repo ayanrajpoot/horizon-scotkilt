@@ -1,0 +1,45 @@
+{% doc %}
+  Maps the Prestige colour-scheme custom properties that `assets/tartan-picker.css`
+  expects onto Horizon's equivalents.
+
+  `tartan-picker.css` is copied byte-for-byte from the source theme so the port
+  stays diffable, so the mapping lives here instead of in that file. Every
+  Prestige value it reads is consumed as `rgb(var(--x))` or `rgb(var(--x) / a)`,
+  i.e. a space-separated RGB triplet — Horizon exposes triplets for foreground
+  and border, so those are aliased; button and background colours are not, so
+  they are emitted from the global settings.
+
+  Scoped to the picker/finder roots rather than `:root` on purpose: inside a
+  section with a custom `background_color`, `contrast-override.liquid` has
+  already redefined `--color-foreground-rgb` on the `.color-custom-<id>`
+  ancestor, and these aliases resolve against it. Put them on `:root` and the
+  picker would keep the page's colours on a dark band.
+
+  Rendered by `blocks/tartan-picker.liquid` and `sections/tartan-finder.liquid`.
+  Safe to render more than once — `{% style %}` output is deduplicated per class,
+  and re-declaring identical custom properties is idempotent.
+{% enddoc %}
+
+{% style %}
+  .tartan-picker,
+  .tartan-finder,
+  .tp-modal {
+    /* Colour — triplets, because the source CSS wraps them in rgb() */
+    --text-color: var(--color-foreground-rgb);
+    --border-color: var(--color-border-rgb);
+    --background-without-opacity: var(--color-background);
+    --button-background: {{ settings.palette_primary_button_background.rgb }};
+    --button-text-color: {{ settings.palette_primary_button_text.rgb }};
+    --error-text: var(--color-error);
+
+    /* Shape */
+    --input-border-radius: var(--style-border-radius-inputs);
+    --button-border-radius: var(--style-border-radius-buttons-primary);
+
+    /* Type */
+    --heading-font-family: var(--font-h3--family);
+    --heading-font-weight: var(--font-h3--weight);
+    --text-xs: var(--font-size--xs);
+    --text-sm: var(--font-size--sm);
+  }
+{% endstyle %}
