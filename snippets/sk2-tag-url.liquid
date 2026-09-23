@@ -1,0 +1,47 @@
+{%- comment -%}
+  SK2 TAG URL — toggles one tag on or off the current collection URL.
+
+  Shopify filters collections by tag natively at /collections/<handle>/<tag>,
+  with several tags joined by "+". This builds that path from
+  current_tags, adding `tag` if it is off and dropping it if it is
+  on, and carries the active sort through.
+
+  Params:
+    tag  - the tag to toggle (required)
+    sort - current sort_by value (optional)
+{%- endcomment -%}
+{%- liquid
+  assign target = tag | handleize
+  assign list = ''
+  assign found = false
+
+  for current in current_tags
+    assign current_handle = current | handleize
+    if current_handle == target
+      assign found = true
+    else
+      assign list = list | append: current_handle | append: '+'
+    endif
+  endfor
+
+  unless found
+    assign list = list | append: target
+  endunless
+
+  comment
+    split/join drops the trailing separator left by the loop.
+  endcomment
+  assign list = list | split: '+' | join: '+'
+
+  if list == blank
+    assign url = collection.url
+  else
+    assign url = collection.url | append: '/' | append: list
+  endif
+
+  if sort != blank
+    assign url = url | append: '?sort_by=' | append: sort
+  endif
+
+  echo url
+-%}

@@ -1,0 +1,155 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 TRENDING TARTANS (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Horizontal rail of tartan cards. Matches pages.html `TrendingTartans()`. Each block is one tartan card.
+----------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign rail_id = 'sk2-rail-tartans-' | append: section.id
+-%}
+
+<div class="sk2">
+  <section class="sk2__section" aria-labelledby="sk2-trending-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2__sec-head sk2-reveal">
+        <div>
+          <h2 class="h2" id="sk2-trending-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+        </div>
+        <div class="sk2__sec-head__tools">
+          {%- if section.settings.link_text != blank -%}
+            <a class="sk2__link" href="{{ section.settings.link_url | default: '#' }}">{{ section.settings.link_text | escape }}</a>
+          {%- endif -%}
+          <div class="sk2-rail-btns">
+            <button type="button" class="sk2-rail-btn" data-sk2-rail-btn="{{ rail_id }}" data-sk2-dir="prev" aria-label="Previous">{% render 'sk2-icons', icon: 'left' %}</button>
+            <button type="button" class="sk2-rail-btn" data-sk2-rail-btn="{{ rail_id }}" data-sk2-dir="next" aria-label="Next">{% render 'sk2-icons', icon: 'right' %}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sk2-rail-wrap">
+      <div class="sk2-rail" id="{{ rail_id }}">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tartan' -%}
+            {%- assign tartan_alt = block.settings.name | append: ' tartan' -%}
+            <article class="sk2-tcard" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.link | default: '#' }}" aria-label="{{ block.settings.name | escape }} tartan">
+                {%- render 'sk2-visual',
+                  image: block.settings.image,
+                  alt: tartan_alt,
+                  color_1: block.settings.color_1, color_2: block.settings.color_2, color_3: block.settings.color_3,
+                  ratio: '1/1', class: 'sk2-visual--zoom'
+                -%}
+                {%- if block.settings.badge != blank -%}
+                  <div class="sk2-tcard__badges"><span class="badge badge--ink">{{ block.settings.badge | escape }}</span></div>
+                {%- endif -%}
+              </a>
+              <div class="sk2-tcard__body">
+                <h3>{{ block.settings.name | escape }}</h3>
+                {%- if block.settings.description != blank -%}<p>{{ block.settings.description }}</p>{%- endif -%}
+                <a class="sk2__link" href="{{ block.settings.link | default: '#' }}">Shop tartan</a>
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Trending tartans",
+  "class": "shopify-section--sk2-trending-tartans",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). A horizontal rail of tartan cards."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trending Tartans"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Discover tartans that are capturing attention across classic and modern kilt styles.</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "View all tartans"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tartan",
+      "name": "Tartan",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Swatch image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Black Watch"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "The dark blue and green universal tartan worn across regiments, pipe bands and everyday kilts."
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge (optional)",
+          "default": "Trending"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Fallback colours (used without an image)"
+        },
+        { "type": "color", "id": "color_1", "label": "Colour 1", "default": "#1e2a4a" },
+        { "type": "color", "id": "color_2", "label": "Colour 2", "default": "#213c2c" },
+        { "type": "color", "id": "color_3", "label": "Colour 3", "default": "#171614" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Trending tartans",
+      "blocks": [
+        { "type": "tartan", "settings": { "name": "Black Watch", "badge": "Trending" } },
+        { "type": "tartan", "settings": { "name": "Royal Stewart", "badge": "Popular", "color_1": "#a8232b", "color_2": "#171614", "color_3": "#243a63" } },
+        { "type": "tartan", "settings": { "name": "MacKenzie", "badge": "Trending", "color_1": "#213c2c", "color_2": "#1e2a4a", "color_3": "#a8232b" } },
+        { "type": "tartan", "settings": { "name": "Wallace", "badge": "Trending", "color_1": "#a8232b", "color_2": "#171614", "color_3": "#d9a63a" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

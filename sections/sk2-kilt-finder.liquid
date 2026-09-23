@@ -1,0 +1,165 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 KILT FINDER (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Interactive "which kilt is right for you" quiz. Matches pages.html `KiltFinder()`. Pure CSS/JS, no cart interaction.
+Each "option" block has a matching result panel (image, title, text, button) shown when picked.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section sk2__section--dark" id="kilt-finder" aria-labelledby="sk2-finder-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2-finder" data-sk2-finder>
+        <div>
+          <div class="sk2-reveal">
+            <h2 class="h2" id="sk2-finder-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+            {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+          </div>
+          <div class="sk2-finder__opts" role="group" aria-label="Choose how you will wear your kilt">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'option' -%}
+                <button type="button" class="sk2-fopt" data-sk2-finder-opt="{{ block.id }}" aria-pressed="false" {{ block.shopify_attributes }}>
+                  {%- render 'sk2-visual',
+                    image: block.settings.thumb_image,
+                    alt: block.settings.label,
+                    color_1: block.settings.color_1, color_2: block.settings.color_2, color_3: block.settings.color_3,
+                    ratio: '1/1'
+                  -%}
+                  <strong>{{ block.settings.label | escape }}</strong>
+                  <small>{{ block.settings.hint | escape }}</small>
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="sk2-finder__result" data-sk2-finder-result aria-live="polite">
+          <div class="sk2-finder__panel is-on" data-sk2-finder-panel="empty">
+            <div class="sk2-empty">
+              {%- render 'sk2-icons', icon: 'size' -%}
+              <strong>Choose a style to start</strong>
+              Your recommended kilt category appears here.
+            </div>
+          </div>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'option' -%}
+              <div class="sk2-finder__panel" data-sk2-finder-panel="{{ block.id }}">
+                {%- render 'sk2-visual',
+                  image: block.settings.result_image,
+                  alt: block.settings.result_title,
+                  color_1: block.settings.color_1, color_2: block.settings.color_2, color_3: block.settings.color_3,
+                  ratio: '16/9'
+                -%}
+                <h3>{{ block.settings.result_title | escape }}</h3>
+                {%- if block.settings.result_text != blank -%}<p>{{ block.settings.result_text }}</p>{%- endif -%}
+                {%- if block.settings.result_link != blank -%}
+                  <a class="btn btn--ivory" href="{{ block.settings.result_link }}">Shop {{ block.settings.result_title | escape }}</a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Kilt finder",
+  "class": "shopify-section--sk2-kilt-finder",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Interactive quiz: pick an option to reveal its result panel."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Which Kilt Is Right for You?"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Pick how you plan to wear it and we will point you to the right style.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "option",
+      "name": "Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Traditional"
+        },
+        {
+          "type": "text",
+          "id": "hint",
+          "label": "Hint",
+          "default": "Weddings, ceremonies, formal dress"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumb_image",
+          "label": "Option thumbnail (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Result"
+        },
+        {
+          "type": "image_picker",
+          "id": "result_image",
+          "label": "Result image"
+        },
+        {
+          "type": "text",
+          "id": "result_title",
+          "label": "Result title",
+          "default": "Traditional Kilts"
+        },
+        {
+          "type": "text",
+          "id": "result_text",
+          "label": "Result text",
+          "default": "A full 8-yard kilt with deep knife pleats and a fringed apron. The classic silhouette for formal Highland dress."
+        },
+        {
+          "type": "url",
+          "id": "result_link",
+          "label": "Result link"
+        },
+        {
+          "type": "header",
+          "content": "Fallback colours (used until images are set)"
+        },
+        { "type": "color", "id": "color_1", "label": "Colour 1", "default": "#1e2a4a" },
+        { "type": "color", "id": "color_2", "label": "Colour 2", "default": "#171614" },
+        { "type": "color", "id": "color_3", "label": "Colour 3", "default": "#213c2c" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Kilt finder",
+      "blocks": [
+        { "type": "option", "settings": { "label": "Traditional", "hint": "Weddings, ceremonies, formal dress", "result_title": "Traditional Kilts", "result_text": "A full 8-yard kilt with deep knife pleats and a fringed apron. The classic silhouette for formal Highland dress." } },
+        { "type": "option", "settings": { "label": "Everyday", "hint": "Casual wear, comfortable, easy care", "result_title": "Tartan Kilts", "result_text": "A lighter 5-yard tartan kilt that keeps the look of the sett without the weight, made for regular wear." } },
+        { "type": "option", "settings": { "label": "Utility", "hint": "Pockets, durability, outdoor use", "result_title": "Utility Kilts", "result_text": "Cotton canvas with cargo pockets and a relaxed fit. Built for work, festivals and travel.", "color_1": "#5a5a42", "color_2": "#3d3a35", "color_3": "#2b2925" } },
+        { "type": "option", "settings": { "label": "Leather", "hint": "Statement piece, night out", "result_title": "Leather Kilts", "result_text": "Full-grain leather with a structured drape. A bold choice that gets more character with wear.", "color_1": "#2b1d15", "color_2": "#171614", "color_3": "#3d3a35" } },
+        { "type": "option", "settings": { "label": "Hybrid", "hint": "Tartan look, modern build", "result_title": "Hybrid Kilts", "result_text": "Tartan pleats at the back with a plain canvas apron in front. Traditional pattern, contemporary construction.", "color_1": "#8f8f8b", "color_2": "#171614", "color_3": "#4f6f9c" } },
+        { "type": "option", "settings": { "label": "Contemporary", "hint": "Solid colours, clean lines", "result_title": "Contemporary Kilts", "result_text": "Solid-tone kilts with minimal hardware and a tailored waist, designed to sit beside the rest of your wardrobe.", "color_1": "#33312e", "color_2": "#2b2925", "color_3": "#171614" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

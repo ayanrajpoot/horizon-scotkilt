@@ -1,0 +1,81 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 NEWSLETTER (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Dark newsletter signup. Matches pages.html `Newsletter()`. Uses Shopify's real customer form.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section sk2__section--dark" aria-labelledby="sk2-news-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2-news">
+        <div>
+          <h2 class="h2" id="sk2-news-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.subheading != blank -%}<p>{{ section.settings.subheading }}</p>{%- endif -%}
+        </div>
+        <div>
+          {%- form 'customer', id: 'sk2-newsletter-form', class: '' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <label class="sr-only" for="sk2-news-email-{{ section.id }}">Email address</label>
+            <input id="sk2-news-email-{{ section.id }}" type="email" name="contact[email]" placeholder="Your email address" required autocomplete="email">
+            <button class="btn btn--ivory" type="submit" data-sk2-newsletter>{{ section.settings.button_text | escape }}</button>
+            {%- if form.posted_successfully? -%}
+              <div class="sk2-news__ok" data-sk2-news-msg aria-live="polite">Thanks — you're on the list.</div>
+            {%- elsif form.errors -%}
+              <div class="sk2-news__ok" data-sk2-news-msg aria-live="polite">{{ form.errors.messages['form'] | default: 'Enter a valid email address to join.' }}</div>
+            {%- else -%}
+              <div class="sk2-news__ok" data-sk2-news-msg aria-live="polite"></div>
+            {%- endif -%}
+          {%- endform -%}
+          {%- if section.settings.disclaimer != blank -%}<small>{{ section.settings.disclaimer | escape }}</small>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Newsletter",
+  "class": "shopify-section--sk2-newsletter",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Dark newsletter signup, wired to Shopify's customer form."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the SCOTKILT List"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover new tartans, kilt styles, inspiration and special offers."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Join the List"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "Unsubscribe at any time. See our Privacy policy."
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Newsletter"
+    }
+  ]
+}
+{% endschema %}

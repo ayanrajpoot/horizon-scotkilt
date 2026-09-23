@@ -1,0 +1,65 @@
+{%- comment -%}
+  SK2 PRODUCT CARD (SCOTKILT — pages.html `ProductCard()`)
+  Same card as the homepage rails, driven by a real product instead of block
+  settings. Used by sections/sk2-product-rail.liquid.
+
+  Params:
+    product   - the product (required)
+    show_add        - show the add to cart button (default true)
+    show_quick_view - show the quick view button on hover (default true)
+{%- endcomment -%}
+{%- liquid
+  assign card_variant = product.selected_or_first_available_variant
+  assign card_rating = product.metafields.reviews.rating.value.rating
+-%}
+<article class="sk2-pcard">
+  <div class="sk2-pcard__media">
+    <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      {%- render 'sk2-visual',
+        image: product.featured_image,
+        alt: product.title,
+        color_1: '#3d3a35', color_2: '#2b2925', color_3: '#171614',
+        ratio: '4/5', class: 'sk2-visual--zoom'
+      -%}
+    </a>
+    {%- unless show_quick_view == false or card_variant.available == false -%}
+      {%- capture quick_view_id -%}sk2-quick-view-{{ section.id }}-{{ product.id }}{%- endcapture -%}
+      <button type="button" class="btn btn--ivory btn--sm sk2-pcard__quick" aria-controls="{{ quick_view_id }}">
+        Quick view
+      </button>
+      <quick-buy-modal handle="{{ product.handle }}?variant={{ card_variant.id }}" class="quick-buy-modal modal" id="{{ quick_view_id }}"></quick-buy-modal>
+    {%- endunless -%}
+    <div class="sk2-pcard__badges">
+      {%- if card_variant.available == false -%}
+        <span class="badge badge--ink">{{ 'product.general.sold_out_badge' | t }}</span>
+      {%- elsif card_variant.compare_at_price > card_variant.price -%}
+        <span class="badge badge--red">{{ 'product.general.on_sale_badge' | t }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="sk2-pcard__body">
+    {%- if product.type != blank -%}<div class="sk2-pcard__style">{{ product.type | escape }}</div>{%- endif -%}
+    <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    <div class="sk2-pcard__rating">
+      {%- if card_rating != blank -%}
+        {%- render 'sk2-stars', rating: card_rating -%}<span>{{ card_rating }} ({{ product.metafields.reviews.rating_count }})</span>
+      {%- else -%}
+        {%- render 'sk2-stars' -%}<span>No reviews yet</span>
+      {%- endif -%}
+    </div>
+    <div class="sk2-price">
+      {{ card_variant.price | money }}
+      {%- if card_variant.compare_at_price > card_variant.price -%}<s>{{ card_variant.compare_at_price | money }}</s>{%- endif -%}
+    </div>
+    {%- unless show_add == false -%}
+      <div class="sk2-pcard__add">
+        {%- form 'product', product -%}
+          <input type="hidden" name="id" value="{{ card_variant.id }}">
+          <button type="submit" class="btn btn--line"{% unless card_variant.available %} disabled{% endunless %}>
+            {%- if card_variant.available -%}{{ 'product.general.add_to_cart_button' | t }}{%- else -%}{{ 'product.general.sold_out_button' | t }}{%- endif -%}
+          </button>
+        {%- endform -%}
+      </div>
+    {%- endunless -%}
+  </div>
+</article>

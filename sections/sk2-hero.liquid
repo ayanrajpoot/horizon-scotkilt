@@ -1,0 +1,159 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 HERO (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Full-bleed hero with a kicker, h1, lede, two CTAs and a stat row. Matches pages.html `Hero()`.
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign hero_alt = section.settings.image_alt
+  if hero_alt == blank
+    assign hero_alt = section.settings.heading | strip_html
+  endif
+-%}
+<div class="sk2">
+  <section class="sk2-hero" aria-labelledby="sk2-hero-title-{{ section.id }}">
+    <div class="sk2-hero__visual">
+      {%- render 'sk2-visual',
+        image: section.settings.image,
+        alt: hero_alt,
+        color_1: '#171614', color_2: '#213c2c', color_3: '#2f4a3b'
+      -%}
+    </div>
+    <div class="sk2-hero__inner">
+      <div class="sk2-hero__copy">
+        {%- if section.settings.kicker != blank -%}
+          <p class="sk2-hero__kicker">{{ section.settings.kicker | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h1 class="h1" id="sk2-hero-title-{{ section.id }}">{{ section.settings.heading }}</h1>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="lede">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+        <div class="sk2-hero__cta">
+          {%- if section.settings.button_1_text != blank -%}
+            <a class="btn btn--ivory" href="{{ section.settings.button_1_link | default: '#' }}">{{ section.settings.button_1_text | escape }}</a>
+          {%- endif -%}
+          {%- if section.settings.button_2_text != blank -%}
+            <a class="btn btn--ghost" href="{{ section.settings.button_2_link | default: '#' }}">{{ section.settings.button_2_text | escape }}</a>
+          {%- endif -%}
+        </div>
+        {%- if section.blocks.size > 0 -%}
+          <div class="sk2-hero__meta">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'stat' -%}
+                <div {{ block.shopify_attributes }}><strong>{{ block.settings.value | escape }}</strong>{{ block.settings.label | escape }}</div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Hero",
+  "class": "shopify-section--sk2-hero",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Full-bleed hero with a background image, kicker, heading, lede and two buttons."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Kilts and tartans, specialist edition"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find Your Tartan. Wear Your Kilt."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Discover premium tartan, traditional, utility, leather and modern kilts designed for distinctive Scottish style.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Button 1 text",
+      "default": "Shop Kilts"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 link"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Button 2 text",
+      "default": "Explore Tartans"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "6"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "kilt styles"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Hero",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "6", "label": "kilt styles" } },
+        { "type": "stat", "settings": { "value": "500", "label": "tartans and growing" } },
+        { "type": "stat", "settings": { "value": "3", "label": "steps to the right size" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

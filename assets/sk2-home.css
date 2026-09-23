@@ -1,0 +1,465 @@
+/* ==========================================================================
+   SCOTKILT — home v2 (pages.html editorial design)
+   Scoped under .sk2 so nothing here touches the rest of the theme.
+   Tokens ported 1:1 from pages.html.
+   ========================================================================== */
+.sk2{
+  --sk2-ink:#1c1b19; --sk2-ink-2:#2b2925; --sk2-ink-3:#3d3a35;
+  --sk2-ivory:#f3efe7; --sk2-ivory-2:#ebe5da; --sk2-ivory-3:#e2dbcd;
+  --sk2-stone:#cbc2b1; --sk2-stone-2:#b3a893;
+  --sk2-grey:#7a7469; --sk2-grey-2:#a59e91;
+  --sk2-red:#8c2a2f; --sk2-green:#2f4a3b; --sk2-brass:#a88a55; --sk2-brass-2:#c9ab72;
+  --sk2-serif:'Cormorant Garamond','Iowan Old Style','Palatino Linotype',Georgia,serif;
+  --sk2-sans:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --sk2-gutter:clamp(20px,4vw,64px);
+  --sk2-shadow-2:0 2px 6px rgba(28,27,25,.08),0 24px 48px -20px rgba(28,27,25,.28);
+  --sk2-ease:cubic-bezier(.22,.61,.36,1);
+  background:var(--sk2-ivory); color:var(--sk2-ink);
+  font-family:var(--sk2-sans); font-size:16px; line-height:1.6;
+}
+.sk2 *,.sk2 *::before,.sk2 *::after{ box-sizing:border-box }
+.sk2 img,.sk2 svg{ max-width:100%; display:block }
+.sk2 :where(a){ color:inherit; text-decoration:none }
+/* Careful: this loads after theme.css at equal specificity, so it also strips
+   border/background/padding from NATIVE theme buttons (.button, the dynamic
+   checkout button) rendered inside a .sk2 section. Style those outright
+   — see the buy buttons in sk2-product.css — the theme's --button-* variables
+   will not reach them. */
+.sk2 :where(button){ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer }
+.sk2 h1,.sk2 h2,.sk2 h3,.sk2 h4{ margin:0; font-family:var(--sk2-serif); font-weight:500; line-height:1.05; letter-spacing:-.01em }
+.sk2 p{ margin:0 }
+.sk2 ul{ list-style:none; margin:0; padding:0 }
+.sk2 :focus-visible{ outline:2px solid var(--sk2-brass); outline-offset:3px }
+
+.sk2__container{ max-width:1440px; margin:0 auto; padding:0 var(--sk2-gutter) }
+.sk2__section{ padding:clamp(56px,7vw,104px) 0 }
+/* Every band gets its own stacking context. Scrims and card overlays inside
+   them run to z-index 6, so without one they sit in the root context and
+   paint over the sticky header (z-index 4) as they scroll past. Matched on
+   the element, not a class, because not every band carries .sk2__section.
+   Not on .sk2 itself: the collection page's filter drawer and backdrop are
+   position:fixed children of .sk2 and have to clear the header. */
+.sk2 section{ isolation:isolate }
+.sk2__section--tight{ padding:clamp(40px,5vw,72px) 0 }
+.sk2__section--dark{ background:var(--sk2-ink); color:var(--sk2-ivory) }
+.sk2__section--ivory2{ background:var(--sk2-ivory-2) }
+
+.sk2 .h1{ font-size:clamp(46px,7.2vw,104px); line-height:.98 }
+.sk2 .h2{ font-size:clamp(34px,4.2vw,58px) }
+.sk2 .h3{ font-size:clamp(24px,2.4vw,32px) }
+.sk2 .lede{ font-size:clamp(16px,1.25vw,19px); line-height:1.55; color:var(--sk2-grey); max-width:58ch }
+.sk2__section--dark .lede{ color:var(--sk2-stone) }
+.sk2__sec-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:clamp(28px,3.5vw,48px) }
+.sk2__sec-head .lede{ margin-top:10px }
+.sk2__sec-head__tools{ display:flex; align-items:center; gap:16px; flex-shrink:0 }
+.sk2__link{ font-weight:600; font-size:14px; letter-spacing:.02em; position:relative; padding-bottom:3px; display:inline-block }
+.sk2__link::after{ content:""; position:absolute; left:0; bottom:0; width:100%; height:1px; background:currentColor; transform:scaleX(1); transform-origin:left; transition:transform .35s var(--sk2-ease) }
+.sk2__link:hover::after{ transform:scaleX(0); transform-origin:right }
+
+/* buttons */
+.sk2 .btn{ display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:50px; padding:0 30px; font-family:var(--sk2-sans); font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; border-radius:2px; transition:background .25s var(--sk2-ease),color .25s var(--sk2-ease),border-color .25s var(--sk2-ease),transform .25s var(--sk2-ease); white-space:nowrap; border:1px solid transparent }
+.sk2 .btn:active{ transform:translateY(1px) }
+.sk2 .btn--ink{ background:var(--sk2-ink); color:var(--sk2-ivory) }
+.sk2 .btn--ink:hover{ background:var(--sk2-ink-3) }
+.sk2 .btn--ivory{ background:var(--sk2-ivory); color:var(--sk2-ink) }
+.sk2 .btn--ivory:hover{ background:#fff }
+.sk2 .btn--ghost{ border-color:rgba(243,239,231,.55); color:var(--sk2-ivory) }
+.sk2 .btn--ghost:hover{ border-color:var(--sk2-ivory); background:rgba(243,239,231,.08) }
+.sk2 .btn--line{ border-color:var(--sk2-ink); color:var(--sk2-ink) }
+.sk2 .btn--line:hover{ background:var(--sk2-ink); color:var(--sk2-ivory) }
+.sk2 .btn--sm{ min-height:42px; padding:0 20px; font-size:12px }
+
+/* badges */
+.sk2 .badge{ display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:5px 9px; border-radius:2px; background:var(--sk2-ivory); color:var(--sk2-ink); line-height:1 }
+.sk2 .badge--red{ background:var(--sk2-red); color:var(--sk2-ivory) }
+.sk2 .badge--ink{ background:var(--sk2-ink); color:var(--sk2-ivory) }
+.sk2 .badge--green{ background:var(--sk2-green); color:var(--sk2-ivory) }
+.sk2 .badge--brass{ background:var(--sk2-brass); color:var(--sk2-ink) }
+
+/* visual (image or flat-colour fallback) */
+.sk2-visual{ position:relative; overflow:hidden; border-radius:2px; background:var(--sk2-ivory-2); aspect-ratio:var(--sk2-ratio,4/5) }
+.sk2-visual__img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover }
+.sk2-visual__fallback{
+  position:absolute; inset:0; background-color:var(--c1);
+  background-image:
+    repeating-linear-gradient(90deg, var(--c2) 0 6px, transparent 6px 22px, var(--c3) 22px 27px, transparent 27px 40px),
+    repeating-linear-gradient(0deg, var(--c2) 0 6px, transparent 6px 22px, var(--c3) 22px 27px, transparent 27px 40px),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.08) 0 1px, transparent 1px 4px, rgba(0,0,0,.1) 4px 5px, transparent 5px 8px);
+  background-size:40px 40px,40px 40px,8px 8px;
+}
+.sk2-visual__fallback::after{ content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(0,0,0,0) 45%,rgba(0,0,0,.18)) }
+.sk2-visual--zoom .sk2-visual__img,.sk2-visual--zoom .sk2-visual__fallback{ transition:transform 1.1s var(--sk2-ease) }
+.sk2-visual--zoom:hover .sk2-visual__img,.sk2-visual--zoom:hover .sk2-visual__fallback{ transform:scale(1.06) }
+
+/* stars */
+.sk2 .sk2-stars{ display:inline-flex; gap:2px }
+.sk2 .sk2-stars svg{ width:13px; height:13px; stroke:var(--sk2-brass); fill:none; stroke-width:1.4 }
+.sk2 .sk2-stars svg.on{ fill:var(--sk2-brass) }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.sk2-hero{ position:relative; isolation:isolate; min-height:min(88vh,860px); display:flex; align-items:flex-end; color:var(--sk2-ivory); overflow:hidden; background:var(--sk2-ink) }
+.sk2-hero__visual{ position:absolute; inset:0 }
+.sk2-hero__visual .sk2-visual{ position:absolute; inset:0; border-radius:0; aspect-ratio:auto }
+.sk2-hero__visual .sk2-visual::before{ content:""; position:absolute; inset:0; z-index:2;
+  background:linear-gradient(90deg,rgba(28,27,25,.88) 0%,rgba(28,27,25,.66) 32%,rgba(28,27,25,.22) 62%,rgba(28,27,25,.06) 100%),
+  linear-gradient(180deg,rgba(28,27,25,.35),rgba(28,27,25,0) 30%,rgba(28,27,25,.55) 100%) }
+.sk2-hero__inner{ position:relative; z-index:5; width:100%; padding:clamp(120px,16vh,180px) var(--sk2-gutter) clamp(56px,7vw,88px) }
+.sk2-hero__copy{ max-width:760px }
+.sk2-hero__kicker{ font-family:var(--sk2-serif); font-style:italic; font-size:clamp(18px,1.6vw,22px); color:var(--sk2-brass-2); margin-bottom:18px }
+.sk2-hero .lede{ color:rgba(243,239,231,.78); margin-top:22px; max-width:52ch }
+.sk2-hero__cta{ display:flex; gap:14px; margin-top:36px; flex-wrap:wrap }
+.sk2-hero__meta{ display:flex; gap:32px; margin-top:52px; font-size:13px; color:rgba(243,239,231,.62); flex-wrap:wrap }
+.sk2-hero__meta strong{ display:block; font-family:var(--sk2-serif); font-size:26px; font-weight:500; color:var(--sk2-ivory); letter-spacing:0; line-height:1.1 }
+
+/* ==========================================================================
+   Rails / carousels
+   ========================================================================== */
+.sk2-rail-wrap{ position:relative }
+.sk2-rail{ display:flex; gap:clamp(14px,1.6vw,24px); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--sk2-gutter); padding:4px var(--sk2-gutter) 24px; scrollbar-width:none; -webkit-overflow-scrolling:touch }
+.sk2-rail::-webkit-scrollbar{ display:none }
+.sk2-rail > *{ scroll-snap-align:start; flex:0 0 var(--sk2-card-w,300px) }
+.sk2-rail-btns{ display:flex; gap:8px }
+.sk2-rail-btn{ width:46px; height:46px; border:1px solid var(--sk2-ink); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; transition:background .2s,color .2s }
+.sk2-rail-btn svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.5 }
+.sk2-rail-btn:hover{ background:var(--sk2-ink); color:var(--sk2-ivory) }
+.sk2__section--dark .sk2-rail-btn{ border-color:rgba(243,239,231,.4); color:var(--sk2-ivory) }
+.sk2__section--dark .sk2-rail-btn:hover{ background:var(--sk2-ivory); color:var(--sk2-ink) }
+
+/* ==========================================================================
+   Tartan cards
+   ========================================================================== */
+.sk2-tcard{ --sk2-card-w:clamp(250px,21vw,320px); display:block; position:relative }
+.sk2-tcard .sk2-visual{ aspect-ratio:1/1 }
+.sk2-tcard__badges{ position:absolute; top:12px; left:12px; display:flex; gap:6px; z-index:2 }
+.sk2-tcard__body{ padding-top:16px }
+.sk2-tcard h3{ font-size:24px }
+.sk2-tcard p{ color:var(--sk2-grey); font-size:14px; margin:6px 0 10px; min-height:44px }
+.sk2-tcard .sk2__link{ font-size:13px }
+.sk2-tcard .sk2-visual{ transition:box-shadow .4s var(--sk2-ease) }
+.sk2-tcard:hover .sk2-visual{ box-shadow:var(--sk2-shadow-2) }
+
+/* ==========================================================================
+   Kilt category cards
+   ========================================================================== */
+.sk2-cats{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(14px,1.6vw,24px) }
+.sk2-ccard{ position:relative; display:block; color:var(--sk2-ivory); border-radius:2px; overflow:hidden }
+.sk2-ccard .sk2-visual{ aspect-ratio:3/4 }
+.sk2-ccard__grad{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(28,27,25,0) 40%,rgba(28,27,25,.85) 100%); z-index:5; pointer-events:none }
+.sk2-ccard__body{ position:absolute; left:0; right:0; bottom:0; padding:26px 26px 28px; z-index:6 }
+.sk2-ccard h3{ font-size:clamp(26px,2.4vw,34px) }
+.sk2-ccard p{ color:rgba(243,239,231,.78); font-size:14px; margin:6px 0 16px; max-width:34ch }
+.sk2-ccard .btn{ min-height:42px; padding:0 18px; font-size:11.5px }
+.sk2-ccard:hover .btn--ghost{ background:var(--sk2-ivory); color:var(--sk2-ink); border-color:var(--sk2-ivory) }
+
+/* ==========================================================================
+   Product cards
+   ========================================================================== */
+.sk2-pgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(14px,1.6vw,24px) 20px }
+.sk2-pcard{ --sk2-card-w:clamp(240px,20vw,300px); position:relative; display:flex; flex-direction:column }
+.sk2-pcard__media{ position:relative }
+.sk2-pcard__media .sk2-visual{ aspect-ratio:4/5 }
+.sk2-pcard__badges{ position:absolute; top:12px; left:12px; display:flex; flex-direction:column; gap:6px; z-index:3 }
+.sk2-pcard__body{ padding:14px 0 0; display:flex; flex-direction:column; flex:1 }
+.sk2-pcard__style{ font-size:12px; color:var(--sk2-grey); letter-spacing:.04em; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.sk2-pcard h3{ font-size:18px; font-family:var(--sk2-sans); font-weight:600; letter-spacing:0; line-height:1.3 }
+.sk2-pcard h3 a:hover{ color:var(--sk2-red) }
+.sk2-pcard__rating{ display:flex; align-items:center; gap:8px; margin:8px 0; font-size:12px; color:var(--sk2-grey) }
+.sk2-price{ font-weight:600; font-size:16px; display:flex; gap:10px; align-items:baseline }
+.sk2-price s{ color:var(--sk2-grey-2); font-weight:400; font-size:14px }
+.sk2-pcard__add{ margin-top:auto; padding-top:12px }
+.sk2-pcard__add .btn{ min-height:44px; font-size:12px; width:100% }
+
+/* ==========================================================================
+   Shop by tartan
+   ========================================================================== */
+.sk2-tgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(10px,1.4vw,20px) }
+.sk2-ttile{ position:relative; display:block; border-radius:2px; overflow:hidden; color:var(--sk2-ivory) }
+.sk2-ttile .sk2-visual{ aspect-ratio:1/1 }
+.sk2-ttile__label{ position:absolute; left:0; right:0; bottom:0; padding:18px 18px 16px; background:linear-gradient(180deg,rgba(28,27,25,0),rgba(28,27,25,.78)); z-index:2; display:flex; align-items:baseline; justify-content:space-between; gap:10px }
+.sk2-ttile__label h3{ font-size:24px }
+.sk2-ttile__label span{ font-size:12px; letter-spacing:.06em; color:rgba(243,239,231,.7); transition:transform .3s var(--sk2-ease) }
+.sk2-ttile:hover .sk2-ttile__label span{ transform:translateX(3px); color:var(--sk2-ivory) }
+
+/* ==========================================================================
+   Split editorial
+   ========================================================================== */
+.sk2-split{ display:grid; grid-template-columns:1fr 1fr; min-height:620px }
+.sk2-split__side{ position:relative; display:flex; align-items:flex-end; color:var(--sk2-ivory); overflow:hidden }
+.sk2-split__side .sk2-visual{ position:absolute; inset:0; border-radius:0; aspect-ratio:auto }
+.sk2-split__side::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(28,27,25,.1),rgba(28,27,25,.15) 45%,rgba(28,27,25,.88) 100%); z-index:5 }
+.sk2-split__body{ position:relative; z-index:6; padding:clamp(32px,4vw,64px); max-width:560px }
+.sk2-split__body h3{ font-size:clamp(34px,3.6vw,52px) }
+.sk2-split__body p{ color:rgba(243,239,231,.8); margin:12px 0 24px; max-width:44ch }
+.sk2-split__title{ text-align:center; padding:clamp(56px,7vw,96px) var(--sk2-gutter) clamp(36px,4vw,56px) }
+.sk2-split__title .lede{ margin:12px auto 0; text-align:center }
+
+/* ==========================================================================
+   Trust features
+   ========================================================================== */
+.sk2-trust{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid rgba(28,27,25,.12) }
+.sk2-tf{ padding:34px 28px 36px 0; border-bottom:1px solid rgba(28,27,25,.12); display:flex; gap:20px }
+.sk2-tf:nth-child(3n+2){ padding-left:28px; border-left:1px solid rgba(28,27,25,.12); border-right:1px solid rgba(28,27,25,.12); padding-right:28px }
+.sk2-tf:nth-child(3n){ padding-left:28px }
+.sk2-tf svg{ width:34px; height:34px; stroke:var(--sk2-ink); fill:none; stroke-width:1.2; flex-shrink:0; margin-top:4px }
+.sk2-tf h3{ font-size:24px }
+.sk2-tf p{ color:var(--sk2-grey); font-size:14.5px; margin-top:6px; max-width:36ch }
+
+/* ==========================================================================
+   Kilt finder
+   ========================================================================== */
+.sk2-finder{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(32px,5vw,80px); align-items:start }
+.sk2-finder__opts{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:32px }
+.sk2-fopt{ text-align:left; padding:18px 18px 16px; border:1px solid rgba(243,239,231,.22); border-radius:2px; transition:.25s var(--sk2-ease); display:flex; flex-direction:column; gap:10px; min-height:118px }
+.sk2-fopt .sk2-visual{ width:36px; height:36px; border-radius:2px; aspect-ratio:1/1 }
+.sk2-fopt strong{ font-family:var(--sk2-serif); font-size:22px; font-weight:500; display:block; line-height:1 }
+.sk2-fopt small{ color:var(--sk2-stone); font-size:12.5px; line-height:1.4 }
+.sk2-fopt:hover{ border-color:rgba(243,239,231,.6); background:rgba(243,239,231,.04) }
+.sk2-fopt.is-on{ background:var(--sk2-ivory); color:var(--sk2-ink); border-color:var(--sk2-ivory) }
+.sk2-fopt.is-on small{ color:var(--sk2-grey) }
+.sk2-finder__result{ position:sticky; top:24px; border:1px solid rgba(243,239,231,.18); border-radius:2px; padding:28px; min-height:360px; display:flex; flex-direction:column; justify-content:center; background:rgba(243,239,231,.03) }
+.sk2-finder__result .sk2-visual{ aspect-ratio:16/9; border-radius:2px; margin-bottom:22px }
+.sk2-finder__result h3{ font-size:34px }
+.sk2-finder__result p{ color:var(--sk2-stone); margin:10px 0 22px; font-size:15px }
+.sk2-finder__result .sk2-empty{ text-align:center; color:var(--sk2-stone); padding:20px }
+.sk2-finder__result .sk2-empty strong{ display:block; font-family:var(--sk2-serif); font-size:30px; font-weight:500; color:var(--sk2-ivory); margin-bottom:8px }
+.sk2-finder__result .sk2-empty svg{ width:56px; height:56px; stroke:var(--sk2-brass-2); fill:none; stroke-width:1; margin:0 auto 16px }
+.sk2-finder__panel{ display:none }
+.sk2-finder__panel.is-on{ display:block }
+
+/* ==========================================================================
+   Size guide
+   ========================================================================== */
+.sk2-sizeguide{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,5vw,96px); align-items:center }
+.sk2-size__fig{ background:var(--sk2-ivory-2); border-radius:2px; padding:clamp(20px,3vw,48px); display:flex; justify-content:center }
+.sk2-size__fig svg{ width:100%; max-width:440px; height:auto }
+.sk2-steps{ display:grid; gap:8px; margin:32px 0 36px }
+.sk2-step{ display:grid; grid-template-columns:64px 1fr; gap:20px; padding:24px 0; border-top:1px solid rgba(28,27,25,.12) }
+.sk2-step:last-child{ border-bottom:1px solid rgba(28,27,25,.12) }
+.sk2-step__n{ font-family:var(--sk2-serif); font-size:40px; font-weight:500; color:var(--sk2-brass); line-height:1 }
+.sk2-step h3{ font-size:24px }
+.sk2-step p{ color:var(--sk2-grey); font-size:14.5px; margin-top:6px; max-width:44ch }
+
+/* ==========================================================================
+   Story
+   ========================================================================== */
+.sk2-story{ display:grid; grid-template-columns:1fr 1fr; gap:0; align-items:stretch }
+.sk2-story__media{ position:relative; min-height:520px }
+.sk2-story__media .sk2-visual{ position:absolute; inset:0; border-radius:0; aspect-ratio:auto }
+.sk2-story__media .sk2-visual--accent{ position:absolute; inset:auto clamp(20px,4vw,64px) clamp(24px,4vw,56px) auto; width:42%; aspect-ratio:3/4; box-shadow:var(--sk2-shadow-2); z-index:2 }
+.sk2-story__body{ padding:clamp(40px,6vw,96px) clamp(24px,5vw,88px) }
+.sk2-story__body p{ margin-top:20px; font-size:clamp(16px,1.15vw,18px); line-height:1.7; max-width:52ch; color:var(--sk2-stone) }
+.sk2-story__body p:first-of-type{ font-family:var(--sk2-serif); font-size:clamp(22px,1.8vw,26px); line-height:1.4; color:var(--sk2-ivory) }
+
+/* ==========================================================================
+   Reviews
+   ========================================================================== */
+.sk2-reviews{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(14px,1.6vw,24px) }
+.sk2-rcard{ background:var(--sk2-ivory); border:1px solid rgba(28,27,25,.1); border-radius:2px; padding:30px 30px 26px; display:flex; flex-direction:column; gap:14px; position:relative }
+.sk2-rcard__tag{ position:absolute; top:14px; right:14px }
+.sk2-rcard blockquote{ margin:0; font-family:var(--sk2-serif); font-size:22px; line-height:1.35; font-weight:500 }
+.sk2-rcard footer{ margin-top:auto; font-size:13px; color:var(--sk2-grey) }
+.sk2-rcard footer strong{ color:var(--sk2-ink); display:block; font-weight:600 }
+.sk2-reviews__note{ margin-top:22px; font-size:13px; color:var(--sk2-grey); display:flex; align-items:center; gap:10px }
+.sk2-reviews__note::before{ content:""; width:24px; height:1px; background:var(--sk2-stone-2) }
+
+/* ==========================================================================
+   FAQ
+   ========================================================================== */
+.sk2-faq{ max-width:860px; margin:0 auto }
+.sk2-faq-head{ max-width:860px; margin:0 auto }
+.sk2-faq__item{ border-top:1px solid rgba(28,27,25,.14) }
+.sk2-faq__item:last-child{ border-bottom:1px solid rgba(28,27,25,.14) }
+.sk2-faq__q{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 0; text-align:left; font-family:var(--sk2-serif); font-size:clamp(20px,1.8vw,25px); font-weight:500; line-height:1.25 }
+.sk2-faq__q svg{ width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.2; flex-shrink:0; transition:transform .35s var(--sk2-ease) }
+.sk2-faq__item.is-open .sk2-faq__q svg{ transform:rotate(45deg) }
+.sk2-faq__a{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s var(--sk2-ease) }
+.sk2-faq__item.is-open .sk2-faq__a{ grid-template-rows:1fr }
+.sk2-faq__a > div{ overflow:hidden }
+.sk2-faq__a p{ padding:0 48px 24px 0; color:var(--sk2-grey); font-size:15.5px; line-height:1.65; max-width:64ch }
+
+/* ==========================================================================
+   SEO copy
+   ========================================================================== */
+.sk2-seo{ display:grid; grid-template-columns:1fr 2fr; gap:clamp(24px,5vw,96px) }
+.sk2-seo__body p{ color:var(--sk2-grey); font-size:15.5px; line-height:1.7; margin-bottom:16px; max-width:66ch }
+.sk2-seo__body h3{ font-size:24px; margin:26px 0 8px }
+.sk2-seo__body h3:first-child{ margin-top:0 }
+.sk2-seo__body a{ color:var(--sk2-ink); border-bottom:1px solid var(--sk2-stone-2) }
+.sk2-seo__body a:hover{ color:var(--sk2-red); border-color:var(--sk2-red) }
+.sk2-seo__aside{ position:sticky; top:24px; align-self:start }
+.sk2-seo__aside .sk2-visual{ aspect-ratio:4/5; border-radius:2px; margin-top:20px }
+
+/* ==========================================================================
+   Newsletter
+   ========================================================================== */
+.sk2-news{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,4vw,64px); align-items:center }
+.sk2-news p{ color:var(--sk2-stone); margin-top:10px; max-width:44ch }
+.sk2-news form{ display:flex; gap:10px }
+.sk2-news input{ flex:1; min-width:0; height:54px; border:1px solid rgba(243,239,231,.35); background:transparent; color:var(--sk2-ivory); padding:0 18px; font:500 15px var(--sk2-sans); border-radius:2px; outline:none; transition:border-color .2s }
+.sk2-news input::placeholder{ color:rgba(243,239,231,.5) }
+.sk2-news input:focus{ border-color:var(--sk2-ivory) }
+.sk2-news__ok{ margin-top:14px; font-size:14px; color:var(--sk2-brass-2); min-height:20px }
+.sk2-news small{ display:block; margin-top:12px; font-size:12px; color:rgba(243,239,231,.5) }
+
+/* ==========================================================================
+   Scroll reveal
+   ========================================================================== */
+.sk2-reveal{ opacity:0; transform:translateY(18px); transition:opacity .8s var(--sk2-ease),transform .8s var(--sk2-ease) }
+.sk2-reveal.in{ opacity:1; transform:none }
+@media (prefers-reduced-motion:reduce){
+  .sk2-reveal{ opacity:1; transform:none }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width:1200px){
+  .sk2-pgrid{ grid-template-columns:repeat(3,1fr) }
+}
+@media (max-width:1023px){
+  .sk2-finder{ grid-template-columns:1fr }
+  .sk2-finder__result{ position:static; min-height:0 }
+  .sk2-sizeguide{ grid-template-columns:1fr }
+  .sk2-story{ grid-template-columns:1fr }
+  .sk2-story__media{ min-height:380px }
+  .sk2-story__media .sk2-visual--accent{ width:40% }
+  .sk2-seo{ grid-template-columns:1fr }
+  .sk2-seo__aside{ position:static }
+  .sk2-seo__aside .sk2-visual{ display:none }
+  .sk2-news{ grid-template-columns:1fr }
+  .sk2-split{ grid-template-columns:1fr }
+  .sk2-split__side{ min-height:460px }
+  .sk2-trust{ grid-template-columns:1fr 1fr }
+  .sk2-tf:nth-child(3n+2),.sk2-tf:nth-child(3n){ padding-left:0; padding-right:28px; border-left:0; border-right:0 }
+  .sk2-tf:nth-child(2n){ padding-left:28px; border-left:1px solid rgba(28,27,25,.12); padding-right:0 }
+  .sk2-cats{ grid-template-columns:repeat(2,1fr) }
+}
+@media (max-width:767px){
+  .sk2{ --sk2-gutter:20px }
+  .sk2__section{ padding:56px 0 }
+  .sk2__sec-head{ flex-direction:column; align-items:flex-start; gap:14px }
+  .sk2__sec-head__tools{ width:100%; justify-content:space-between }
+  .sk2-rail-btns{ display:none }
+  .sk2-hero{ min-height:min(92vh,760px); align-items:flex-end }
+  .sk2-hero__inner{ padding-top:120px }
+  .sk2-hero__cta .btn{ flex:1 1 auto }
+  .sk2-hero__meta{ gap:22px; margin-top:36px }
+  .sk2-cats{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--sk2-gutter); padding:4px var(--sk2-gutter) 20px; margin:0 calc(var(--sk2-gutter) * -1); scrollbar-width:none }
+  .sk2-cats::-webkit-scrollbar{ display:none }
+  .sk2-cats > *{ flex:0 0 78vw; scroll-snap-align:start }
+  .sk2-ccard .sk2-visual{ aspect-ratio:4/5 }
+  .sk2-tgrid{ grid-template-columns:repeat(2,1fr) }
+  .sk2-ttile__label{ padding:14px 14px 12px }
+  .sk2-ttile__label h3{ font-size:20px }
+  .sk2-finder__opts{ grid-template-columns:repeat(2,1fr) }
+  .sk2-fopt{ min-height:0 }
+  .sk2-trust{ grid-template-columns:1fr }
+  .sk2-tf,.sk2-tf:nth-child(2n){ padding:24px 0; border-left:0 }
+  .sk2-reviews{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--sk2-gutter); padding:4px var(--sk2-gutter) 20px; margin:0 calc(var(--sk2-gutter) * -1); scrollbar-width:none }
+  .sk2-reviews::-webkit-scrollbar{ display:none }
+  .sk2-reviews > *{ flex:0 0 82vw; scroll-snap-align:start }
+  .sk2-step{ grid-template-columns:48px 1fr; gap:14px }
+  .sk2-step__n{ font-size:32px }
+  .sk2-story__media{ min-height:300px }
+  .sk2-story__media .sk2-visual--accent{ width:44%; right:20px }
+  .sk2-news form{ flex-direction:column }
+  .sk2-faq__a p{ padding-right:24px }
+  .sk2-pgrid{ grid-template-columns:1fr 1fr; gap:24px 12px }
+  .sk2-pcard h3{ font-size:16px }
+}
+
+/* ==========================================================================
+   Native Prestige components inside a .sk2 scope
+   The reset above strips their chrome, and they show up in more than one place
+   (product page buy box, quick view modal), so they are skinned here rather
+   than in any one section's stylesheet.
+   ========================================================================== */
+/* native variant picker, re-skinned into pages.html's option rows */
+.sk2 variant-picker{ display:block }
+.sk2 .variant-picker__option{ border:0; margin:0; padding:18px 0; border-top:1px solid rgba(28,27,25,.12) }
+.sk2 .variant-picker__option-info{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:12px }
+.sk2 .variant-picker__option-info > .h-stack{ display:flex; align-items:baseline; gap:8px }
+.sk2 .variant-picker__option-info legend{ font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:12px; font-family:var(--sk2-sans); padding:0 }
+.sk2 .variant-picker__option-info span{ font-size:13px; color:var(--sk2-grey) }
+.sk2 .variant-picker__option-info .link,.sk2 .variant-picker__option-info button{ font-size:12.5px; font-weight:600; text-decoration:underline; text-underline-offset:3px; color:var(--sk2-grey) }
+.sk2 .variant-picker__option-values{ display:flex; flex-wrap:wrap; gap:8px }
+.sk2 .block-swatch{ min-width:64px; height:44px; padding:0 12px; border:1px solid rgba(28,27,25,.22); border-radius:2px; font-size:13.5px; font-weight:600; font-family:var(--sk2-sans); transition:.15s; display:inline-flex; align-items:center; justify-content:center; gap:8px; text-align:center; background:none; color:var(--sk2-ink) }
+.sk2 .block-swatch:hover{ border-color:var(--sk2-ink) }
+.sk2 input:checked + .block-swatch,.sk2 .block-swatch.is-selected{ background:var(--sk2-ink); color:var(--sk2-ivory); border-color:var(--sk2-ink) }
+.sk2 .block-swatch.is-disabled,.sk2 input:disabled + .block-swatch{ opacity:.4; text-decoration:line-through }
+.sk2 .block-swatch__color{ width:18px; height:18px; border-radius:50%; display:block; background-size:cover }
+.sk2 .color-swatch,.sk2 .thumbnail-swatch{ width:46px; height:46px; border-radius:50%; overflow:hidden; border:2px solid transparent; padding:2px; transition:.2s; display:block; background-size:cover; background-position:center }
+.sk2 .color-swatch:hover,.sk2 .thumbnail-swatch:hover{ border-color:var(--sk2-stone-2) }
+.sk2 input:checked + .color-swatch,.sk2 input:checked + .thumbnail-swatch,.sk2 .color-swatch.is-selected,.sk2 .thumbnail-swatch.is-selected{ border-color:var(--sk2-ink) }
+.sk2 .variant-picker__option .select{ height:44px; border:1px solid rgba(28,27,25,.22); border-radius:2px; padding:0 14px; font-size:13.5px; font-weight:600; display:inline-flex; align-items:center; gap:10px; background:none }
+
+.sk2 .quantity-selector{ display:inline-flex; align-items:center; border:1px solid rgba(28,27,25,.22); border-radius:2px; height:54px; background:none }
+.sk2 .quantity-selector__button{ width:40px; height:100%; display:inline-flex; align-items:center; justify-content:center }
+.sk2 .quantity-selector__input{ min-width:40px; width:44px; text-align:center; font-weight:600; font-size:14px; border:0; background:none; font-family:var(--sk2-sans) }
+.sk2 product-form{ display:block }
+.sk2 .buy-buttons{ display:grid; gap:10px }
+/* The .sk2 reset (`.sk2 :where(button)`) zeroes border/background/padding on
+   every native button inside the scope, and it loads after theme.css at equal
+   specificity — so the theme's own .button chrome never reaches these two.
+   They are therefore styled outright, as pages.html's .btn--line / .btn--ink,
+   rather than through the theme's --button-* variables. */
+.sk2 .buy-buttons .button,
+.sk2 .shopify-payment-button__button--unbranded{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; min-height:54px; padding:0 30px; border-radius:2px;
+  font-family:var(--sk2-sans); font-size:13px; font-weight:700; line-height:1;
+  letter-spacing:.14em; text-transform:uppercase; text-align:center;
+  background-image:none;
+  transition:background-color .25s var(--sk2-ease),color .25s var(--sk2-ease),border-color .25s var(--sk2-ease);
+}
+/* Add to cart — outlined ink (pages.html .btn--line) */
+.sk2 .buy-buttons .button{
+  border:1px solid var(--sk2-ink); background-color:transparent; color:var(--sk2-ink);
+}
+.sk2 .buy-buttons .button:hover{ background-color:var(--sk2-ink); color:var(--sk2-ivory) }
+.sk2 .buy-buttons .button[disabled]{ opacity:.45; pointer-events:none }
+/* Buy now — solid ink (pages.html .btn--ink) */
+.sk2 .shopify-payment-button{ display:grid }
+.sk2 .shopify-payment-button__button{ min-height:54px; border-radius:2px }
+.sk2 .shopify-payment-button__button--unbranded{
+  border:1px solid var(--sk2-ink); background-color:var(--sk2-ink); color:var(--sk2-ivory);
+}
+.sk2 .shopify-payment-button__button--unbranded:hover{ background-color:var(--sk2-ink-3); border-color:var(--sk2-ink-3) }
+.sk2 .shopify-payment-button__more-options{ font-family:var(--sk2-sans); font-size:12px; color:var(--sk2-grey); text-decoration:underline; text-underline-offset:3px }
+
+/* ==========================================================================
+   Quick view (pages.html .pcard__quick + .modal)
+   The button lives on the card; the modal content comes from the product
+   page's #quick-buy-content template, opened by Prestige's <quick-buy-modal>.
+   ========================================================================== */
+.sk2-pcard__quick{ position:absolute; left:12px; right:12px; bottom:12px; z-index:3; opacity:0; transform:translateY(8px); transition:opacity .3s var(--sk2-ease),transform .3s var(--sk2-ease) }
+.sk2-pcard:hover .sk2-pcard__quick,.sk2-pcard:focus-within .sk2-pcard__quick{ opacity:1; transform:none }
+@media (hover:none){ .sk2-pcard__quick{ opacity:1; transform:none } }
+
+.sk2-qv{ background:var(--sk2-ivory); color:var(--sk2-ink); font-family:var(--sk2-sans) }
+.sk2-qv__media img,.sk2-qv__media .sk2-visual{ width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:2px }
+/* pages.html's modal image is flush to the modal edge; the theme's modal pads
+   its body on all sides, which frames the image. Pull the media column back out
+   over that padding and let it fill the row. */
+@media (min-width:700px){
+  .sk2-qv{ align-items:stretch; column-gap:clamp(24px,3vw,40px) }
+  .sk2-qv__media{
+    margin-block:calc(var(--modal-body-padding-block,3.125rem) * -1);
+    margin-inline-start:calc(var(--modal-body-padding-inline,3.125rem) * -1);
+  }
+  .sk2-qv__media img,.sk2-qv__media .sk2-visual{ height:100%; border-radius:0 }
+  .sk2-qv__body{ padding-block:clamp(8px,1.5vw,20px) }
+}
+.sk2-qv__body h3{ font-family:var(--sk2-serif); font-weight:500; font-size:clamp(26px,3vw,34px); line-height:1.05; margin:10px 0 6px }
+.sk2-qv .price{ font-family:var(--sk2-serif); font-weight:500; font-size:20px; margin:8px 0 18px; display:flex; gap:10px; align-items:baseline }
+.sk2-qv .price s{ color:var(--sk2-grey-2); font-weight:400; font-size:15px }
+.sk2-qv__text{ color:var(--sk2-grey); font-size:15px; margin-bottom:22px }
+.sk2-qv__text p{ margin:0 0 10px }
+.sk2-qv .variant-picker__option:first-child{ border-top:0 }
+.sk2-qv .buy-buttons{ margin-top:18px }
+.sk2-qv__link{ display:block; margin-top:14px; font-size:13px; font-weight:600; text-decoration:underline; text-underline-offset:3px }
+@media (max-width:699px){
+  .sk2-qv__media{ max-width:220px; margin:0 auto 18px }
+}

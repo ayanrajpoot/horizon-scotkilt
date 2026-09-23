@@ -1,0 +1,119 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 REVIEWS (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+3-up review cards. Matches pages.html `Reviews()`. Placeholder blocks render a visible "Sample review" tag.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section sk2__section--ivory2" aria-labelledby="sk2-reviews-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2__sec-head sk2-reveal">
+        <div>
+          <h2 class="h2" id="sk2-reviews-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+        </div>
+      </div>
+      <div class="sk2-reviews">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            <article class="sk2-rcard" {{ block.shopify_attributes }}>
+              {%- if block.settings.placeholder -%}<span class="badge sk2-rcard__tag">Sample review</span>{%- endif -%}
+              {%- if block.settings.rating > 0 -%}{%- render 'sk2-stars', rating: block.settings.rating -%}{%- endif -%}
+              <blockquote>{{ block.settings.quote | escape }}</blockquote>
+              <footer><strong>{{ block.settings.name | escape }}</strong>{{ block.settings.meta | escape }}</footer>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.note != blank -%}<p class="sk2-reviews__note">{{ section.settings.note | escape }}</p>{%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Reviews",
+  "class": "shopify-section--sk2-reviews",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Review cards. Replace placeholder blocks with real reviews, or swap this section for a reviews app block."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Verified reviews from your reviews provider will be shown here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Footnote",
+      "default": "Cards above are layout placeholders. No customer reviews have been collected yet."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "placeholder",
+          "label": "Show \"Sample review\" tag",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 0.5,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Sample review copy. Replace with a real customer review from your store."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Customer name"
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Meta",
+          "default": "Product · Location"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Reviews",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

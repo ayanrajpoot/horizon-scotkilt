@@ -1,0 +1,155 @@
+/* ==========================================================================
+   SCOTKILT — product page v2 (pages.html PDP design)
+   Scoped under .sk2-pdp (inside .sk2) so nothing here touches the rest of the
+   theme. Tokens come from sk2-home.css; rules are ported 1:1 from pages.html's
+   PDP stylesheet, plus rules that re-skin the native Prestige variant picker /
+   buy buttons / quantity selector into the same visual language.
+   ========================================================================== */
+
+.sk2-pdp{ padding:clamp(20px,3vw,36px) 0 0 }
+.sk2-pdp .crumbs{ font-size:13px; color:var(--sk2-grey); margin-bottom:22px; display:flex; gap:8px; flex-wrap:wrap }
+.sk2-pdp .crumbs a:hover{ color:var(--sk2-ink) }
+
+.sk2-pdp__top{ display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:clamp(28px,4.5vw,80px); align-items:start; padding-bottom:clamp(40px,5vw,72px) }
+
+/* --------------------------------------------------------------------------
+   Gallery
+   -------------------------------------------------------------------------- */
+.pdp-gallery{ position:sticky; top:calc(var(--header-height,72px) + 20px) }
+.pdp-main{ position:relative; border-radius:2px; overflow:hidden; background:var(--sk2-ivory-2) }
+.pdp-main .sk2-visual,.pdp-main img{ aspect-ratio:4/5; width:100% }
+.pdp-main__slide{ display:none }
+.pdp-main__slide.is-on{ display:block }
+.pdp-main__slide img{ object-fit:cover; height:100% }
+.pdp-main__badges{ position:absolute; top:14px; left:14px; display:flex; gap:6px; z-index:5 }
+.pdp-main__nav{ position:absolute; bottom:12px; right:12px; display:flex; gap:6px; z-index:5 }
+.pdp-main__nav button{ width:40px; height:40px; border-radius:50%; background:rgba(243,239,231,.9); display:inline-flex; align-items:center; justify-content:center }
+.pdp-main__nav svg{ width:16px; height:16px; stroke:var(--sk2-ink); fill:none; stroke-width:1.6 }
+.pdp-main__cap{ position:absolute; left:14px; bottom:16px; z-index:5; font-size:12px; color:rgba(243,239,231,.85); background:rgba(28,27,25,.55); padding:6px 10px; border-radius:2px; backdrop-filter:blur(6px); max-width:calc(100% - 130px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.pdp-main__cap:empty{ display:none }
+.pdp-thumbs{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:10px }
+.pdp-thumb{ position:relative; border-radius:2px; overflow:hidden; border:1px solid transparent; transition:border-color .2s; text-align:left; background:var(--sk2-ivory-2) }
+.pdp-thumb img,.pdp-thumb .sk2-visual{ aspect-ratio:1/1; width:100%; object-fit:cover }
+.pdp-thumb.is-on{ border-color:var(--sk2-ink) }
+.pdp-thumb span{ position:absolute; left:0; right:0; bottom:0; padding:5px 8px; font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--sk2-ivory); background:linear-gradient(180deg,rgba(28,27,25,0),rgba(28,27,25,.7)); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.pdp-gallery__note{ margin-top:12px; font-size:12.5px; color:var(--sk2-grey) }
+
+/* --------------------------------------------------------------------------
+   Buy box
+   -------------------------------------------------------------------------- */
+.sk2-pdp .pdp-eyebrow{ font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--sk2-brass); display:flex; gap:10px; flex-wrap:wrap; font-family:var(--sk2-sans) }
+.sk2-pdp .pdp-eyebrow a:hover{ color:var(--sk2-ink) }
+.sk2-pdp .pdp-buy h1{ font-size:clamp(32px,3.4vw,50px); line-height:1.02; margin:10px 0 12px }
+.pdp-buy__rating{ display:flex; align-items:center; gap:10px; font-size:13px; color:var(--sk2-grey) }
+.pdp-buy__rating a{ text-decoration:underline; text-underline-offset:3px }
+.sk2-pdp .price{ display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; font-size:26px; margin:16px 0 6px; font-family:var(--sk2-serif); font-weight:500 }
+.sk2-pdp .price s,.sk2-pdp .price .line-through{ color:var(--sk2-grey-2); font-weight:400; font-size:18px; text-decoration:line-through }
+.pdp-buy__save{ display:inline-block; font-size:12px; font-weight:700; color:var(--sk2-red); letter-spacing:.06em; font-family:var(--sk2-sans) }
+.pdp-buy__tax{ font-size:12.5px; color:var(--sk2-grey) }
+.pdp-buy__short{ margin:18px 0 24px; color:var(--sk2-ink-2); font-size:15.5px; line-height:1.6; max-width:52ch }
+.pdp-buy__short p{ margin:0 0 10px }
+
+.sk2-pdp .opt{ padding:18px 0; border-top:1px solid rgba(28,27,25,.12) }
+.sk2-pdp .opt__head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:12px; font-size:13px }
+.sk2-pdp .opt__head strong{ font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:12px }
+.sk2-pdp .opt__head span{ color:var(--sk2-grey) }
+.sk2-pdp .opt__head a{ font-size:12.5px; font-weight:600; text-decoration:underline; text-underline-offset:3px; color:var(--sk2-grey) }
+.sk2-pdp .opt__head a:hover{ color:var(--sk2-ink) }
+.sk2-pdp .opt__hint{ margin-top:10px; font-size:12.5px; color:var(--sk2-grey) }
+
+/* CTA row */
+.sk2-pdp .pdp-cta{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; margin-top:22px; align-items:start }
+
+/* cross-sell rails and grids (sections/sk2-product-rail.liquid) */
+product-recommendations.sk2,recently-viewed-products.sk2{ display:block }
+.sk2 .sk2-pcard__add .btn--line{ font-family:var(--sk2-sans) }
+
+.sk2-pdp .pdp-buy__secondary{ display:flex; gap:18px; margin-top:12px; font-size:13px; color:var(--sk2-grey); flex-wrap:wrap }
+.sk2-pdp .pdp-buy__secondary a,.sk2-pdp .pdp-buy__secondary button{ text-decoration:underline; text-underline-offset:3px; font-weight:600; color:var(--sk2-grey) }
+.sk2-pdp .pdp-buy__secondary a:hover,.sk2-pdp .pdp-buy__secondary button:hover{ color:var(--sk2-ink) }
+
+.sk2-pdp .assure{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:26px }
+.sk2-pdp .assure > div{ display:flex; gap:10px; align-items:flex-start; font-size:12.5px; line-height:1.4; color:var(--sk2-grey) }
+.sk2-pdp .assure a{ text-decoration:underline; text-underline-offset:2px }
+.sk2-pdp .assure strong{ display:block; color:var(--sk2-ink); font-weight:600; font-size:13px }
+.sk2-pdp .assure svg{ width:20px; height:20px; stroke:var(--sk2-brass); fill:none; stroke-width:1.3; flex-shrink:0; margin-top:2px }
+
+.sk2-pdp .facts{ margin-top:26px; padding-top:18px; border-top:1px solid rgba(28,27,25,.12) }
+.sk2-pdp .facts h2{ font-family:var(--sk2-sans); font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; margin-bottom:10px }
+.sk2-pdp .facts ul{ margin:0; padding:0 }
+.sk2-pdp .facts li{ position:relative; padding-left:20px; font-size:14.5px; color:var(--sk2-ink-2); margin-bottom:7px; list-style:none }
+.sk2-pdp .facts li::before{ content:""; position:absolute; left:0; top:.7em; width:10px; height:1px; background:var(--sk2-brass) }
+.pdp-buy__sku{ margin-top:18px; font-size:12px; color:var(--sk2-grey-2); letter-spacing:.04em }
+
+/* the tartan picker keeps its own stylesheet; just give it the option-row rhythm */
+.sk2-pdp .tartan-picker,.sk2-pdp .tp{ padding:18px 0; border-top:1px solid rgba(28,27,25,.12) }
+
+/* --------------------------------------------------------------------------
+   Sticky buy bar
+
+   z-index 3, the same as Prestige's own .product-sticky-bar: the header section
+   is z-index 4, so anything higher here paints the bar over the nav dropdown.
+   -------------------------------------------------------------------------- */
+.sk2 .buybar{ position:fixed; left:0; right:0; top:calc(var(--header-height,72px) + env(safe-area-inset-top,0px)); z-index:3; background:var(--sk2-ivory); border-bottom:1px solid rgba(28,27,25,.14); box-shadow:0 12px 30px -18px rgba(28,27,25,.35); opacity:0; visibility:hidden; transform:translateY(-12px); transition:opacity .25s var(--sk2-ease),transform .25s var(--sk2-ease),visibility 0s .25s }
+.sk2 .buybar.is-on{ opacity:1; visibility:visible; transform:none; transition-delay:0s }
+.sk2 .buybar__inner{ display:flex; align-items:center; gap:16px; height:64px }
+.sk2 .buybar img{ width:40px; height:50px; object-fit:cover; border-radius:2px; flex-shrink:0 }
+.sk2 .buybar__name{ font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.sk2 .buybar__meta{ font-size:12px; color:var(--sk2-grey) }
+.sk2 .buybar__price{ margin-left:auto; font-family:var(--sk2-serif); font-size:22px; white-space:nowrap }
+.sk2 .buybar .btn{ min-height:44px }
+
+/* --------------------------------------------------------------------------
+   Details accordion
+   -------------------------------------------------------------------------- */
+.pdp-details{ border-top:1px solid rgba(28,27,25,.14); padding:clamp(24px,3vw,40px) 0 clamp(40px,5vw,72px) }
+.pdp-details__grid{ display:grid; grid-template-columns:260px minmax(0,1fr); gap:clamp(28px,5vw,96px) }
+.pdp-details__side{ position:sticky; top:calc(var(--header-height,72px) + 24px) }
+.sk2-pdp .pdp-details__side h2{ font-size:clamp(28px,3vw,40px) }
+.pdp-details__side p{ margin-top:10px; font-size:14px; color:var(--sk2-grey) }
+.dacc{ border-top:1px solid rgba(28,27,25,.14) }
+.dacc:last-child{ border-bottom:1px solid rgba(28,27,25,.14) }
+.sk2-pdp .dacc h2{ margin:0 }
+.dacc__btn{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 0; text-align:left; font-family:var(--sk2-serif); font-size:clamp(22px,1.8vw,26px); font-weight:500 }
+.dacc__btn svg{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.2; transition:transform .35s var(--sk2-ease); flex-shrink:0 }
+.dacc.is-open .dacc__btn svg{ transform:rotate(45deg) }
+.dacc__panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s var(--sk2-ease) }
+.dacc.is-open .dacc__panel{ grid-template-rows:1fr }
+.dacc__panel > div{ overflow:hidden }
+.dacc__body{ padding:0 0 28px; max-width:70ch; color:var(--sk2-ink-2); font-size:15.5px; line-height:1.7 }
+.dacc__body p{ margin-bottom:14px }
+.dacc__body ul,.dacc__body ol{ margin:0 0 14px; padding:0 }
+.dacc__body li{ position:relative; padding-left:20px; margin-bottom:6px; list-style:none }
+.dacc__body li::before{ content:""; position:absolute; left:0; top:.72em; width:10px; height:1px; background:var(--sk2-brass) }
+.dacc__body a{ color:var(--sk2-ink); border-bottom:1px solid var(--sk2-stone-2) }
+.dacc__body a:hover{ color:var(--sk2-red); border-color:var(--sk2-red) }
+.dacc__body img{ border-radius:2px; margin-bottom:14px }
+.dacc__body table,.sk2-pdp .spec{ width:100%; border-collapse:collapse; font-size:14.5px; margin:8px 0 24px }
+.dacc__body th,.dacc__body td,.sk2-pdp .spec th,.sk2-pdp .spec td{ text-align:left; padding:12px 14px 12px 0; border-bottom:1px solid rgba(28,27,25,.12); vertical-align:top }
+.dacc__body th,.sk2-pdp .spec th{ font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--sk2-grey) }
+.dacc__body td:first-child,.sk2-pdp .spec td:first-child{ font-weight:600; color:var(--sk2-ink); width:38% }
+.spec-wrap{ overflow-x:auto }
+
+/* --------------------------------------------------------------------------
+   Responsive (ported from pages.html)
+   -------------------------------------------------------------------------- */
+@media (max-width:1200px){
+  .pdp-details__grid{ grid-template-columns:220px minmax(0,1fr) }
+}
+@media (max-width:1023px){
+  .sk2-pdp__top{ grid-template-columns:minmax(0,1fr); gap:24px }
+  .pdp-gallery{ position:static }
+  .pdp-details__grid{ grid-template-columns:minmax(0,1fr); gap:20px }
+  .pdp-details__side{ position:static }
+  .sk2 .buybar{ top:auto; bottom:0; border-bottom:0; border-top:1px solid rgba(28,27,25,.14); transform:translateY(12px); padding-bottom:env(safe-area-inset-bottom,0px); box-shadow:0 -12px 30px -18px rgba(28,27,25,.35) }
+  .sk2 .buybar__inner{ height:auto; padding:10px 0 }
+  .sk2 .buybar img,.sk2 .buybar__meta{ display:none }
+  .sk2 .buybar__name{ flex:1 }
+  .sk2 .buybar__price{ margin-left:0 }
+}
+@media (max-width:767px){
+  .pdp-main .sk2-visual,.pdp-main img{ aspect-ratio:1/1 }
+  .pdp-thumbs{ gap:6px }
+  .sk2-pdp .pdp-buy h1{ font-size:clamp(28px,8vw,36px) }
+  .sk2-pdp .assure{ grid-template-columns:1fr; gap:8px }
+}

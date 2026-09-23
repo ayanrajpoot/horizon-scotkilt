@@ -1,0 +1,453 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 TARTAN FINDER (SCOTKILT — the /tartan-finder page in the pages.html design)
+----------------------------------------------------------------------------------------------------------------------
+The same tartan browser as the `tartan-finder` section — same data, same
+search, filters, A-Z, colourways, preview and product carousel — rendered from
+the shared `tartan-finder-app` snippet under the SCOTKILT editorial skin.
+
+The browser sits outside the .sk2 wrapper on purpose: `.sk2 :where(button)`
+strips border, background and padding from every button inside it, which would
+gut the component. It is skinned instead by redefining the colour-scheme
+variables it reads — see assets/sk2-tartan-finder.css.
+
+URL parameters: ?q=macdonald prefills the search, ?tartan=handle opens a tartan.
+Documentation: docs/TARTAN-PICKER.md
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+{{ 'tartan-picker.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-tartan-finder.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tartan-picker.js' | asset_url }}" defer></script>
+<script src="{{ 'sk2-tartan-finder.js' | asset_url }}" defer></script>
+
+<div class="sk2-tf">
+  <div class="sk2">
+    {%- if section.settings.show_breadcrumb -%}
+      <div class="sk2__container sk2-tf__crumb">
+        <a href="{{ routes.root_url }}">Home</a><span aria-hidden="true">/</span><span>{{ section.settings.heading | escape }}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="sk2__container sk2-tf__intro">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="sk2-tf__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="{{ section.settings.heading_size }}">{{ section.settings.heading | escape }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <div class="lede">{{ section.settings.subheading }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- render 'tartan-finder-app', section: section, class: 'sk2-tf__app' -%}
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Tartan finder",
+  "class": "shopify-section--sk2-tartan-finder",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "custom.overlay"
+    ]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The tartan library browser in the SCOTKILT editorial design. Tartan data is set in Theme settings > Tartan picker."
+    },
+    {
+      "type": "header",
+      "content": "Page head"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Tartans"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tartan Finder"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Text",
+      "default": "<p>Browse every tartan we weave by colour, family and clan name. Open any tartan to see the sett up close, then shop the kilts made in it.</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h1",
+      "options": [
+        {
+          "value": "h1",
+          "label": "Large"
+        },
+        {
+          "value": "h2",
+          "label": "Medium"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Browser"
+    },
+    {
+      "type": "header",
+      "content": "Browser"
+    },
+    {
+      "type": "text",
+      "id": "panel_title",
+      "label": "Panel title",
+      "info": "Leave empty to hide the panel header"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search by surname, clan, region or colour"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Height on desktop",
+      "min": 500,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 780
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Height on mobile",
+      "min": 60,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 85,
+      "info": "Percentage of the screen height"
+    },
+    {
+      "type": "select",
+      "id": "default_view",
+      "label": "Default view",
+      "default": "grid",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "list",
+          "label": "List"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_popular_filter",
+      "label": "Show popular filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_filter",
+      "label": "Show category filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colour_filter",
+      "label": "Show colour filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_availability_filter",
+      "label": "Show availability filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_alphabet",
+      "label": "Show A–Z jump",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_surcharge",
+      "label": "Show surcharge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "url_param",
+      "label": "Update page link when a tartan is opened",
+      "default": true,
+      "info": "Lets shoppers share a link to a tartan (?tartan=handle)"
+    },
+    {
+      "type": "text",
+      "id": "scope_groups",
+      "label": "Only show tartans in groups",
+      "info": "Comma separated. Leave empty to show all tartans."
+    },
+    {
+      "type": "text",
+      "id": "no_results_text",
+      "label": "No results text",
+      "default": "No tartans match your search."
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Text when no tartans are uploaded",
+      "default": "Our tartan library is coming soon."
+    },
+    {
+      "type": "text",
+      "id": "request_text",
+      "label": "Custom request link text",
+      "default": "Don't see your clan? Request a custom tartan"
+    },
+    {
+      "type": "url",
+      "id": "request_url",
+      "label": "Custom request link"
+    },
+    {
+      "type": "header",
+      "content": "Colourways"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_colourways",
+      "label": "Show Modern / Ancient / Weathered",
+      "default": true,
+      "info": "For library tartans drawn from their threadcount. Ancient and Weathered colours are approximations."
+    },
+    {
+      "type": "select",
+      "id": "default_colourway",
+      "label": "Default colourway",
+      "default": "modern",
+      "options": [
+        {
+          "value": "modern",
+          "label": "Modern"
+        },
+        {
+          "value": "ancient",
+          "label": "Ancient"
+        },
+        {
+          "value": "weathered",
+          "label": "Weathered"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Swatches"
+    },
+    {
+      "type": "select",
+      "id": "swatch_shape",
+      "label": "Shape",
+      "default": "rounded",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "circle",
+          "label": "Circle"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Fill"
+        },
+        {
+          "value": "contain",
+          "label": "Fit"
+        },
+        {
+          "value": "tile",
+          "label": "Repeat pattern"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "tile_size",
+      "label": "Pattern tile size",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Zoom on preview image",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shop_link",
+      "name": "Shop in this tartan link",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shown in the tartan preview. The chosen tartan is added to the link (?tartan=handle) so the product's Tartan picker preselects it."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shop kilts in this tartan"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "default": "solid",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "link_type",
+          "label": "Link to",
+          "default": "url",
+          "options": [
+            {
+              "value": "url",
+              "label": "A fixed page or collection"
+            },
+            {
+              "value": "tagged",
+              "label": "Products tagged with the tartan"
+            }
+          ]
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection to search",
+          "info": "Tagged links only. Defaults to the collection in the link above, then to all products."
+        },
+        {
+          "type": "text",
+          "id": "tag_word",
+          "label": "Tag word",
+          "default": "tartan",
+          "info": "Tagged links look for “<tartan name> <tag word>”, e.g. “MacDonald tartan”."
+        },
+        {
+          "type": "checkbox",
+          "id": "single_product",
+          "label": "Go straight to the product when only one matches",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_without_products",
+          "label": "Hide when no products match",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "display",
+          "label": "Show as",
+          "default": "carousel",
+          "options": [
+            {
+              "value": "carousel",
+              "label": "Product carousel"
+            },
+            {
+              "value": "button",
+              "label": "Button"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "products_limit",
+          "label": "Products in the carousel",
+          "min": 4,
+          "max": 24,
+          "step": 2,
+          "default": 12
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Tartan finder",
+      "blocks": [
+        {
+          "type": "shop_link",
+          "settings": {
+            "label": "Shop kilts in this tartan",
+            "style": "solid",
+            "link_type": "tagged",
+            "tag_word": "tartan"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

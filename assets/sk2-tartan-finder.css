@@ -1,0 +1,228 @@
+/* ==========================================================================
+   SCOTKILT — tartan finder page v2 (pages.html editorial design)
+
+   The browser itself is the existing <tartan-finder> element, unchanged. All
+   that happens here is that the Prestige colour-scheme variables it reads are
+   redefined to the SK2 palette on .sk2-tf__app, so the whole component — the
+   search, the chips, the A–Z rail, the preview, the product carousel — follows
+   the page without a single tp- rule being rewritten.
+
+   The app deliberately sits OUTSIDE .sk2: `.sk2 :where(button)` would strip
+   every button the component renders.
+   ========================================================================== */
+.sk2-tf{
+  background:var(--sk2-ivory,#f3efe7);
+  padding:0;
+}
+
+/* The head and the browser are one column, always: whatever a parent section
+   wrapper or a stale stylesheet does, they never share a row. */
+.sk2-tf{ display:block; width:100% }
+.sk2-tf > *{ display:block; width:100%; max-width:none; float:none; clear:both }
+
+/* ---------- page head ---------------------------------------------------- */
+/* The finder is the whole page, so the head runs the full width of the screen
+   too — no 1440px container, just the page gutter. */
+.sk2-tf .sk2__container{ max-width:none }
+.sk2-tf__intro{ padding:clamp(24px,3vw,44px) 0 clamp(18px,2.2vw,28px) }
+.sk2-tf__eyebrow{
+  font-size:12px; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--sk2-brass); margin-bottom:18px;
+}
+.sk2-tf__intro .lede{ margin-top:16px }
+.sk2-tf__crumb{
+  font-size:13px; color:var(--sk2-grey); padding:clamp(18px,2.5vw,28px) 0 0;
+  display:flex; gap:8px; flex-wrap:wrap;
+}
+.sk2-tf__crumb a:hover{ color:var(--sk2-ink); text-decoration:underline }
+
+/* ---------- the browser -------------------------------------------------- */
+/* This page is the finder and nothing else, so the browser runs edge to edge
+   rather than sitting inside the 1440px container the other SK2 bands use. */
+.sk2-tf__app{
+  display:block;
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:0;
+
+  /* Prestige scheme variables, re-pointed at the SK2 palette */
+  --text-color:28 27 25;
+  --background-without-opacity:255 253 249;
+  --border-color:203 194 177;
+  --button-background:28 27 25;
+  --button-text-color:243 239 231;
+  --error-text:140 42 47;
+  --input-border-radius:2px;
+  --button-border-radius:2px;
+  --text-sm:14px;
+  --text-xs:12px;
+  --heading-font-family:'Cormorant Garamond','Iowan Old Style','Palatino Linotype',Georgia,serif;
+  --heading-font-weight:500;
+
+  /* component tokens */
+  --tp-radius:2px;
+  --tp-swatch-radius:2px;
+  --tp-muted:#7a7469;
+  --tp-line:rgba(28,27,25,.14);
+  --tp-soft:rgba(28,27,25,.045);
+  --tp-accent:#1c1b19;
+  --tp-accent-text:#f3efe7;
+
+  font-family:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;
+  color:#1c1b19;
+}
+.sk2-tf__app.tartan-picker--rounded{ --tp-swatch-radius:2px }
+
+/* Full bleed: a band across the page, not a card floating on it */
+.sk2-tf__app .tp-modal--inline{
+  border-radius:0;
+  border-left:0;
+  border-right:0;
+  border-color:rgba(28,27,25,.14);
+  box-shadow:none;
+  background:#fffdf9;
+}
+
+/* The finder's own padding takes over from the container it no longer has,
+   so the search, results and preview still line up with the heading above. */
+.sk2-tf__app .tp-modal__head,
+.sk2-tf__app .tp-modal__search,
+.sk2-tf__app .tp-modal__toolbar,
+.sk2-tf__app .tp-modal__active,
+.sk2-tf__app .tp-modal__alphabet,
+.sk2-tf__app .tp-modal__body,
+.sk2-tf__app .tp-modal__foot{
+  padding-left:var(--sk2-gutter,clamp(20px,4vw,64px));
+  padding-right:var(--sk2-gutter,clamp(20px,4vw,64px));
+}
+.sk2-tf__app .tp-modal__filters{
+  margin-left:var(--sk2-gutter,clamp(20px,4vw,64px));
+  margin-right:var(--sk2-gutter,clamp(20px,4vw,64px));
+  border-radius:2px;
+}
+.sk2-tf__app .tp-modal__head h2,
+.sk2-tf__app .tp-preview h3,
+.sk2-tf__app .tp-preview__name{
+  font-family:'Cormorant Garamond','Iowan Old Style','Palatino Linotype',Georgia,serif;
+  font-weight:500; letter-spacing:-.01em;
+}
+.sk2-tf__app .tp-btn--solid{ letter-spacing:.12em; text-transform:uppercase; font-size:12px; font-weight:700 }
+.sk2-tf__app .tp-products__arrow{ border-radius:2px }
+
+@media (max-width:767px){
+  .sk2-tf__app .tp-modal__head,
+  .sk2-tf__app .tp-modal__search,
+  .sk2-tf__app .tp-modal__toolbar,
+  .sk2-tf__app .tp-modal__active,
+  .sk2-tf__app .tp-modal__alphabet,
+  .sk2-tf__app .tp-modal__body,
+  .sk2-tf__app .tp-modal__foot{ padding-left:20px; padding-right:20px }
+  .sk2-tf__app .tp-modal__filters{ margin-left:20px; margin-right:20px }
+}
+
+/* ---------- tartan preview: stacked, not side by side -------------------- */
+/* The component's own preview is a two-column grid — the swatch on the left,
+   every piece of text on the right. On a page this wide that reads as two
+   unrelated halves, so here it stacks: the cloth across the screen, then the
+   name, facts, colourways, products and buttons underneath it. */
+.sk2-tf__app .tp-preview__layout{
+  grid-template-columns:minmax(0,1fr);
+  gap:clamp(24px,3vw,40px);
+}
+.sk2-tf__app .tp-preview__media{
+  width:100%;
+  aspect-ratio:16/7;
+  border-radius:2px;
+}
+.sk2-tf__app .tp-preview__details{ max-width:none }
+.sk2-tf__app .tp-preview__name{ font-size:clamp(28px,3.2vw,44px) }
+
+/* Four across on a full-width screen rather than two */
+.sk2-tf__app .tp-products__track{ grid-auto-columns:calc((100% - 42px) / 4) }
+
+@media (max-width:1023px){
+  .sk2-tf__app .tp-preview__media{ aspect-ratio:16/9 }
+  .sk2-tf__app .tp-products__track{ grid-auto-columns:calc((100% - 14px) / 2) }
+}
+@media (max-width:767px){
+  .sk2-tf__app .tp-preview__media{ aspect-ratio:4/3 }
+  .sk2-tf__app .tp-products__track{ grid-auto-columns:62% }
+}
+
+/* ---------- one scrollbar, not two --------------------------------------- */
+/* The finder used to be a fixed-height box with its own scrolling results
+   list, which meant two scrollbars on a page that is nothing but the finder.
+   Here the panel grows to its content and the page scrolls instead, so there
+   is one scrollbar and nothing is clipped.
+ 
+   Three things have to move together for that:
+   - .tp-modal__body stops being a scroll container;
+   - .tp-modal's overflow:hidden goes, or it clips the sticky bars below;
+   - search, filters and letter headings pin under the site header, otherwise
+     they scroll away and a list this long has no controls.
+ 
+   tartan-picker.js measures those pinned bars, so opening a tartan or jumping
+   to a letter lands below them instead of underneath. */
+.sk2-tf > .sk2-tf__app .tp-modal--inline{
+  height:auto;
+  overflow:visible;
+  border-bottom:0;
+}
+.sk2-tf .tp-modal__body{ overflow:visible }
+
+/* The bars' own heights come from assets/sk2-tartan-finder.js, which measures
+   them — hard-coding the offsets left a few pixels of grid showing between the
+   filter bar and the letter heading, and the heights move with the viewport
+   and with how many filter chips are on. The values below are only fallbacks
+   for the moment before the script runs. */
+.sk2-tf .tp-modal__search{
+  position:sticky;
+  top:var(--sticky-area-height, 0px);
+  z-index:7;
+  background:#fffdf9;
+}
+.sk2-tf .tp-modal__toolbar{
+  position:sticky;
+  top:calc(var(--sticky-area-height, 0px) + var(--sk2-tf-search-h, 88px));
+  z-index:6;
+  padding-bottom:14px;
+  background:#fffdf9;
+}
+/* The -1px tucks the heading under the bar rather than butting against it, so
+   no seam can appear however the browser rounds the sub-pixel heights. */
+.sk2-tf .tp-letter{
+  top:calc(var(--sticky-area-height, 0px) + var(--sk2-tf-search-h, 88px) + var(--sk2-tf-toolbar-h, 46px) - 1px);
+}
+
+/* Prestige styles every icon as an outline (`fill:none`), but the component's
+   grid/list icons are solid shapes with no stroke, so they came out invisible. */
+.sk2-tf .tp-view-toggle svg{
+  width:16px;
+  height:16px;
+  fill:currentColor;
+  stroke:none;
+}
+
+/* The search field is the width of the screen here, so it does not need the
+   height of a modal's: bring it down and sit the text on the page gutter. */
+.sk2-tf .tp-modal__search-input{
+  height:auto;
+  padding:12px 14px 12px 42px;
+  background-position:16px 50%;
+}
+
+/* ---------- responsive ---------------------------------------------------- */
+/* The heading is a page title here, not a hero: the shared .h1 scale reaches
+   104px, which on this page pushes the finder off the screen. */
+.sk2-tf .sk2-tf__intro .h1,
+.sk2-tf .sk2-tf__intro h1{ font-size:clamp(30px,4.6vw,56px) }
+
+@media (max-width:767px){
+  /* The filter chips wrap to three rows on a phone, so pinning them as well as
+     the search took a third of the screen. Only the search stays. */
+  .sk2-tf .tp-modal__toolbar{ position:static }
+  .sk2-tf .tp-letter{
+    top:calc(var(--sticky-area-height, 0px) + var(--sk2-tf-search-h, 88px) - 1px);
+  }
+}

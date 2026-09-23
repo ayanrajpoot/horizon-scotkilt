@@ -1,0 +1,119 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 SHOP BY KILT TYPE (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Grid of kilt category cards. Matches pages.html `ShopByKiltType()`.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section sk2__section--ivory2" aria-labelledby="sk2-types-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2__sec-head sk2-reveal">
+        <div>
+          <h2 class="h2" id="sk2-types-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+        </div>
+      </div>
+      <div class="sk2-cats">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'category' -%}
+            <a class="sk2-ccard" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+              {%- render 'sk2-visual',
+                image: block.settings.image,
+                alt: block.settings.title,
+                color_1: block.settings.color_1, color_2: block.settings.color_2, color_3: block.settings.color_3,
+                ratio: '3/4', class: 'sk2-visual--zoom'
+              -%}
+              <div class="sk2-ccard__grad"></div>
+              <div class="sk2-ccard__body">
+                <h3>{{ block.settings.title | escape }}</h3>
+                {%- if block.settings.description != blank -%}<p>{{ block.settings.description }}</p>{%- endif -%}
+                <span class="btn btn--ghost">Explore</span>
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Shop by kilt type",
+  "class": "shopify-section--sk2-kilt-types",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). A grid of kilt category cards."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Kilt Type"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Six ways to wear a kilt, from full ceremonial pleating to canvas and leather.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Traditional Kilts"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Full-pleat kilts built for weddings, ceremonies and formal Highland dress."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Fallback colours (used until an image is set)"
+        },
+        { "type": "color", "id": "color_1", "label": "Colour 1", "default": "#1e2a4a" },
+        { "type": "color", "id": "color_2", "label": "Colour 2", "default": "#171614" },
+        { "type": "color", "id": "color_3", "label": "Colour 3", "default": "#213c2c" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Shop by kilt type",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Tartan Kilts", "description": "Woven tartan in classic clan and universal setts, pleated for movement." } },
+        { "type": "category", "settings": { "title": "Utility Kilts", "description": "Hard-wearing cotton styles with cargo pockets and a relaxed everyday fit.", "color_1": "#5a5a42", "color_2": "#3d3a35", "color_3": "#2b2925" } },
+        { "type": "category", "settings": { "title": "Leather Kilts", "description": "Statement kilts in supple leather with a bold, modern silhouette.", "color_1": "#2b1d15", "color_2": "#171614", "color_3": "#3d3a35" } },
+        { "type": "category", "settings": { "title": "Hybrid Kilts", "description": "Tartan pleats paired with a plain canvas apron. Two traditions, one kilt.", "color_1": "#8f8f8b", "color_2": "#171614", "color_3": "#4f6f9c" } },
+        { "type": "category", "settings": { "title": "Contemporary Kilts", "description": "Clean lines and solid tones designed for the modern wardrobe.", "color_1": "#33312e", "color_2": "#2b2925", "color_3": "#171614" } },
+        { "type": "category", "settings": { "title": "Traditional Kilts", "description": "Full-pleat kilts built for weddings, ceremonies and formal Highland dress." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,108 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SCOTKILT – SIZING CSS FOR ONE SECTION OR BLOCK, ONE DEVICE
+----------------------------------------------------------------------------------------------------------------------
+
+Outputs plain CSS rules (no style tag, no media query) from the "Sizing and spacing" sliders.
+
+Parameters:
+- s:      the section or block settings
+- sel:    the CSS selector of the section wrapper or block element
+- device: 'd' (desktop) or 'm' (mobile)
+- kind:   'section' or 'block'
+
+Used by snippets/sk-section-style.liquid. Documentation: docs/SECTION-SIZING.md
+{%- endcomment -%}
+
+{%- liquid
+  if device == 'd'
+    assign heading = s.sk_heading_size_d
+    assign subheading = s.sk_subheading_size_d
+    assign text = s.sk_text_size_d
+    assign image_height = s.sk_image_height_d
+    assign image_width = s.sk_image_width_d
+    assign padding_top = s.sk_padding_top_d
+    assign padding_bottom = s.sk_padding_bottom_d
+    assign padding_side = s.sk_padding_side_d
+    assign margin_top = s.sk_margin_top_d
+    assign margin_bottom = s.sk_margin_bottom_d
+    assign base_text = settings.text_font_size_desktop
+  else
+    assign heading = s.sk_heading_size_m
+    assign subheading = s.sk_subheading_size_m
+    assign text = s.sk_text_size_m
+    assign image_height = s.sk_image_height_m
+    assign image_width = s.sk_image_width_m
+    assign padding_top = s.sk_padding_top_m
+    assign padding_bottom = s.sk_padding_bottom_m
+    assign padding_side = s.sk_padding_side_m
+    assign margin_top = s.sk_margin_top_m
+    assign margin_bottom = s.sk_margin_bottom_m
+    assign base_text = settings.text_font_size_mobile
+  endif
+
+  assign factor = settings.heading_font_size_factor | default: 1
+-%}
+
+{%- if heading and heading != 100 -%}
+  {%- assign f = factor | times: heading | divided_by: 100.0 -%}
+  {{ sel }} {
+    --text-h1: max(0.6875rem, clamp(1.375rem, 1.146341463414634rem + 0.975609756097561vw, 2rem) * {{ f }});
+    --text-h2: max(0.6875rem, clamp(1.25rem, 1.0670731707317074rem + 0.7804878048780488vw, 1.75rem) * {{ f }});
+    --text-h3: max(0.6875rem, clamp(1.125rem, 1.0335365853658536rem + 0.3902439024390244vw, 1.375rem) * {{ f }});
+    --text-h4: max(0.6875rem, clamp(1rem, 0.9542682926829268rem + 0.1951219512195122vw, 1.125rem) * {{ f }});
+    --text-h5: calc(0.875rem * {{ f }});
+  }
+{%- endif -%}
+
+{%- if subheading and subheading != 100 -%}
+  {%- assign f = factor | times: subheading | divided_by: 100.0 -%}
+  {{ sel }} { --text-h6: calc(0.75rem * {{ f }}); }
+{%- endif -%}
+
+{%- if text and text != 100 -%}
+  {%- assign t = text | divided_by: 1600.0 -%}
+  {{ sel }} {
+    --text-xs: {{ base_text | minus: 2 | at_least: 11 | times: t }}rem;
+    --text-sm: {{ base_text | minus: 1 | at_least: 12 | times: t }}rem;
+    --text-base: {{ base_text | times: t }}rem;
+    --text-lg: {{ base_text | plus: 2 | times: t }}rem;
+    {%- if device == 'd' %}
+    --text-xl: {{ base_text | plus: 6 | at_most: 22 | times: t }}rem;
+    {%- else %}
+    --text-xl: {{ settings.text_font_size_desktop | plus: 4 | at_most: 20 | times: t }}rem;
+    {%- endif %}
+  }
+  {%- comment -%}
+    Text inherits its size, so the size itself is set too: sections from the scaled base size, blocks relative to what
+    they would inherit (keeps sections with their own font size setting, e.g. scrolling content, in proportion).
+    Buttons get their size from --button-font, resolved once for the page, so they are sized directly.
+  {%- endcomment -%}
+  {%- if kind == 'section' -%}
+    {{ sel }} { font-size: var(--text-base); }
+  {%- else -%}
+    {{ sel }} { font-size: {{ text | divided_by: 100.0 }}em; }
+  {%- endif -%}
+  {{ sel }}.button, {{ sel }} .button { font-size: var(--text-sm) !important; }
+  {{ sel }}.button--sm, {{ sel }} .button--sm { font-size: var(--text-xs) !important; }
+{%- endif -%}
+
+{%- if s.sk_custom_padding -%}
+  {%- if kind == 'section' -%}
+    {%- if padding_side != nil -%}{{ sel }} { --container-gutter: {{ padding_side }}px; }{%- endif -%}
+    {{ sel }} .section-spacing { padding-block-start: {{ padding_top }}px !important; padding-block-end: {{ padding_bottom }}px !important; }
+    {{ sel }}:not(:has(.section-spacing)) { padding-block-start: {{ padding_top }}px; padding-block-end: {{ padding_bottom }}px; }
+  {%- else -%}
+    {{ sel }} { padding: {{ padding_top }}px {{ padding_side }}px {{ padding_bottom }}px !important; }
+  {%- endif -%}
+{%- endif -%}
+
+{%- if margin_top and margin_top != 0 -%}{{ sel }} { margin-block-start: {{ margin_top }}px !important; }{%- endif -%}
+{%- if margin_bottom and margin_bottom != 0 -%}{{ sel }} { margin-block-end: {{ margin_bottom }}px !important; }{%- endif -%}
+
+{%- if image_height and image_height > 0 -%}
+  {{ sel }} img:not([class*="icon"]):not([class*="logo"]), {{ sel }} video { height: {{ image_height }}px !important; object-fit: cover; }
+{%- endif -%}
+{%- if image_width and image_width < 100 -%}
+  {{ sel }} img:not([class*="icon"]):not([class*="logo"]), {{ sel }} video { width: {{ image_width }}% !important; margin-inline: auto; }
+{%- endif -%}

@@ -1,0 +1,127 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 SHOP BY TARTAN (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Dark section, grid of tartan colour/family tiles. Matches pages.html `ShopByTartan()`.
+----------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section sk2__section--dark" aria-labelledby="sk2-bytartan-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2__sec-head sk2-reveal">
+        <div>
+          <h2 class="h2" id="sk2-bytartan-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+        </div>
+        <div class="sk2__sec-head__tools">
+          {%- if section.settings.link_text != blank -%}
+            <a class="sk2__link" href="{{ section.settings.link_url | default: '#' }}">{{ section.settings.link_text | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="sk2-tgrid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tile' -%}
+            <a class="sk2-ttile" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+              {%- render 'sk2-visual',
+                image: block.settings.image,
+                alt: block.settings.name,
+                color_1: block.settings.color_1, color_2: block.settings.color_2, color_3: block.settings.color_3,
+                ratio: '1/1', class: 'sk2-visual--zoom'
+              -%}
+              <div class="sk2-ttile__label"><h3>{{ block.settings.name | escape }}</h3><span>Shop</span></div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Shop by tartan",
+  "class": "shopify-section--sk2-shop-by-tartan",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Dark section, grid of tartan colour/family tiles."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Tartan"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Browse the cloth first. Every tartan here can be made into more than one kilt style.</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Explore all tartans"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Swatch image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Popular"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Fallback colours (used without an image)"
+        },
+        { "type": "color", "id": "color_1", "label": "Colour 1", "default": "#a8232b" },
+        { "type": "color", "id": "color_2", "label": "Colour 2", "default": "#171614" },
+        { "type": "color", "id": "color_3", "label": "Colour 3", "default": "#efeadf" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Shop by tartan",
+      "blocks": [
+        { "type": "tile", "settings": { "name": "Popular" } },
+        { "type": "tile", "settings": { "name": "Clan", "color_1": "#d9a63a", "color_2": "#171614", "color_3": "#2a5238" } },
+        { "type": "tile", "settings": { "name": "Red", "color_1": "#a8232b", "color_2": "#171614", "color_3": "#d9a63a" } },
+        { "type": "tile", "settings": { "name": "Black", "color_1": "#171614", "color_2": "#a8232b", "color_3": "#d9a63a" } },
+        { "type": "tile", "settings": { "name": "Green", "color_1": "#2a5238", "color_2": "#efeadf", "color_3": "#cf7a2c" } },
+        { "type": "tile", "settings": { "name": "Blue", "color_1": "#1e2a4a", "color_2": "#213c2c", "color_3": "#171614" } },
+        { "type": "tile", "settings": { "name": "Brown", "color_1": "#6b4a32", "color_2": "#171614", "color_3": "#b79b78" } },
+        { "type": "tile", "settings": { "name": "Modern", "color_1": "#2f2e2c", "color_2": "#5a5b58", "color_3": "#8f8f8b" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

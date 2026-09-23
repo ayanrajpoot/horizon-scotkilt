@@ -1,0 +1,93 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 SEO CONTENT (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Sticky heading + swatch aside beside long-form SEO copy blocks. Matches pages.html `SeoContent()`.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section sk2__section--ivory2" aria-labelledby="sk2-seo-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2-seo">
+        <div class="sk2-seo__aside">
+          <h2 class="h2" id="sk2-seo-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- render 'sk2-visual',
+            image: section.settings.aside_image,
+            alt: section.settings.heading,
+            color_1: '#d9a63a', color_2: '#171614', color_3: '#2a5238'
+          -%}
+        </div>
+        <div class="sk2-seo__body">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'paragraph' -%}
+              <div {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading | escape }}</h3>{%- endif -%}
+                {%- if block.settings.text != blank -%}{{ block.settings.text }}{%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 SEO content",
+  "class": "shopify-section--sk2-seo-content",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Long-form SEO copy for the homepage, with a sticky heading and swatch aside."
+    },
+    {
+      "type": "image_picker",
+      "id": "aside_image",
+      "label": "Aside swatch image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Premium Kilts & Scottish Tartans"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "paragraph",
+      "name": "Paragraph",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Tartan kilts and Scottish kilts"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>A tartan kilt is the original Scottish kilt: a length of woven cloth, pleated at the back and sides and flat across the front apron, fastened with leather straps and buckles.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 SEO content",
+      "blocks": [
+        { "type": "paragraph", "settings": { "heading": "Tartan kilts and Scottish kilts", "text": "<p>A tartan kilt is the original Scottish kilt: a length of woven cloth, pleated at the back and sides and flat across the front apron, fastened with leather straps and buckles. At SCOTKILT the tartan comes first.</p>" } },
+        { "type": "paragraph", "settings": { "heading": "Men's kilts for every occasion", "text": "<p>Traditional kilts are cut from a full length of cloth with deep knife pleats and a fringed apron edge — the silhouette for weddings, ceremonies and formal Highland dress. Casual-weight tartan kilts keep the same sett in a lighter build for everyday wear.</p>" } },
+        { "type": "paragraph", "settings": { "heading": "Utility, leather and hybrid kilts", "text": "<p>Utility kilts swap wool for cotton canvas, add cargo pockets and belt loops, and are made to be worn hard. Leather kilts bring structure and shine to the same silhouette. Hybrid kilts sit in between: tartan pleats with a plain canvas apron.</p>" } },
+        { "type": "paragraph", "settings": { "heading": "Choosing a Scottish tartan", "text": "<p>Universal tartans such as Black Watch can be worn by anyone. Clan tartans carry family associations. Our Tartan Finder sorts the range by colour and family so the choice is easier.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

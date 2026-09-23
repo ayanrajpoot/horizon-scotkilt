@@ -1,0 +1,76 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 BRAND STORY (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Dark editorial split: background image + a smaller accent image, and a column of copy. Matches `BrandStory()`.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section--dark" aria-labelledby="sk2-story-title-{{ section.id }}">
+    <div class="sk2-story">
+      <div class="sk2-story__media">
+        {%- render 'sk2-visual',
+          image: section.settings.background_image,
+          alt: section.settings.heading,
+          color_1: '#213c2c', color_2: '#171614', color_3: '#2a5238'
+        -%}
+        {%- if section.settings.accent_image != blank -%}
+          {%- render 'sk2-visual',
+            image: section.settings.accent_image,
+            alt: section.settings.heading,
+            color_1: '#1e2a4a', color_2: '#171614', color_3: '#213c2c',
+            ratio: '3/4', class: 'sk2-visual--accent'
+          -%}
+        {%- endif -%}
+      </div>
+      <div class="sk2-story__body">
+        <div class="sk2-reveal"><h2 class="h2" id="sk2-story-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2></div>
+        {%- if section.settings.content != blank -%}{{ section.settings.content }}{%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Brand story",
+  "class": "shopify-section--sk2-brand-story",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Dark editorial split with a background image, a smaller accent image and copy."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "accent_image",
+      "label": "Accent image (optional)"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Scottish Heritage. Modern Kilt Style."
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>SCOTKILT exists for one reason: to make the kilt a piece you reach for, not a costume you rent.</p><p>We are a specialist. We do not sell tea towels, fridge magnets or postcards of castles. We sell kilts — and the tartans that make them — to customers on every continent who want the real silhouette, the right cloth and a fit that is properly explained.</p><p>Every tartan in the range is chosen for how it behaves in pleats, not just how it looks flat. Every style, from a full eight-yard traditional kilt to a black leather kilt, gets the same attention to waist, drop and hardware.</p><p>Heritage is the starting point. How you wear it is up to you.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Brand story"
+    }
+  ]
+}
+{% endschema %}

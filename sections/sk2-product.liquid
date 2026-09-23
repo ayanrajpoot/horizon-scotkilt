@@ -1,0 +1,862 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 PRODUCT (SCOTKILT — pages.html PDP)
+----------------------------------------------------------------------------------------------------------------------
+Rebuild of the product page in the pages.html design: breadcrumb, image-on-top
+gallery with a labelled thumbnail row, buy box (eyebrow / title / rating /
+price / short copy / options / CTA / assurances / at-a-glance / SKU), a
+two-column Details section with accordions, and a sticky buy bar.
+
+It reuses Prestige's own machinery so nothing breaks: <variant-picker>,
+<product-rerender>, buy-buttons, quantity-selector and the SCOTKILT tartan
+picker are the native snippets, restyled by assets/sk2-product.css.
+
+The stock Prestige product section (sections/main-product.liquid) is untouched
+and still available on the "Prestige default" and "Native blocks" product
+templates.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-product.js' | asset_url }}" defer></script>
+
+{%- liquid
+  capture product_form_id
+    echo 'product-form-main-'
+    echo product.id
+    echo '-'
+    echo section.id
+  endcapture
+
+  assign variant = product.selected_or_first_available_variant
+  assign short_description = product.metafields.custom.short_description | default: section.settings.short_description
+
+  assign on_sale = false
+  if variant.compare_at_price > variant.price
+    assign on_sale = true
+    assign save_percent = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round
+  endif
+-%}
+
+<div class="sk2 sk2-pdp" id="sk2-pdp-{{ section.id }}">
+  <div class="sk2__container">
+
+    {%- comment -%}------- breadcrumb -------{%- endcomment -%}
+    <nav class="crumbs" aria-label="{{ 'general.breadcrumb.label' | t | escape }}">
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+      {%- if product.collections.first != blank -%}
+        <span>/</span><a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+      {%- endif -%}
+      <span>/</span><span aria-current="page">{{ product.title }}</span>
+    </nav>
+
+    <div class="sk2-pdp__top">
+
+      {%- comment -%}------- gallery -------{%- endcomment -%}
+      <div class="pdp-gallery" data-sk2-gallery>
+        <div class="pdp-main">
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              {%- assign image = media.preview_image -%}
+              {%- if forloop.first -%}{%- assign media_loading = 'eager' -%}{%- else -%}{%- assign media_loading = 'lazy' -%}{%- endif -%}
+              <div class="pdp-main__slide{% if forloop.first %} is-on{% endif %}" data-media-id="{{ media.id }}" data-cap="{{ image.alt | default: product.title | escape }}">
+                {{ image | image_url: width: 1200 | image_tag:
+                  loading: media_loading,
+                  sizes: '(max-width: 1023px) 100vw, 55vw',
+                  widths: '400,600,800,1000,1200,1600',
+                  alt: image.alt | default: product.title
+                }}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="pdp-main__slide is-on" data-cap="{{ product.title | escape }}">
+              {%- render 'sk2-visual', alt: product.title, color_1: '#3d3a35', color_2: '#2b2925', color_3: '#171614', ratio: '4/5' -%}
+            </div>
+          {%- endif -%}
+
+          <div class="pdp-main__badges">
+            {%- if variant.available == false -%}
+              <span class="badge badge--ink">{{ 'product.general.sold_out_badge' | t }}</span>
+            {%- elsif on_sale -%}
+              <span class="badge badge--red">{{ 'product.general.on_sale_badge' | t }}</span>
+            {%- endif -%}
+          </div>
+
+          <div class="pdp-main__cap" data-sk2-cap>{{ product.featured_media.preview_image.alt | default: product.title }}</div>
+
+          {%- if product.media.size > 1 -%}
+            <div class="pdp-main__nav">
+              <button type="button" data-sk2-nav="-1" aria-label="{{ 'general.accessibility.previous' | t | escape }}">{% render 'sk2-icons', icon: 'left' %}</button>
+              <button type="button" data-sk2-nav="1" aria-label="{{ 'general.accessibility.next' | t | escape }}">{% render 'sk2-icons', icon: 'right' %}</button>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="pdp-thumbs" role="tablist" aria-label="Product images">
+            {%- for media in product.media -%}
+              {%- assign image = media.preview_image -%}
+              <button type="button" class="pdp-thumb{% if forloop.first %} is-on{% endif %}" data-sk2-slide="{{ forloop.index0 }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                {{ image | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150,300,450', alt: '' }}
+                <span>{{ image.alt | default: media.alt | default: product.title | truncatewords: 2 }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.gallery_note != blank -%}
+          <p class="pdp-gallery__note">{{ section.settings.gallery_note }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%}------- buy box (re-rendered on variant change) -------{%- endcomment -%}
+      <product-rerender id="sk2-pdp-buy-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
+        <div class="pdp-buy">
+
+          {%- render 'pdp-eyebrow', product: product, context: 'main_product' -%}
+
+          <h1>{{ product.title }}</h1>
+
+          {%- if product.metafields.reviews.rating.value != blank -%}
+            <div class="pdp-buy__rating">
+              {%- render 'sk2-stars', rating: product.metafields.reviews.rating.value.rating -%}
+              <span>{{ product.metafields.reviews.rating.value.rating }} · {{ product.metafields.reviews.rating_count }} reviews</span>
+            </div>
+          {%- endif -%}
+
+          <div class="price">
+            {{ variant.price | money }}
+            {%- if on_sale -%}
+              <s>{{ variant.compare_at_price | money }}</s>
+              <span class="pdp-buy__save">Save {{ save_percent }}%</span>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.tax_notice != blank -%}
+            <div class="pdp-buy__tax">{{ section.settings.tax_notice }}</div>
+          {%- endif -%}
+
+          {%- if short_description != blank -%}
+            <div class="pdp-buy__short">{{ short_description }}</div>
+          {%- endif -%}
+
+          {%- render 'variant-picker',
+            product: product,
+            form_id: product_form_id,
+            context: 'main_product',
+            hide_sold_out_variants: section.settings.hide_sold_out_variants,
+            selector_style: 'block',
+            swatch_selector_style: 'block_swatch',
+            size_chart_page: section.settings.size_chart_page
+          -%}
+
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tartan_picker' -%}
+              <div {{ block.shopify_attributes }}>
+                {%- render 'tartan-picker', product: product, block: block, form_id: product_form_id -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if section.settings.size_hint != blank -%}
+            <p class="opt__hint">{{ section.settings.size_hint }}</p>
+          {%- endif -%}
+
+          <div class="pdp-cta" data-sk2-cta>
+            {%- render 'quantity-selector', variant: variant, form: product_form_id -%}
+            {%- render 'buy-buttons',
+              product: product,
+              form_id: product_form_id,
+              show_payment_button: section.settings.show_payment_button,
+              show_gift_card_recipient: section.settings.show_gift_card_recipient,
+              atc_button_background: section.settings.atc_button_background,
+              atc_button_text_color: section.settings.atc_button_text_color,
+              payment_button_background: section.settings.payment_button_background,
+              payment_button_text_color: section.settings.payment_button_text_color
+            -%}
+          </div>
+
+          {%- if section.settings.link_1_text != blank or section.settings.link_2_text != blank or section.settings.show_copy_link -%}
+            <div class="pdp-buy__secondary">
+              {%- if section.settings.link_1_text != blank -%}<a href="{{ section.settings.link_1_url | default: '#' }}">{{ section.settings.link_1_text }}</a>{%- endif -%}
+              {%- if section.settings.show_copy_link -%}<button type="button" data-sk2-copy-link>{{ section.settings.copy_link_text | default: 'Copy link' }}</button>{%- endif -%}
+              {%- if section.settings.link_2_text != blank -%}<a href="{{ section.settings.link_2_url | default: '#' }}">{{ section.settings.link_2_text }}</a>{%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- assign assurances = section.blocks | where: 'type', 'assurance' -%}
+          {%- if assurances.size > 0 -%}
+            <div class="assure">
+              {%- for block in assurances -%}
+                <div {{ block.shopify_attributes }}>
+                  {%- case block.settings.icon -%}
+                    {%- when 'exchange' -%}
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg>
+                    {%- when 'lock' -%}
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                    {%- else -%}
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
+                  {%- endcase -%}
+                  <div><strong>{{ block.settings.title }}</strong>{{ block.settings.text }}</div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- assign facts = section.blocks | where: 'type', 'fact' -%}
+          {%- if facts.size > 0 -%}
+            <div class="facts">
+              <h2>{{ section.settings.facts_title | default: 'At a glance' }}</h2>
+              <ul>
+                {%- for block in facts -%}
+                  <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_sku and variant.sku != blank -%}
+            <div class="pdp-buy__sku">{{ 'product.general.sku' | t }} {{ variant.sku }}</div>
+          {%- endif -%}
+        </div>
+      </product-rerender>
+    </div>
+  </div>
+
+  {%- comment -%}------- details -------{%- endcomment -%}
+  {%- assign accordions = section.blocks | where: 'type', 'accordion' -%}
+  {%- if product.description != blank or accordions.size > 0 -%}
+    <section class="pdp-details" aria-label="{{ 'product.general.description' | t | escape }}">
+      <div class="sk2__container pdp-details__grid">
+        <div class="pdp-details__side">
+          <h2>{{ section.settings.details_title | default: 'Details' }}</h2>
+          {%- if section.settings.details_text != blank -%}
+            <p>{{ section.settings.details_text }}</p>
+          {%- endif -%}
+        </div>
+
+        <div>
+          {%- if product.description != blank -%}
+            <div class="dacc is-open" id="d-description-{{ section.id }}">
+              <h2>
+                <button type="button" class="dacc__btn" data-sk2-dacc aria-expanded="true" aria-controls="dp-description-{{ section.id }}">
+                  {{- section.settings.description_title | default: 'Description' -}}
+                  {%- render 'sk2-icons', icon: 'plus' -%}
+                </button>
+              </h2>
+              <div class="dacc__panel" id="dp-description-{{ section.id }}">
+                <div><div class="dacc__body">{{ product.description }}</div></div>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- for block in accordions -%}
+            {%- liquid
+              assign accordion_title = block.settings.title | default: block.settings.page.title
+              assign accordion_content = block.settings.page.content | default: block.settings.content
+            -%}
+            {%- if accordion_title != blank and accordion_content != blank -%}
+              <div class="dacc{% if block.settings.open_by_default %} is-open{% endif %}" id="d-{{ block.id }}" {{ block.shopify_attributes }}>
+                <h2>
+                  <button type="button" class="dacc__btn" data-sk2-dacc aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}" aria-controls="dp-{{ block.id }}">
+                    {{- accordion_title -}}
+                    {%- render 'sk2-icons', icon: 'plus' -%}
+                  </button>
+                </h2>
+                <div class="dacc__panel" id="dp-{{ block.id }}">
+                  <div><div class="dacc__body">{{ accordion_content }}</div></div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%}------- complete the look -------{%- endcomment -%}
+  {%- assign complementary = section.blocks | where: 'type', 'complementary_products' | first -%}
+  {%- if complementary != blank -%}
+    <section class="sk2__section sk2__section--tight sk2__section--ivory2" {{ complementary.shopify_attributes }}>
+      <div class="sk2__container">
+        {%- render 'complementary-products', product: product, block: complementary -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%}------- sticky buy bar -------{%- endcomment -%}
+  {%- if section.settings.show_sticky_add_to_cart and product.available -%}
+    <product-rerender id="sk2-pdp-buybar-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
+      <div class="buybar" data-sk2-buybar aria-hidden="true">
+        <div class="sk2__container buybar__inner">
+          {%- if product.featured_media != blank -%}
+            {{ product.featured_media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
+          {%- endif -%}
+          <div>
+            <div class="buybar__name">{{ product.title }}</div>
+            {%- unless product.has_only_default_variant -%}
+              <div class="buybar__meta">{{ variant.title }}</div>
+            {%- endunless -%}
+          </div>
+          <div class="buybar__price">{{ variant.price | money }}</div>
+          <button type="submit" form="{{ product_form_id }}" class="btn btn--ink"{% unless variant.available %} disabled{% endunless %}>
+            {%- if variant.available -%}{{ 'product.general.add_to_cart_button' | t }}{%- else -%}{{ 'product.general.sold_out_button' | t }}{%- endif -%}
+          </button>
+        </div>
+      </div>
+    </product-rerender>
+  {%- endif -%}
+</div>
+
+{%- comment -%}------- quick view -------
+
+Quick view fetches this page and lifts #quick-buy-content out of it, so the
+template has to live here. The native snippet can't be reused: it renders
+`product-info`, which builds itself from the section's blocks, and this section
+has none of the native product blocks. This is pages.html's QuickView instead —
+image beside title, rating, price, options, add to cart, view full details —
+inside the theme's own modal wrappers so its responsive layout still applies.
+The "Recently viewed" section reads the list the script below writes.
+{%- endcomment -%}
+{%- liquid
+  capture quick_buy_form_id
+    echo 'product-form-quick-buy-'
+    echo product.id
+    echo '-'
+    echo section.id
+  endcapture
+
+  # the modal always shows a line of copy: the short description when there is
+  # one, otherwise the opening of the product description
+  assign quick_view_text = short_description
+  if quick_view_text == blank
+    assign quick_view_text = product.description | strip_html | truncatewords: 30
+  endif
+-%}
+
+<template id="quick-buy-content">
+  <p class="h5" slot="header">{{ 'product.general.choose_options' | t }}</p>
+
+  <div class="quick-buy-modal__content sk2 sk2-qv">
+    <product-rerender id="quick-buy-modal-content" observe-form="{{ quick_buy_form_id }}">
+      <dialog-close-button class="contents">
+        <button type="button" class="quick-buy-modal__close-button sm-max:hidden">
+          <span class="sr-only">{{ 'general.accessibility.close' | t }}</span>
+          {%- render 'icon' with 'close' -%}
+        </button>
+      </dialog-close-button>
+
+      <div class="sk2-qv__media">
+        {%- if product.featured_media != blank -%}
+          {{ product.featured_media.preview_image | image_url: width: 800 | image_tag:
+            loading: 'lazy', widths: '300,500,700,900', alt: product.title }}
+        {%- else -%}
+          {%- render 'sk2-visual', alt: product.title, color_1: '#3d3a35', color_2: '#2b2925', color_3: '#171614', ratio: '4/5' -%}
+        {%- endif -%}
+      </div>
+
+      <div class="sk2-qv__body">
+        {%- if variant.available == false -%}
+          <span class="badge badge--ink">{{ 'product.general.sold_out_badge' | t }}</span>
+        {%- elsif on_sale -%}
+          <span class="badge badge--red">{{ 'product.general.on_sale_badge' | t }}</span>
+        {%- endif -%}
+
+        <h3>{{ product.title }}</h3>
+
+        {%- if product.metafields.reviews.rating.value != blank -%}
+          <div class="sk2-pcard__rating">
+            {%- render 'sk2-stars', rating: product.metafields.reviews.rating.value.rating -%}
+            <span>{{ product.metafields.reviews.rating.value.rating }} ({{ product.metafields.reviews.rating_count }})</span>
+          </div>
+        {%- endif -%}
+
+        <div class="price">
+          {{ variant.price | money }}
+          {%- if on_sale -%}<s>{{ variant.compare_at_price | money }}</s>{%- endif -%}
+        </div>
+
+        {%- if quick_view_text != blank -%}
+          <div class="sk2-qv__text">{{ quick_view_text }}</div>
+        {%- endif -%}
+
+        {%- render 'variant-picker',
+          product: product,
+          form_id: quick_buy_form_id,
+          context: 'quick_buy',
+          selector_style: 'block',
+          swatch_selector_style: 'block_swatch'
+        -%}
+
+        {%- render 'buy-buttons',
+          product: product,
+          form_id: quick_buy_form_id,
+          show_payment_button: false,
+          show_gift_card_recipient: section.settings.show_gift_card_recipient
+        -%}
+
+        <a href="{{ product.url }}" class="sk2-qv__link">{{ 'product.general.view_details' | t }}</a>
+      </div>
+    </product-rerender>
+  </div>
+</template>
+
+<script>
+  try {
+    let recentlyViewedProducts = JSON.parse(localStorage.getItem('theme:recently-viewed-products') || '[]');
+
+    recentlyViewedProducts = recentlyViewedProducts.filter(item => item !== {{ product.id }});
+    recentlyViewedProducts.unshift({{ product.id }});
+
+    localStorage.setItem('theme:recently-viewed-products', JSON.stringify(recentlyViewedProducts));
+  } catch (e) {
+    // Safari in private mode does not allow setting item, we silently fail
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product page (SK2)",
+  "class": "shopify-section--main-product",
+  "tag": "section",
+  "settings": [
+    {"type": "header", "content": "Gallery"},
+    {"type": "text", "id": "gallery_note", "label": "Note under the gallery"},
+    {"type": "header", "content": "Buy box"},
+    {"type": "richtext", "id": "short_description", "label": "Short description (fallback)", "info": "Used when a product has no custom.short_description metafield."},
+    {"type": "text", "id": "tax_notice", "label": "Tax notice", "default": "Taxes and shipping calculated at checkout."},
+    {"type": "checkbox", "id": "hide_sold_out_variants", "label": "Hide sold out variants", "default": false},
+    {"type": "page", "id": "size_chart_page", "label": "Size chart page", "info": "Adds a \"Size chart\" link beside the size option."},
+    {"type": "text", "id": "size_hint", "label": "Hint under the options", "default": "Measure at the navel. Between sizes? Take the larger — the straps adjust."},
+    {"type": "checkbox", "id": "show_sku", "label": "Show SKU", "default": true},
+    {"type": "text", "id": "facts_title", "label": "At a glance heading", "default": "At a glance"},
+    {"type": "header", "content": "Buy buttons"},
+    {"type": "checkbox", "id": "show_payment_button", "label": "Show dynamic checkout button", "default": true},
+    {"type": "checkbox", "id": "show_gift_card_recipient", "label": "Show gift card recipient form", "default": true},
+    {"type": "color", "id": "atc_button_background", "label": "Add to cart background"},
+    {"type": "color", "id": "atc_button_text_color", "label": "Add to cart text"},
+    {"type": "color", "id": "payment_button_background", "label": "Payment button background"},
+    {"type": "color", "id": "payment_button_text_color", "label": "Payment button text"},
+    {"type": "checkbox", "id": "show_sticky_add_to_cart", "label": "Show sticky add to cart bar", "default": true},
+    {"type": "header", "content": "Secondary links"},
+    {"type": "text", "id": "link_1_text", "label": "Link 1 text", "default": "Not sure about the style?"},
+    {"type": "url", "id": "link_1_url", "label": "Link 1 URL"},
+    {"type": "checkbox", "id": "show_copy_link", "label": "Show \"Copy link\"", "default": true},
+    {"type": "text", "id": "copy_link_text", "label": "Copy link text", "default": "Copy link"},
+    {"type": "text", "id": "link_2_text", "label": "Link 2 text", "default": "Ask a question"},
+    {"type": "url", "id": "link_2_url", "label": "Link 2 URL"},
+    {"type": "header", "content": "Details section"},
+    {"type": "text", "id": "details_title", "label": "Heading", "default": "Details"},
+    {"type": "text", "id": "details_text", "label": "Text", "default": "Cloth, construction, sizing and care."},
+    {"type": "text", "id": "description_title", "label": "Description accordion title", "default": "Description"}
+  ],
+  "blocks": [
+    {
+      "type": "assurance",
+      "name": "Assurance",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "globe",
+          "options": [
+            {"value": "globe", "label": "Globe"},
+            {"value": "exchange", "label": "Exchange"},
+            {"value": "lock", "label": "Lock"}
+          ]
+        },
+        {"type": "text", "id": "title", "label": "Title", "default": "Ships worldwide"},
+        {"type": "richtext", "id": "text", "label": "Text", "default": "<p>Options and estimates shown at checkout.</p>"}
+      ]
+    },
+    {
+      "type": "fact",
+      "name": "At a glance line",
+      "settings": [
+        {"type": "text", "id": "text", "label": "Text", "default": "Waist 28–50 · lengths 22–26\""}
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Details accordion",
+      "settings": [
+        {"type": "text", "id": "title", "label": "Title"},
+        {"type": "richtext", "id": "content", "label": "Content"},
+        {"type": "page", "id": "page", "label": "Page content", "info": "Overrides the content above."},
+        {"type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": false}
+      ]
+    },
+    {
+      "type": "complementary_products",
+      "name": "Complete the look",
+      "limit": 1,
+      "settings": [
+        {"type": "paragraph", "content": "Shows the complementary products set in the Shopify Search & Discovery app."},
+        {"type": "text", "id": "title", "label": "Heading", "default": "Complete the look"},
+        {"type": "range", "id": "products_count", "label": "Products", "min": 1, "max": 10, "step": 1, "default": 4},
+        {"type": "checkbox", "id": "stack_products", "label": "Stack products", "default": false},
+        {"type": "checkbox", "id": "show_quick_buy", "label": "Show quick buy", "default": true}
+      ]
+    },
+    {
+      "type": "tartan_picker",
+      "name": "Tartan picker",
+      "limit": 1,
+      "settings": [
+        {"type": "paragraph", "content": "Lets shoppers choose a tartan from your library. Tartan data is set in Theme settings > Tartan picker."},
+        {"type": "header", "content": "Show on"},
+        {
+          "type": "select",
+          "id": "visibility",
+          "label": "Show the picker on",
+          "default": "all",
+          "options": [
+            {
+              "value": "all",
+              "label": "All products"
+            },
+            {
+              "value": "tags",
+              "label": "Products with tags"
+            },
+            {
+              "value": "types",
+              "label": "Product types"
+            },
+            {
+              "value": "vendors",
+              "label": "Vendors"
+            },
+            {
+              "value": "collections",
+              "label": "Products in collections"
+            },
+            {
+              "value": "products",
+              "label": "Selected products"
+            },
+            {
+              "value": "metafield",
+              "label": "Products with a true metafield"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "include_tags",
+          "label": "Tags",
+          "default": "tartan-picker",
+          "info": "Comma separated. Used with Products with tags."
+        },
+        {
+          "type": "select",
+          "id": "tag_match",
+          "label": "Tag match",
+          "default": "any",
+          "options": [
+            {
+              "value": "any",
+              "label": "Any tag"
+            },
+            {
+              "value": "all",
+              "label": "All tags"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "product_types",
+          "label": "Product types",
+          "info": "Comma separated, e.g. Kilt, Trews"
+        },
+        {
+          "type": "text",
+          "id": "vendors",
+          "label": "Vendors",
+          "info": "Comma separated"
+        },
+        {
+          "type": "text",
+          "id": "collection_handles",
+          "label": "Collection handles",
+          "info": "Comma separated, e.g. kilts, wedding"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Products",
+          "limit": 50
+        },
+        {
+          "type": "text",
+          "id": "metafield_key",
+          "label": "Metafield (namespace.key)",
+          "default": "custom.show_tartan_picker",
+          "info": "True/false product metafield"
+        },
+        {
+          "type": "text",
+          "id": "exclude_tags",
+          "label": "Hide on products with tags",
+          "info": "Comma separated. Always wins over the rules above."
+        },
+        {"type": "header", "content": "Tartans offered"},
+        {
+          "type": "select",
+          "id": "tartan_scope",
+          "label": "Tartans shown",
+          "default": "all",
+          "options": [
+            {
+              "value": "all",
+              "label": "All tartans"
+            },
+            {
+              "value": "groups",
+              "label": "Tartans in groups"
+            },
+            {
+              "value": "product_groups",
+              "label": "Groups from product tags"
+            },
+            {
+              "value": "product_metafield",
+              "label": "Tartans listed in a product metafield"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "scope_groups",
+          "label": "Groups",
+          "info": "Comma separated. Matches the tartan groups field."
+        },
+        {
+          "type": "text",
+          "id": "scope_tag_prefix",
+          "label": "Product tag prefix",
+          "default": "tartan-group:",
+          "info": "e.g. tag a product tartan-group:wedding"
+        },
+        {
+          "type": "text",
+          "id": "scope_metafield_key",
+          "label": "Product metafield (namespace.key)",
+          "default": "custom.tartans",
+          "info": "List of tartan metaobjects, or comma separated tartan handles"
+        },
+        {"type": "header", "content": "Block content"},
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Choose your tartan"
+        },
+        {"type": "checkbox", "id": "show_search", "label": "Show search", "default": true},
+        {
+          "type": "text",
+          "id": "search_placeholder",
+          "label": "Search placeholder",
+          "default": "Search your clan or surname (e.g. MacDonald, Stewart)"
+        },
+        {
+          "type": "select",
+          "id": "inline_source",
+          "label": "Swatches in block",
+          "default": "popular",
+          "options": [
+            {
+              "value": "popular",
+              "label": "Popular tartans"
+            },
+            {
+              "value": "first",
+              "label": "First tartans"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {"type": "range", "id": "inline_count", "label": "Number of swatches", "min": 0, "max": 30, "step": 1, "default": 14},
+        {
+          "type": "text",
+          "id": "browse_text",
+          "label": "Browse button text",
+          "default": "Browse all"
+        },
+        {"type": "checkbox", "id": "show_total", "label": "Show tartan count on button", "default": true},
+        {"type": "header", "content": "Selection and cart"},
+        {
+          "type": "text",
+          "id": "property_name",
+          "label": "Cart property name",
+          "default": "Tartan"
+        },
+        {"type": "checkbox", "id": "store_handle", "label": "Save tartan ID as hidden property", "default": true},
+        {"type": "checkbox", "id": "required", "label": "Tartan is required", "default": true},
+        {
+          "type": "text",
+          "id": "required_message",
+          "label": "Required message",
+          "default": "Please choose your tartan"
+        },
+        {"type": "checkbox", "id": "guard_payment_button", "label": "Block Buy it now until a tartan is chosen", "default": true},
+        {"type": "checkbox", "id": "remember_selection", "label": "Remember last tartan", "default": true},
+        {"type": "checkbox", "id": "url_param", "label": "Preselect from URL (?tartan=handle)", "default": true},
+        {"type": "header", "content": "Colourways"},
+        {"type": "checkbox", "id": "enable_colourways", "label": "Show Modern / Ancient / Weathered", "default": true, "info": "For library tartans drawn from their threadcount. Ancient and Weathered colours are approximations."},
+        {
+          "type": "select",
+          "id": "default_colourway",
+          "label": "Default colourway",
+          "default": "modern",
+          "options": [
+            {
+              "value": "modern",
+              "label": "Modern"
+            },
+            {
+              "value": "ancient",
+              "label": "Ancient"
+            },
+            {
+              "value": "weathered",
+              "label": "Weathered"
+            }
+          ]
+        },
+        {"type": "header", "content": "Pricing"},
+        {
+          "type": "select",
+          "id": "price_mode",
+          "label": "Tartan pricing",
+          "default": "surcharge_display",
+          "options": [
+            {
+              "value": "none",
+              "label": "No pricing"
+            },
+            {
+              "value": "surcharge_display",
+              "label": "Show surcharge text only"
+            }
+          ]
+        },
+        {"type": "header", "content": "Browse modal"},
+        {
+          "type": "text",
+          "id": "modal_title",
+          "label": "Title",
+          "default": "Browse all tartans"
+        },
+        {
+          "type": "select",
+          "id": "default_view",
+          "label": "Default view",
+          "default": "grid",
+          "options": [
+            {
+              "value": "grid",
+              "label": "Grid"
+            },
+            {
+              "value": "list",
+              "label": "List"
+            }
+          ]
+        },
+        {"type": "checkbox", "id": "show_popular_filter", "label": "Show popular filter", "default": true},
+        {"type": "checkbox", "id": "show_category_filter", "label": "Show category filter", "default": true},
+        {"type": "checkbox", "id": "show_colour_filter", "label": "Show colour filter", "default": true},
+        {"type": "checkbox", "id": "show_availability_filter", "label": "Show availability filter", "default": true},
+        {"type": "checkbox", "id": "show_alphabet", "label": "Show A–Z jump", "default": true},
+        {"type": "checkbox", "id": "show_preview", "label": "Show preview panel", "default": true},
+        {"type": "checkbox", "id": "show_surcharge", "label": "Show surcharge", "default": true},
+        {
+          "type": "text",
+          "id": "no_results_text",
+          "label": "No results text",
+          "default": "No tartans match your search."
+        },
+        {
+          "type": "text",
+          "id": "request_text",
+          "label": "Custom request link text",
+          "default": "Don't see your clan? Request a custom tartan"
+        },
+        {
+          "type": "url",
+          "id": "request_url",
+          "label": "Custom request link"
+        },
+        {"type": "header", "content": "Swatch appearance"},
+        {
+          "type": "select",
+          "id": "swatch_shape",
+          "label": "Shape",
+          "default": "rounded",
+          "options": [
+            {
+              "value": "square",
+              "label": "Square"
+            },
+            {
+              "value": "rounded",
+              "label": "Rounded"
+            },
+            {
+              "value": "circle",
+              "label": "Circle"
+            }
+          ]
+        },
+        {"type": "range", "id": "swatch_size", "label": "Block swatch size", "min": 32, "max": 80, "step": 4, "unit": "px", "default": 48},
+        {
+          "type": "select",
+          "id": "image_fit",
+          "label": "Image fit",
+          "default": "cover",
+          "options": [
+            {
+              "value": "cover",
+              "label": "Fill"
+            },
+            {
+              "value": "contain",
+              "label": "Fit"
+            },
+            {
+              "value": "tile",
+              "label": "Repeat pattern"
+            }
+          ]
+        },
+        {"type": "range", "id": "tile_size", "label": "Pattern tile size", "min": 20, "max": 200, "step": 10, "unit": "px", "default": 80},
+        {"type": "checkbox", "id": "enable_zoom", "label": "Zoom on preview image", "default": true},
+        {"type": "header", "content": "Block sizing and spacing"},
+        {"type": "paragraph", "content": "Default values keep the theme's look. Mobile is up to 699px wide, desktop is 700px and wider."},
+        {"type": "checkbox", "id": "sk_custom_padding", "label": "Use custom padding", "default": false},
+        {"type": "header", "content": "Block sizing – desktop"},
+        {"type": "range", "id": "sk_text_size_d", "label": "Text size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100},
+        {"type": "range", "id": "sk_padding_top_d", "label": "Padding top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0, "info": "Used when \"Use custom padding\" is on"},
+        {"type": "range", "id": "sk_padding_bottom_d", "label": "Padding bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0},
+        {"type": "range", "id": "sk_margin_top_d", "label": "Margin top", "min": -100, "max": 200, "step": 4, "unit": "px", "default": 0},
+        {"type": "range", "id": "sk_margin_bottom_d", "label": "Margin bottom", "min": -100, "max": 200, "step": 4, "unit": "px", "default": 0},
+        {"type": "header", "content": "Block sizing – mobile"},
+        {"type": "range", "id": "sk_text_size_m", "label": "Text size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100},
+        {"type": "range", "id": "sk_padding_top_m", "label": "Padding top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0, "info": "Used when \"Use custom padding\" is on"},
+        {"type": "range", "id": "sk_padding_bottom_m", "label": "Padding bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0},
+        {"type": "range", "id": "sk_margin_top_m", "label": "Margin top", "min": -100, "max": 200, "step": 4, "unit": "px", "default": 0},
+        {"type": "range", "id": "sk_margin_bottom_m", "label": "Margin bottom", "min": -100, "max": 200, "step": 4, "unit": "px", "default": 0}
+      ]
+    }
+  ],
+  "presets": [{"name": "Product page (SK2)"}],
+  "enabled_on": {"templates": ["product"]}
+}
+{% endschema %}

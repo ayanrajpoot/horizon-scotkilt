@@ -1,0 +1,174 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 COLLECTION FAQ (SCOTKILT — pages.html `catFAQ()`)
+----------------------------------------------------------------------------------------------------------------------
+"<Collection> FAQs" — the questions come from a collection metafield so every
+collection can answer its own, falling back to the section's blocks when a
+collection has none.
+
+The metafield is a list of metaobjects with a `question` and an `answer`
+field. Namespace and key are settings, so it works with whatever definition
+you create in the admin (default: custom.faqs).
+
+Emits FAQPage structured data, as pages.html does.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign ns = section.settings.metafield_namespace | default: 'custom'
+  assign key = section.settings.metafield_key | default: 'faqs'
+  assign entries = collection.metafields[ns][key].value
+
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = collection.title | append: ' FAQs'
+  endif
+
+  assign has_entries = false
+  if entries != blank and entries.size > 0
+    assign has_entries = true
+  endif
+-%}
+
+{%- if has_entries or section.blocks.size > 0 -%}
+  <div class="sk2">
+    <section class="cat-faq" aria-labelledby="sk2-cat-faq-title-{{ section.id }}">
+      <div class="sk2__container faq-wrap">
+        <div>
+          <h2 class="h2" id="sk2-cat-faq-title-{{ section.id }}">{{ heading | escape }}</h2>
+          {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+        </div>
+
+        <div class="sk2-faq" data-sk2-faq>
+          {%- if has_entries -%}
+            {%- for entry in entries -%}
+              <div class="sk2-faq__item">
+                <h3>
+                  <button type="button" class="sk2-faq__q" data-sk2-faq-toggle aria-expanded="false" aria-controls="sk2-cat-faq-{{ section.id }}-{{ forloop.index }}">
+                    {{ entry.question | escape }}
+                    {%- render 'sk2-icons', icon: 'plus' -%}
+                  </button>
+                </h3>
+                <div class="sk2-faq__a" id="sk2-cat-faq-{{ section.id }}-{{ forloop.index }}"><div><p>{{ entry.answer }}</p></div></div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'question' -%}
+                <div class="sk2-faq__item" {{ block.shopify_attributes }}>
+                  <h3>
+                    <button type="button" class="sk2-faq__q" data-sk2-faq-toggle aria-expanded="false" aria-controls="sk2-cat-faq-a-{{ block.id }}">
+                      {{ block.settings.question | escape }}
+                      {%- render 'sk2-icons', icon: 'plus' -%}
+                    </button>
+                  </h3>
+                  <div class="sk2-faq__a" id="sk2-cat-faq-a-{{ block.id }}"><div><p>{{ block.settings.answer }}</p></div></div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- if has_entries -%}
+          {%- for entry in entries -%}
+            {
+              "@type": "Question",
+              "name": {{ entry.question | strip_html | json }},
+              "acceptedAnswer": { "@type": "Answer", "text": {{ entry.answer | strip_html | json }} }
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'question' -%}
+              {
+                "@type": "Question",
+                "name": {{ block.settings.question | strip_html | json }},
+                "acceptedAnswer": { "@type": "Answer", "text": {{ block.settings.answer | strip_html | json }} }
+              }{% unless forloop.last %},{% endunless %}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SK2 Collection FAQ",
+  "class": "shopify-section--sk2-cat-faq",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Questions come from a collection metafield, so each collection answers its own. The blocks below are the fallback for collections with none."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Leave blank for \"<Collection title> FAQs\"."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "header",
+      "content": "Metafield"
+    },
+    {
+      "type": "paragraph",
+      "content": "Create a metaobject with a `question` and an `answer` field, then a collection metafield of type \"list of metaobjects\" pointing at it."
+    },
+    {
+      "type": "text",
+      "id": "metafield_namespace",
+      "label": "Namespace",
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "metafield_key",
+      "label": "Key",
+      "default": "faqs"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Collection FAQ"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,117 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 FEATURED SPLIT (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Two-column full-bleed editorial split (e.g. Traditional / Modern). Matches pages.html `FeaturedCollection()`.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section aria-labelledby="sk2-split-title-{{ section.id }}">
+    <div class="sk2-split__title sk2-reveal">
+      <h2 class="h2" id="sk2-split-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+    </div>
+    <div class="sk2-split">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'side' -%}
+          <div class="sk2-split__side" {{ block.shopify_attributes }}>
+            {%- render 'sk2-visual',
+              image: block.settings.image,
+              alt: block.settings.title,
+              color_1: block.settings.color_1, color_2: block.settings.color_2, color_3: block.settings.color_3
+            -%}
+            <div class="sk2-split__body">
+              <h3>{{ block.settings.title | escape }}</h3>
+              {%- if block.settings.description != blank -%}<p>{{ block.settings.description }}</p>{%- endif -%}
+              {%- if block.settings.button_text != blank -%}
+                <a class="btn btn--ivory" href="{{ block.settings.button_link | default: '#' }}">{{ block.settings.button_text | escape }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Featured split",
+  "class": "shopify-section--sk2-featured-split",
+  "tag": "section",
+  "max_blocks": 2,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Full-bleed two-up editorial split, e.g. Traditional vs Modern."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Traditional Roots. Modern Style."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Two directions, one specialist store.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "side",
+      "name": "Side",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Traditional"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Classic tartan kilts inspired by timeless Scottish style."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Traditional"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Fallback colours (used until an image is set)"
+        },
+        { "type": "color", "id": "color_1", "label": "Colour 1", "default": "#a8232b" },
+        { "type": "color", "id": "color_2", "label": "Colour 2", "default": "#171614" },
+        { "type": "color", "id": "color_3", "label": "Colour 3", "default": "#213c2c" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Featured split",
+      "blocks": [
+        { "type": "side", "settings": { "title": "Traditional", "description": "Classic tartan kilts inspired by timeless Scottish style.", "button_text": "Shop Traditional" } },
+        { "type": "side", "settings": { "title": "Modern", "description": "Utility, leather, hybrid and contemporary kilts designed for today's wardrobe.", "button_text": "Shop Modern", "color_1": "#8f8f8b", "color_2": "#171614", "color_3": "#5a5b58" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,51 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SCOTKILT – SECTION AND BLOCK SIZING AND SPACING
+----------------------------------------------------------------------------------------------------------------------
+
+Outputs one style tag for a section and its blocks from the "Sizing and spacing" sliders. Nothing is output while
+every slider is at its default, so the section keeps the theme's own look.
+
+- Section rules target #shopify-section-<section id>.
+- Block rules target the block's element, marked with data-sk-block="<block id>" next to block.shopify_attributes.
+  Nested elements of the same block (e.g. a button inside the block) are skipped so spacing isn't applied twice.
+
+Mobile = screens up to 699px, desktop = 700px and wider (the theme's own text breakpoint).
+
+Usage (inside a section): render 'sk-section-style', sk_section: section
+Documentation: docs/SECTION-SIZING.md
+{%- endcomment -%}
+
+{%- liquid
+  assign section_selector = '#shopify-section-' | append: sk_section.id
+-%}
+
+{%- capture mobile_css -%}
+  {%- render 'sk-size-css', s: sk_section.settings, sel: section_selector, device: 'm', kind: 'section' -%}
+  {%- for sk_block in sk_section.blocks -%}
+    {%- if sk_block.settings.sk_heading_size_m != nil -%}
+      {%- capture block_selector -%}{{ section_selector }} [data-sk-block="{{ sk_block.id }}"]:not([data-sk-block="{{ sk_block.id }}"] *){%- endcapture -%}
+      {%- render 'sk-size-css', s: sk_block.settings, sel: block_selector, device: 'm', kind: 'block' -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture desktop_css -%}
+  {%- render 'sk-size-css', s: sk_section.settings, sel: section_selector, device: 'd', kind: 'section' -%}
+  {%- for sk_block in sk_section.blocks -%}
+    {%- if sk_block.settings.sk_heading_size_d != nil -%}
+      {%- capture block_selector -%}{{ section_selector }} [data-sk-block="{{ sk_block.id }}"]:not([data-sk-block="{{ sk_block.id }}"] *){%- endcapture -%}
+      {%- render 'sk-size-css', s: sk_block.settings, sel: block_selector, device: 'd', kind: 'block' -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- assign mobile_css = mobile_css | strip -%}
+{%- assign desktop_css = desktop_css | strip -%}
+
+{%- if mobile_css != blank or desktop_css != blank -%}
+  <style>
+    {%- if mobile_css != blank %}@media screen and (max-width: 699px) { {{ mobile_css }} }{% endif -%}
+    {%- if desktop_css != blank %}@media screen and (min-width: 700px) { {{ desktop_css }} }{% endif -%}
+  </style>
+{%- endif -%}

@@ -343,5 +343,35 @@
       "success_moderated": "ความคิดเห็นถูกโพสต์แล้ว กำลังรอการตรวจสอบ",
       "success": "ความคิดเห็นถูกโพสต์แล้ว"
     }
+  },
+  "general": {
+    "accessibility": {
+      "close": "Close",
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "label": "Breadcrumb"
+    }
+  },
+  "product": {
+    "general": {
+      "add_to_cart_button": "Add to cart",
+      "choose_options": "Choose options",
+      "description": "Description",
+      "on_sale_badge": "Sale",
+      "sku": "SKU",
+      "sold_out_badge": "Sold out",
+      "sold_out_button": "Sold out",
+      "view_details": "View details"
+    }
+  },
+  "collection": {
+    "faceting": {
+      "clear_filters": "Clear all",
+      "filters": "Filters",
+      "no_results": "No products found."
+    }
   }
 }

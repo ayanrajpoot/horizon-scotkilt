@@ -1,0 +1,119 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 COLLECTION CTA (SCOTKILT — pages.html `catCTA()`)
+----------------------------------------------------------------------------------------------------------------------
+"Not sure which kilt?" — the dark band that closes the category page.
+
+Heading and text fall back to the section settings, so one section serves
+every collection, but a collection can say something of its own through the
+metafields named in the settings (default: custom.cta_heading, custom.cta_text).
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign ns = section.settings.metafield_namespace | default: 'custom'
+
+  assign heading_key = section.settings.heading_key | default: 'cta_heading'
+  assign text_key = section.settings.text_key | default: 'cta_text'
+
+  assign heading = collection.metafields[ns][heading_key].value | default: section.settings.heading
+  assign text = collection.metafields[ns][text_key].value | default: section.settings.text
+-%}
+
+{%- if heading != blank or text != blank -%}
+  <div class="sk2">
+    <section class="cat-cta" aria-labelledby="sk2-cat-cta-title-{{ section.id }}">
+      <div class="sk2__container cat-cta__grid">
+        <div>
+          {%- if heading != blank -%}<h2 id="sk2-cat-cta-title-{{ section.id }}">{{ heading | escape }}</h2>{%- endif -%}
+          {%- if text != blank -%}<p>{{ text }}</p>{%- endif -%}
+        </div>
+        <div class="cat-cta__btns">
+          {%- if section.settings.button_1_text != blank -%}
+            <a class="btn btn--ivory" href="{{ section.settings.button_1_url | default: '#' }}">{{ section.settings.button_1_text | escape }}</a>
+          {%- endif -%}
+          {%- if section.settings.button_2_text != blank -%}
+            <a class="btn btn--ghost" href="{{ section.settings.button_2_url | default: '#' }}">{{ section.settings.button_2_text | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SK2 Collection CTA",
+  "class": "shopify-section--sk2-cat-cta",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Not sure which kilt?"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Answer one question in the Kilt Finder and we will point you to the right style, or send us the occasion, the tartan and your waist size and we will reply with a recommendation.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Button 1 — text",
+      "default": "Kilt Finder"
+    },
+    {
+      "type": "url",
+      "id": "button_1_url",
+      "label": "Button 1 — link"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Button 2 — text",
+      "default": "Ask us"
+    },
+    {
+      "type": "url",
+      "id": "button_2_url",
+      "label": "Button 2 — link"
+    },
+    {
+      "type": "header",
+      "content": "Per-collection overrides"
+    },
+    {
+      "type": "paragraph",
+      "content": "Collection metafields with these keys replace the heading and text above for that collection."
+    },
+    {
+      "type": "text",
+      "id": "metafield_namespace",
+      "label": "Namespace",
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "heading_key",
+      "label": "Heading key",
+      "default": "cta_heading"
+    },
+    {
+      "type": "text",
+      "id": "text_key",
+      "label": "Text key",
+      "default": "cta_text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Collection CTA"
+    }
+  ]
+}
+{% endschema %}

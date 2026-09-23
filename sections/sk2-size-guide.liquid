@@ -1,0 +1,121 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 SIZE GUIDE (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Measurement diagram + numbered steps. Matches pages.html `SizeGuide()` / `SizeFigure()`.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section" aria-labelledby="sk2-size-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2-sizeguide">
+        <div class="sk2-size__fig">
+          <svg viewBox="0 0 440 400" role="img" aria-label="Kilt measurement diagram showing waist and length"><g fill="none" stroke="#1c1b19" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M140 74h160v26H140z"/>
+            <path d="M140 100l-14 200h188l-14-200"/>
+            <path d="M160 100l-1.4 200" opacity=".55"/><path d="M178 100l-2.66 200" opacity=".55"/><path d="M196 100l-3.92 200" opacity=".55"/><path d="M214 100l-5.18 200" opacity=".55"/><path d="M232 100l-6.44 200" opacity=".55"/><path d="M250 100l-7.7 200" opacity=".55"/><path d="M268 100l-8.96 200" opacity=".55"/><path d="M286 100l-10.22 200" opacity=".55"/>
+            <path d="M300 100v200" opacity=".9"/><path d="M226 100v200" stroke-dasharray="3 5" opacity=".6"/>
+            <rect x="286" y="80" width="18" height="12" rx="2"/><rect x="286" y="120" width="18" height="12" rx="2"/>
+          </g><g stroke="#8c2a2f" stroke-width="1.4" fill="none">
+            <path d="M132 60h176M132 54v12M308 54v12"/><path d="M356 100v200M350 100h12M350 300h12"/>
+          </g><g font-family="Manrope,Arial,sans-serif" font-size="13" font-weight="700" fill="#8c2a2f" letter-spacing=".08">
+            <text x="220" y="46" text-anchor="middle">WAIST</text><text x="380" y="204" text-anchor="start">LENGTH</text>
+          </g><g font-family="Manrope,Arial,sans-serif" font-size="11" fill="#7a7469"><text x="220" y="340" text-anchor="middle">Measure at the navel &#183; length to the top of the knee</text></g></svg>
+        </div>
+        <div>
+          <div class="sk2-reveal">
+            <h2 class="h2" id="sk2-size-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+            {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+          </div>
+          <div class="sk2-steps">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'step' -%}
+                <div class="sk2-step" {{ block.shopify_attributes }}>
+                  <div class="sk2-step__n">0{{ forloop.index }}</div>
+                  <div>
+                    <h3>{{ block.settings.title | escape }}</h3>
+                    {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if section.settings.button_text != blank -%}
+            <a class="btn btn--ink" href="{{ section.settings.button_link | default: '#' }}">{{ section.settings.button_text | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 Size guide",
+  "class": "shopify-section--sk2-size-guide",
+  "tag": "section",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Measurement diagram with numbered steps."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find Your Perfect Fit"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Two measurements and one decision. That is all it takes to order the right kilt.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View Size Guide"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Measure your waist"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Wrap the tape where the kilt will sit — at the navel, higher than trousers — snug but not tight."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Size guide",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Measure your waist", "text": "Wrap the tape where the kilt will sit — at the navel, higher than trousers — snug but not tight." } },
+        { "type": "step", "settings": { "title": "Choose your length", "text": "Measure from that waistline to the top of your kneecap. Traditional kilts finish here; casual styles can sit slightly shorter." } },
+        { "type": "step", "settings": { "title": "Select your style", "text": "Traditional, tartan, utility, leather, hybrid or contemporary. Each style page shows its own fit notes." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

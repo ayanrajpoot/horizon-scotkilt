@@ -1,0 +1,40 @@
+{%- comment -%}
+  SK2 VISUAL (SCOTKILT — pages.html home v2)
+  Renders a product/tartan image when one is set; otherwise a crisp CSS plaid
+  placeholder woven from up to 3 accent colours, so unphotographed products and
+  tartans never show a broken image while merchandising is in progress.
+
+  ponytail: a repeating-linear-gradient plaid stands in for pages.html's exact
+  per-sett SVG weave (see pages.html `weaveTartan()`, which draws the real
+  stripe widths from each tartan's sett string) — swap in a real photo per
+  product/tartan and this fallback stops rendering. Porting the sett-string
+  weaver into Liquid would need real sett data we don't have on any product/
+  collection yet, for a fallback that disappears once photos are uploaded.
+
+  Params:
+    image        - {{ image }} object, optional
+    alt          - alt text string
+    color_1/2/3  - fallback hex colours (color_1 required for a non-generic look)
+    ratio        - css aspect-ratio string, e.g. '4/5', '3/4', '1/1', '16/9'
+    class        - extra class(es) on the wrapper
+    sizes        - sizes attr for the image (default matches card width)
+{%- endcomment -%}
+{%- liquid
+  assign ratio = ratio | default: '4/5'
+  assign wrap_class = 'sk2-visual'
+  if class != blank
+    assign wrap_class = wrap_class | append: ' ' | append: class
+  endif
+-%}
+<div class="{{ wrap_class }}" style="--sk2-ratio:{{ ratio }};">
+  {%- if image != blank -%}
+    {{ image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: alt, sizes: sizes | default: '(min-width: 990px) 25vw, 50vw', widths: '360,540,720,900,1200', class: 'sk2-visual__img' }}
+  {%- else -%}
+    {%- liquid
+      assign c1 = color_1 | default: '#3d3a35'
+      assign c2 = color_2 | default: c1
+      assign c3 = color_3 | default: c2
+    -%}
+    <div class="sk2-visual__fallback" role="img" aria-label="{{ alt | escape }}" style="--c1:{{ c1 }};--c2:{{ c2 }};--c3:{{ c3 }};"></div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,178 @@
+/* ==========================================================================
+   SCOTKILT — collection page v2 (pages.html `CategoryPage()`)
+   Ported from pages.html lines 640–710, scoped under .sk2-cat so the generic
+   class names (.filters, .toolbar, .chips) cannot leak into the rest of the
+   theme. Tokens come from sk2-home.css via the .sk2 wrapper.
+   ========================================================================== */
+.sk2-cat .sk2__container{ position:relative }
+
+/* breadcrumb --------------------------------------------------------------- */
+.sk2-cat .crumbs{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:22px 0 0; font-size:12.5px; color:var(--sk2-grey) }
+.sk2-cat .crumbs a:hover{ color:var(--sk2-ink); text-decoration:underline; text-underline-offset:3px }
+.sk2-cat .crumbs span[aria-current]{ color:var(--sk2-ink) }
+
+/* hero --------------------------------------------------------------------- */
+.sk2-cat .cat-hero{ display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(28px,4vw,72px); align-items:center; padding:8px 0 clamp(32px,4vw,56px) }
+.sk2-cat .cat-hero__eyebrow{ font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--sk2-brass); margin:18px 0 12px }
+.sk2-cat .cat-hero h1{ font-family:var(--sk2-serif); font-weight:500; letter-spacing:-.01em; font-size:clamp(40px,5vw,72px); line-height:1; margin:0 }
+.sk2-cat .cat-hero .lede{ margin-top:18px; max-width:62ch; color:var(--sk2-ink-2) }
+.sk2-cat .cat-hero__facts{ display:flex; flex-wrap:wrap; gap:8px 28px; margin-top:26px; font-size:13px; color:var(--sk2-grey) }
+.sk2-cat .cat-hero__facts strong{ display:block; font-family:var(--sk2-serif); font-size:24px; font-weight:500; color:var(--sk2-ink); letter-spacing:0; line-height:1.05 }
+.sk2-cat .cat-hero__visual .sk2-visual{ --sk2-ratio:4/3; border-radius:2px }
+.sk2-cat .cat-hero__cap{ margin-top:10px; font-size:12.5px; color:var(--sk2-grey) }
+
+/* sub-collection chips ----------------------------------------------------- */
+.sk2-cat .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 clamp(24px,3vw,40px) }
+.sk2-cat .chip{ display:inline-flex; align-items:center; gap:8px; height:38px; padding:0 14px 0 6px; border:1px solid rgba(28,27,25,.18); border-radius:20px; font-size:13px; font-weight:600; transition:.2s; background:var(--sk2-ivory) }
+.sk2-cat .chip .sk2-visual{ width:26px; height:26px; border-radius:50%; aspect-ratio:auto; flex-shrink:0 }
+.sk2-cat .chip:hover{ border-color:var(--sk2-ink); background:#fff }
+.sk2-cat .chip--text{ padding:0 14px }
+
+/* layout ------------------------------------------------------------------- */
+.sk2-cat .cat-layout{ display:grid; grid-template-columns:250px minmax(0,1fr); gap:clamp(28px,4vw,64px); align-items:start; padding-bottom:clamp(40px,5vw,72px) }
+.sk2-cat .cat-layout--wide{ grid-template-columns:minmax(0,1fr) }
+.sk2-cat .filters{ position:sticky; top:20px; max-height:calc(100vh - 40px); overflow-y:auto; padding-right:6px; scrollbar-width:thin }
+.sk2-cat .filters__head{ display:flex; align-items:center; justify-content:space-between; padding-bottom:14px; border-bottom:1px solid rgba(28,27,25,.14) }
+.sk2-cat .filters__head h2{ font-family:var(--sk2-sans); font-size:12px; letter-spacing:.18em; text-transform:uppercase; font-weight:700 }
+.sk2-cat .filters__clear{ font-size:12.5px; font-weight:600; color:var(--sk2-grey); text-decoration:underline; text-underline-offset:3px }
+.sk2-cat .filters__clear:hover{ color:var(--sk2-red) }
+.sk2-cat .filters__close{ display:none; width:38px; height:38px; align-items:center; justify-content:center; border-radius:50% }
+.sk2-cat .filters__close svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2 }
+
+.sk2-cat .fgroup{ border-bottom:1px solid rgba(28,27,25,.12); padding:6px 0 }
+.sk2-cat .fgroup__btn{ width:100%; display:flex; align-items:center; justify-content:space-between; padding:14px 0; font-size:14px; font-weight:700; text-align:left }
+.sk2-cat .fgroup__btn svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.6; transition:transform .3s var(--sk2-ease) }
+.sk2-cat .fgroup.is-open .fgroup__btn svg{ transform:rotate(180deg) }
+.sk2-cat .fgroup__panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s var(--sk2-ease) }
+.sk2-cat .fgroup.is-open .fgroup__panel{ grid-template-rows:1fr }
+.sk2-cat .fgroup__panel > div{ overflow:hidden }
+
+.sk2-cat .fopt2{ display:flex; align-items:center; gap:10px; width:100%; padding:7px 0; font-size:14px; text-align:left; color:var(--sk2-ink-2) }
+.sk2-cat .fopt2:last-child{ padding-bottom:16px }
+.sk2-cat .fopt2__box{ width:16px; height:16px; border:1px solid rgba(28,27,25,.4); border-radius:2px; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; transition:.15s }
+.sk2-cat .fopt2__box svg{ width:11px; height:11px; stroke:var(--sk2-ivory); fill:none; stroke-width:2.4; opacity:0 }
+.sk2-cat .fopt2.is-on .fopt2__box{ background:var(--sk2-ink); border-color:var(--sk2-ink) }
+.sk2-cat .fopt2.is-on .fopt2__box svg{ opacity:1 }
+.sk2-cat .fopt2__dot{ width:14px; height:14px; border-radius:50%; flex-shrink:0; border:1px solid rgba(28,27,25,.15) }
+.sk2-cat .fopt2 small{ margin-left:auto; color:var(--sk2-grey-2); font-size:12px }
+.sk2-cat .fopt2:hover{ color:var(--sk2-ink) }
+
+.sk2-cat .fsizes{ display:flex; flex-wrap:wrap; gap:6px; padding:4px 0 16px }
+.sk2-cat .fsize{ display:inline-flex; align-items:center; justify-content:center; min-width:42px; height:34px; padding:0 8px; border:1px solid rgba(28,27,25,.2); border-radius:2px; font-size:12.5px; font-weight:600; transition:.15s }
+.sk2-cat .fsize:hover{ border-color:var(--sk2-ink) }
+.sk2-cat .fsize.is-on{ background:var(--sk2-ink); color:var(--sk2-ivory); border-color:var(--sk2-ink) }
+
+/* toolbar ------------------------------------------------------------------ */
+.sk2-cat .toolbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 0 18px; border-bottom:1px solid rgba(28,27,25,.14); margin-bottom:22px }
+.sk2-cat .toolbar__count{ font-size:13.5px; color:var(--sk2-grey) }
+.sk2-cat .toolbar__count strong{ color:var(--sk2-ink); font-weight:600 }
+.sk2-cat .toolbar__right{ display:flex; align-items:center; gap:10px }
+.sk2-cat .sort{ display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--sk2-grey) }
+.sk2-cat .sort select{ font:600 13px var(--sk2-sans); color:var(--sk2-ink); background:transparent; border:1px solid rgba(28,27,25,.2); border-radius:2px; padding:9px 32px 9px 12px; -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231c1b19' stroke-width='1.6'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; background-size:14px; cursor:pointer }
+.sk2-cat .filters-btn{ display:none }
+
+/* active filter pills ------------------------------------------------------ */
+.sk2-cat .active{ display:flex; flex-wrap:wrap; gap:8px; margin:-8px 0 22px }
+.sk2-cat .active:empty{ display:none }
+.sk2-cat .active a{ display:inline-flex; align-items:center; gap:8px; height:32px; padding:0 10px 0 12px; border-radius:16px; background:var(--sk2-ivory-2); font-size:12.5px; font-weight:600 }
+.sk2-cat .active a svg{ width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2 }
+.sk2-cat .active a:hover{ background:var(--sk2-ink); color:var(--sk2-ivory) }
+
+/* results ------------------------------------------------------------------ */
+.sk2-cat .cat-grid .sk2-pgrid{ grid-template-columns:repeat(3,minmax(0,1fr)); margin-bottom:0 }
+.sk2-cat .cat-layout--wide .cat-grid .sk2-pgrid{ grid-template-columns:repeat(4,minmax(0,1fr)) }
+.sk2-cat .cat-grid .sk2-pcard{ min-width:0 }
+.sk2-cat .cat-more{ display:flex; flex-direction:column; align-items:center; gap:12px; padding:36px 0 8px; font-size:13px; color:var(--sk2-grey) }
+.sk2-cat .cat-more__bar{ width:180px; height:2px; background:var(--sk2-ivory-3); position:relative; overflow:hidden; border-radius:1px }
+.sk2-cat .cat-more__bar i{ position:absolute; left:0; top:0; bottom:0; background:var(--sk2-ink) }
+.sk2-cat .cat-empty{ border:1px dashed var(--sk2-stone-2); padding:48px 24px; text-align:center; color:var(--sk2-grey); border-radius:2px }
+.sk2-cat .cat-empty strong{ display:block; font-family:var(--sk2-serif); font-size:26px; font-weight:500; color:var(--sk2-ink); margin-bottom:6px }
+
+/* "Load more" replaces the numbered pagination, which is the no-JS fallback.
+   The class sits on <html> so a page rendered through the Section Rendering
+   API (load more, theme editor) keeps the same state. */
+html:not(.sk2-js) .sk2-cat [data-sk2-more-btn]{ display:none }
+.sk2-js .sk2-cat .pagination{ display:none }
+.sk2-cat .pagination{ padding-top:32px }
+
+/* drawer backdrop (mobile filters) ----------------------------------------- */
+.sk2-cat__backdrop{ position:fixed; inset:0; background:rgba(28,27,25,.5); opacity:0; visibility:hidden; transition:.3s var(--sk2-ease); z-index:150 }
+.sk2-cat__backdrop.is-open{ opacity:1; visibility:visible }
+
+@media (max-width:1100px){
+  .sk2-cat .cat-layout{ grid-template-columns:220px minmax(0,1fr) }
+  .sk2-cat .cat-grid .sk2-pgrid{ grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .sk2-cat .cat-layout--wide .cat-grid .sk2-pgrid{ grid-template-columns:repeat(3,minmax(0,1fr)) }
+}
+
+@media (max-width:1023px){
+  .sk2-cat .cat-hero{ grid-template-columns:1fr; gap:24px }
+  .sk2-cat .cat-hero__visual{ order:-1 }
+  .sk2-cat .cat-hero__visual .sk2-visual{ --sk2-ratio:16/8 }
+  .sk2-cat .cat-hero__eyebrow{ margin-top:0 }
+  .sk2-cat .cat-layout{ grid-template-columns:minmax(0,1fr); gap:0 }
+  .sk2-cat .filters{ position:fixed; inset:0 auto 0 0; width:min(360px,88vw); max-height:none; background:var(--sk2-ivory); z-index:160; padding:calc(16px + env(safe-area-inset-top,0px)) 22px 24px; transform:translateX(-102%); transition:transform .38s var(--sk2-ease); overflow-y:auto }
+  .sk2-cat .filters.is-open{ transform:none }
+  .sk2-cat .filters__close{ display:inline-flex }
+  .sk2-cat .filters-btn{ display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 14px; border:1px solid rgba(28,27,25,.2); border-radius:2px; font-size:13px; font-weight:700 }
+  .sk2-cat .filters-btn svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.6 }
+  .sk2-cat .filters-btn b{ min-width:18px; height:18px; border-radius:9px; background:var(--sk2-ink); color:var(--sk2-ivory); font-size:11px; display:inline-flex; align-items:center; justify-content:center; padding:0 5px }
+  .sk2-cat .filters-btn b:empty{ display:none }
+}
+
+@media (max-width:699px){
+  .sk2-cat .cat-hero h1{ font-size:clamp(34px,9vw,44px) }
+  .sk2-cat .cat-hero__facts{ gap:8px 20px }
+  .sk2-cat .chips{ flex-wrap:nowrap; overflow-x:auto; margin-left:calc(var(--sk2-gutter) * -1); margin-right:calc(var(--sk2-gutter) * -1); padding:0 var(--sk2-gutter) 6px; scrollbar-width:none }
+  .sk2-cat .chips::-webkit-scrollbar{ display:none }
+  .sk2-cat .chip{ flex-shrink:0 }
+  .sk2-cat .cat-grid .sk2-pgrid,
+  .sk2-cat .cat-layout--wide .cat-grid .sk2-pgrid{ grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .sk2-cat .toolbar{ flex-wrap:wrap; gap:12px }
+}
+
+/* in-flight state while the section re-renders at the new filter URL --------- */
+.sk2-cat[aria-busy="true"] .cat-grid,
+.sk2-cat[aria-busy="true"] .toolbar__count{ opacity:.45; transition:opacity .2s var(--sk2-ease) }
+.sk2-cat[aria-busy="true"] .filters,
+.sk2-cat[aria-busy="true"] .active{ pointer-events:none }
+
+/* ==========================================================================
+   Collection bands — pages.html `catFAQ()`, `catRelated()`, `catCTA()`.
+   Separate sections, so these are scoped to .sk2 rather than .sk2-cat.
+   ========================================================================== */
+
+/* FAQ ---------------------------------------------------------------------- */
+.sk2 .cat-faq{ padding:clamp(48px,6vw,88px) 0 }
+.sk2 .cat-faq .faq-wrap{ display:grid; grid-template-columns:1fr 2fr; gap:clamp(24px,5vw,96px) }
+.sk2 .cat-faq .sk2-faq{ margin:0; max-width:none }
+.sk2 .cat-faq .lede{ margin-top:10px }
+
+/* related categories ------------------------------------------------------- */
+.sk2 .cat-related{ padding:clamp(40px,5vw,72px) 0 }
+.sk2 .cat-related__grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px }
+.sk2 .rcat{ display:block; border-radius:2px; overflow:hidden; position:relative; color:var(--sk2-ivory) }
+.sk2 .rcat .sk2-visual{ --sk2-ratio:4/5 }
+.sk2 .rcat__label{ position:absolute; left:0; right:0; bottom:0; padding:16px; background:linear-gradient(180deg,rgba(28,27,25,0),rgba(28,27,25,.85)); z-index:5; display:flex; align-items:baseline; justify-content:space-between; gap:12px }
+.sk2 .rcat__label h3{ font-size:20px }
+.sk2 .rcat__label span{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; opacity:.7 }
+
+/* CTA band ----------------------------------------------------------------- */
+.sk2 .cat-cta{ background:var(--sk2-ink); color:var(--sk2-ivory); padding:clamp(48px,6vw,80px) 0 }
+.sk2 .cat-cta__grid{ display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center }
+.sk2 .cat-cta h2{ font-size:clamp(30px,3.6vw,50px) }
+.sk2 .cat-cta p{ color:var(--sk2-stone); margin-top:10px; max-width:52ch }
+.sk2 .cat-cta__btns{ display:flex; gap:12px; flex-wrap:wrap }
+
+@media (max-width:1200px){
+  .sk2 .cat-related__grid{ grid-template-columns:repeat(3,1fr) }
+}
+@media (max-width:1023px){
+  .sk2 .cat-faq .faq-wrap{ grid-template-columns:1fr }
+  .sk2 .cat-cta__grid{ grid-template-columns:1fr }
+}
+@media (max-width:767px){
+  .sk2 .cat-related__grid{ display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; margin:0 calc(var(--sk2-gutter) * -1); padding-left:var(--sk2-gutter); scrollbar-width:none }
+  .sk2 .cat-related__grid::-webkit-scrollbar{ display:none }
+  .sk2 .cat-related__grid > *{ flex:0 0 46vw; scroll-snap-align:start }
+}

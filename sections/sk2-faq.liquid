@@ -1,0 +1,100 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 FAQ (SCOTKILT — pages.html home v2)
+----------------------------------------------------------------------------------------------------------------------
+Accordion FAQ. Matches pages.html `FAQ()`.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+
+<div class="sk2">
+  <section class="sk2__section" id="faq" aria-labelledby="sk2-faq-title-{{ section.id }}">
+    <div class="sk2__container">
+      <div class="sk2-faq-head">
+        <div class="sk2__sec-head sk2-reveal">
+          <div>
+            <h2 class="h2" id="sk2-faq-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+            {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sk2__container">
+      <div class="sk2-faq" data-sk2-faq>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'question' -%}
+            <div class="sk2-faq__item" {{ block.shopify_attributes }}>
+              <h3>
+                <button type="button" class="sk2-faq__q" data-sk2-faq-toggle aria-expanded="false" aria-controls="sk2-faq-a-{{ block.id }}">
+                  {{ block.settings.question | escape }}
+                  {%- render 'sk2-icons', icon: 'plus' -%}
+                </button>
+              </h3>
+              <div class="sk2-faq__a" id="sk2-faq-a-{{ block.id }}"><div><p>{{ block.settings.answer }}</p></div></div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "SK2 FAQ",
+  "class": "shopify-section--sk2-faq",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Home v2 (pages.html design). Accordion FAQ."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Kilt & Tartan Questions"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Short answers to the questions we hear most.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is a tartan kilt?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>A tartan kilt is a pleated, wrap-around garment made from tartan cloth.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 FAQ",
+      "blocks": [
+        { "type": "question", "settings": { "question": "What is a tartan kilt?", "answer": "<p>A tartan kilt is a pleated, wrap-around garment made from tartan cloth — a woven pattern of coloured stripes that cross at right angles to form a repeating check (the sett).</p>" } },
+        { "type": "question", "settings": { "question": "How do I choose a tartan?", "answer": "<p>Start with family or clan associations if you have them, then think about colour. Universal tartans such as Black Watch suit anyone.</p>" } },
+        { "type": "question", "settings": { "question": "How do I measure for a kilt?", "answer": "<p>Measure your waist where you want the kilt to sit, then measure the drop to the top of your kneecap for length. Our size guide walks through each step.</p>" } },
+        { "type": "question", "settings": { "question": "What is a utility kilt?", "answer": "<p>A utility kilt is a modern, casual kilt made from cotton canvas, usually with cargo pockets, belt loops and snap or buckle closures.</p>" } },
+        { "type": "question", "settings": { "question": "Do you ship internationally?", "answer": "<p>SCOTKILT is built as an international store. Delivery estimates and any duties are shown on our Shipping page and confirmed at checkout.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

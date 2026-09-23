@@ -9,274 +9,675 @@
  */
 {
   "sections": {
-    "hero_jVaWmY": {
-      "type": "hero",
+    "sk2_hero": {
+      "type": "sk2-hero",
+      "settings": {
+        "kicker": "Kilts and tartans, specialist edition",
+        "heading": "Find Your Tartan. Wear Your Kilt.",
+        "subheading": "<p>Discover premium tartan, traditional, utility, leather and modern kilts designed for distinctive Scottish style.</p>",
+        "button_1_text": "Shop Kilts",
+        "button_2_text": "Explore Tartans"
+      },
       "blocks": {
-        "text_YLPk4p": {
-          "type": "text",
-          "name": "t:names.heading",
+        "stat_1": {
+          "type": "stat",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "{{ settings.color_palette.background }}",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "value": "6",
+            "label": "kilt styles"
+          }
         },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
+        "stat_2": {
+          "type": "stat",
           "settings": {
-            "label": "Shop all",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-custom",
-            "custom_button_background": "rgba(0, 0, 0, 0)",
-            "custom_button_text": "{{ settings.color_palette.background }}",
-            "custom_button_border": "{{ settings.color_palette.background }}",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
+            "value": "500",
+            "label": "tartans and growing"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "3",
+            "label": "steps to the right size"
+          }
         }
       },
       "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
-      ],
-      "name": "t:names.hero",
-      "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "link": "",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
-        "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
-      }
+        "stat_1",
+        "stat_2",
+        "stat_3"
+      ]
     },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "sk2_trending_tartans": {
+      "type": "sk2-trending-tartans",
+      "settings": {
+        "heading": "Trending Tartans",
+        "subheading": "<p>Discover tartans that are capturing attention across classic and modern kilt styles.</p>",
+        "link_text": "View all tartans"
+      },
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
+        "tartan_1": {
+          "type": "tartan",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_YFtzcL": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "button-unstyled",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+            "name": "Black Watch",
+            "description": "The dark blue and green universal tartan worn across regiments, pipe bands and everyday kilts.",
+            "badge": "Trending",
+            "color_1": "#1e2a4a",
+            "color_2": "#213c2c",
+            "color_3": "#171614"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "tartan_2": {
+          "type": "tartan",
           "settings": {
-            "product_card_gap": 4,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_677WP3": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_YXxMTj": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "paragraph",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_JQzVV4": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+            "name": "Royal Stewart",
+            "description": "The dark blue and green universal tartan worn across regiments, pipe bands and everyday kilts.",
+            "badge": "Popular",
+            "color_1": "#a8232b",
+            "color_2": "#171614",
+            "color_3": "#243a63"
+          }
+        },
+        "tartan_3": {
+          "type": "tartan",
+          "settings": {
+            "name": "MacKenzie",
+            "description": "The dark blue and green universal tartan worn across regiments, pipe bands and everyday kilts.",
+            "badge": "Trending",
+            "color_1": "#213c2c",
+            "color_2": "#1e2a4a",
+            "color_3": "#a8232b"
+          }
+        },
+        "tartan_4": {
+          "type": "tartan",
+          "settings": {
+            "name": "Wallace",
+            "description": "The dark blue and green universal tartan worn across regiments, pipe bands and everyday kilts.",
+            "badge": "Trending",
+            "color_1": "#a8232b",
+            "color_2": "#171614",
+            "color_3": "#d9a63a"
+          }
         }
       },
-      "name": "t:names.featured_collection",
+      "block_order": [
+        "tartan_1",
+        "tartan_2",
+        "tartan_3",
+        "tartan_4"
+      ]
+    },
+    "sk2_kilt_types": {
+      "type": "sk2-kilt-types",
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "heading": "Shop by Kilt Type",
+        "subheading": "<p>Six ways to wear a kilt, from full ceremonial pleating to canvas and leather.</p>"
+      },
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "title": "Tartan Kilts",
+            "description": "Woven tartan in classic clan and universal setts, pleated for movement.",
+            "color_1": "#1e2a4a",
+            "color_2": "#171614",
+            "color_3": "#213c2c"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "title": "Utility Kilts",
+            "description": "Hard-wearing cotton styles with cargo pockets and a relaxed everyday fit.",
+            "color_1": "#5a5a42",
+            "color_2": "#3d3a35",
+            "color_3": "#2b2925"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "title": "Leather Kilts",
+            "description": "Statement kilts in supple leather with a bold, modern silhouette.",
+            "color_1": "#2b1d15",
+            "color_2": "#171614",
+            "color_3": "#3d3a35"
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "title": "Hybrid Kilts",
+            "description": "Tartan pleats paired with a plain canvas apron. Two traditions, one kilt.",
+            "color_1": "#8f8f8b",
+            "color_2": "#171614",
+            "color_3": "#4f6f9c"
+          }
+        },
+        "category_5": {
+          "type": "category",
+          "settings": {
+            "title": "Contemporary Kilts",
+            "description": "Clean lines and solid tones designed for the modern wardrobe.",
+            "color_1": "#33312e",
+            "color_2": "#2b2925",
+            "color_3": "#171614"
+          }
+        },
+        "category_6": {
+          "type": "category",
+          "settings": {
+            "title": "Traditional Kilts",
+            "description": "Full-pleat kilts built for weddings, ceremonies and formal Highland dress.",
+            "color_1": "#1e2a4a",
+            "color_2": "#171614",
+            "color_3": "#213c2c"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4",
+        "category_5",
+        "category_6"
+      ]
+    },
+    "sk2_popular_kilts": {
+      "type": "sk2-popular-kilts",
+      "settings": {
+        "heading": "Popular Kilts",
+        "subheading": "<p>Our best sellers, trending styles and new arrivals.</p>",
+        "link_text": "Shop all kilts"
+      }
+    },
+    "sk2_shop_by_tartan": {
+      "type": "sk2-shop-by-tartan",
+      "settings": {
+        "heading": "Shop by Tartan",
+        "subheading": "<p>Browse the cloth first. Every tartan here can be made into more than one kilt style.</p>",
+        "link_text": "Explore all tartans"
+      },
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "name": "Popular",
+            "color_1": "#a8232b",
+            "color_2": "#171614",
+            "color_3": "#efeadf"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "name": "Clan",
+            "color_1": "#d9a63a",
+            "color_2": "#171614",
+            "color_3": "#2a5238"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "name": "Red",
+            "color_1": "#a8232b",
+            "color_2": "#171614",
+            "color_3": "#d9a63a"
+          }
+        },
+        "tile_4": {
+          "type": "tile",
+          "settings": {
+            "name": "Black",
+            "color_1": "#171614",
+            "color_2": "#a8232b",
+            "color_3": "#d9a63a"
+          }
+        },
+        "tile_5": {
+          "type": "tile",
+          "settings": {
+            "name": "Green",
+            "color_1": "#2a5238",
+            "color_2": "#efeadf",
+            "color_3": "#cf7a2c"
+          }
+        },
+        "tile_6": {
+          "type": "tile",
+          "settings": {
+            "name": "Blue",
+            "color_1": "#1e2a4a",
+            "color_2": "#213c2c",
+            "color_3": "#171614"
+          }
+        },
+        "tile_7": {
+          "type": "tile",
+          "settings": {
+            "name": "Brown",
+            "color_1": "#6b4a32",
+            "color_2": "#171614",
+            "color_3": "#b79b78"
+          }
+        },
+        "tile_8": {
+          "type": "tile",
+          "settings": {
+            "name": "Modern",
+            "color_1": "#2f2e2c",
+            "color_2": "#5a5b58",
+            "color_3": "#8f8f8b"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_4",
+        "tile_5",
+        "tile_6",
+        "tile_7",
+        "tile_8"
+      ]
+    },
+    "sk2_featured_split": {
+      "type": "sk2-featured-split",
+      "settings": {
+        "heading": "Traditional Roots. Modern Style.",
+        "subheading": "<p>Two directions, one specialist store.</p>"
+      },
+      "blocks": {
+        "side_1": {
+          "type": "side",
+          "settings": {
+            "title": "Traditional",
+            "description": "Classic tartan kilts inspired by timeless Scottish style.",
+            "button_text": "Shop Traditional",
+            "color_1": "#a8232b",
+            "color_2": "#171614",
+            "color_3": "#213c2c"
+          }
+        },
+        "side_2": {
+          "type": "side",
+          "settings": {
+            "title": "Modern",
+            "description": "Utility, leather, hybrid and contemporary kilts designed for today's wardrobe.",
+            "button_text": "Shop Modern",
+            "color_1": "#8f8f8b",
+            "color_2": "#171614",
+            "color_3": "#5a5b58"
+          }
+        }
+      },
+      "block_order": [
+        "side_1",
+        "side_2"
+      ]
+    },
+    "sk2_why_scotkilt": {
+      "type": "sk2-why-scotkilt",
+      "settings": {
+        "heading": "Why SCOTKILT?",
+        "subheading": "<p>A specialist store, built around the two things that matter: the kilt and the cloth.</p>"
+      },
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon": "weave",
+            "title": "Premium tartan selection",
+            "text": "A curated range of clan, universal and fashion tartans, chosen for how they look in pleats."
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon": "styles",
+            "title": "Multiple kilt styles",
+            "text": "Tartan, utility, leather, hybrid, contemporary and traditional — one place for every kilt."
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "measure",
+            "title": "Easy size guidance",
+            "text": "Three measuring steps and a clear size guide so the fit is right the first time."
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon": "balance",
+            "title": "Modern and traditional options",
+            "text": "From full ceremonial pleating to kilts made for jeans-and-boots weekends."
+          }
+        },
+        "feature_5": {
+          "type": "feature",
+          "settings": {
+            "icon": "support",
+            "title": "Customer support",
+            "text": "Questions about a tartan, a size or an order — a real person replies."
+          }
+        },
+        "feature_6": {
+          "type": "feature",
+          "settings": {
+            "icon": "globe",
+            "title": "International ecommerce experience",
+            "text": "Built for customers ordering from around the world, with clear pricing at checkout."
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4",
+        "feature_5",
+        "feature_6"
+      ]
+    },
+    "sk2_kilt_finder": {
+      "type": "sk2-kilt-finder",
+      "settings": {
+        "heading": "Which Kilt Is Right for You?",
+        "subheading": "<p>Pick how you plan to wear it and we will point you to the right style.</p>"
+      },
+      "blocks": {
+        "option_1": {
+          "type": "option",
+          "settings": {
+            "label": "Traditional",
+            "hint": "Weddings, ceremonies, formal dress",
+            "result_title": "Traditional Kilts",
+            "result_text": "A full 8-yard kilt with deep knife pleats and a fringed apron. The classic silhouette for formal Highland dress.",
+            "color_1": "#1e2a4a",
+            "color_2": "#171614",
+            "color_3": "#213c2c"
+          }
+        },
+        "option_2": {
+          "type": "option",
+          "settings": {
+            "label": "Everyday",
+            "hint": "Casual wear, comfortable, easy care",
+            "result_title": "Tartan Kilts",
+            "result_text": "A lighter 5-yard tartan kilt that keeps the look of the sett without the weight, made for regular wear.",
+            "color_1": "#1e2a4a",
+            "color_2": "#171614",
+            "color_3": "#213c2c"
+          }
+        },
+        "option_3": {
+          "type": "option",
+          "settings": {
+            "label": "Utility",
+            "hint": "Pockets, durability, outdoor use",
+            "result_title": "Utility Kilts",
+            "result_text": "Cotton canvas with cargo pockets and a relaxed fit. Built for work, festivals and travel.",
+            "color_1": "#5a5a42",
+            "color_2": "#3d3a35",
+            "color_3": "#2b2925"
+          }
+        },
+        "option_4": {
+          "type": "option",
+          "settings": {
+            "label": "Leather",
+            "hint": "Statement piece, night out",
+            "result_title": "Leather Kilts",
+            "result_text": "Full-grain leather with a structured drape. A bold choice that gets more character with wear.",
+            "color_1": "#2b1d15",
+            "color_2": "#171614",
+            "color_3": "#3d3a35"
+          }
+        },
+        "option_5": {
+          "type": "option",
+          "settings": {
+            "label": "Hybrid",
+            "hint": "Tartan look, modern build",
+            "result_title": "Hybrid Kilts",
+            "result_text": "Tartan pleats at the back with a plain canvas apron in front. Traditional pattern, contemporary construction.",
+            "color_1": "#8f8f8b",
+            "color_2": "#171614",
+            "color_3": "#4f6f9c"
+          }
+        },
+        "option_6": {
+          "type": "option",
+          "settings": {
+            "label": "Contemporary",
+            "hint": "Solid colours, clean lines",
+            "result_title": "Contemporary Kilts",
+            "result_text": "Solid-tone kilts with minimal hardware and a tailored waist, designed to sit beside the rest of your wardrobe.",
+            "color_1": "#33312e",
+            "color_2": "#2b2925",
+            "color_3": "#171614"
+          }
+        }
+      },
+      "block_order": [
+        "option_1",
+        "option_2",
+        "option_3",
+        "option_4",
+        "option_5",
+        "option_6"
+      ]
+    },
+    "sk2_size_guide": {
+      "type": "sk2-size-guide",
+      "settings": {
+        "heading": "Find Your Perfect Fit",
+        "subheading": "<p>Two measurements and one decision. That is all it takes to order the right kilt.</p>",
+        "button_text": "View Size Guide"
+      },
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Measure your waist",
+            "text": "Wrap the tape where the kilt will sit — at the navel, higher than trousers — snug but not tight."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Choose your length",
+            "text": "Measure from that waistline to the top of your kneecap. Traditional kilts finish here; casual styles can sit slightly shorter."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Select your style",
+            "text": "Traditional, tartan, utility, leather, hybrid or contemporary. Each style page shows its own fit notes."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ]
+    },
+    "sk2_brand_story": {
+      "type": "sk2-brand-story",
+      "settings": {
+        "heading": "Scottish Heritage. Modern Kilt Style.",
+        "content": "<p>SCOTKILT exists for one reason: to make the kilt a piece you reach for, not a costume you rent.</p><p>We are a specialist. We do not sell tea towels, fridge magnets or postcards of castles. We sell kilts — and the tartans that make them — to customers on every continent who want the real silhouette, the right cloth and a fit that is properly explained.</p><p>Every tartan in the range is chosen for how it behaves in pleats, not just how it looks flat. Every style, from a full eight-yard traditional kilt to a black leather kilt, gets the same attention to waist, drop and hardware.</p><p>Heritage is the starting point. How you wear it is up to you.</p>"
+      }
+    },
+    "sk2_reviews": {
+      "type": "sk2-reviews",
+      "settings": {
+        "heading": "What Our Customers Say",
+        "subheading": "<p>Verified reviews from your reviews provider will be shown here.</p>",
+        "note": "Cards above are layout placeholders. No customer reviews have been collected yet."
+      },
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "placeholder": true,
+            "rating": 5,
+            "quote": "Sample review copy. Replace with a real customer review from your store.",
+            "name": "Customer name",
+            "meta": "Product · Location"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "placeholder": true,
+            "rating": 5,
+            "quote": "Sample review copy. Replace with a real customer review from your store.",
+            "name": "Customer name",
+            "meta": "Product · Location"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "placeholder": true,
+            "rating": 5,
+            "quote": "Sample review copy. Replace with a real customer review from your store.",
+            "name": "Customer name",
+            "meta": "Product · Location"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ]
+    },
+    "sk2_faq": {
+      "type": "sk2-faq",
+      "settings": {
+        "heading": "Kilt & Tartan Questions",
+        "subheading": "<p>Short answers to the questions we hear most.</p>"
+      },
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "What is a tartan kilt?",
+            "answer": "<p>A tartan kilt is a pleated, wrap-around garment made from tartan cloth — a woven pattern of coloured stripes that cross at right angles to form a repeating check (the sett).</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose a tartan?",
+            "answer": "<p>Start with family or clan associations if you have them, then think about colour. Universal tartans such as Black Watch suit anyone.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "How do I measure for a kilt?",
+            "answer": "<p>Measure your waist where you want the kilt to sit, then measure the drop to the top of your kneecap for length. Our size guide walks through each step.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "What is a utility kilt?",
+            "answer": "<p>A utility kilt is a modern, casual kilt made from cotton canvas, usually with cargo pockets, belt loops and snap or buckle closures.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>SCOTKILT is built as an international store. Delivery estimates and any duties are shown on our Shipping page and confirmed at checkout.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5"
+      ]
+    },
+    "sk2_seo_content": {
+      "type": "sk2-seo-content",
+      "settings": {
+        "heading": "Premium Kilts & Scottish Tartans"
+      },
+      "blocks": {
+        "paragraph_1": {
+          "type": "paragraph",
+          "settings": {
+            "heading": "Tartan kilts and Scottish kilts",
+            "text": "<p>A tartan kilt is the original Scottish kilt: a length of woven cloth, pleated at the back and sides and flat across the front apron, fastened with leather straps and buckles. At SCOTKILT the tartan comes first.</p>"
+          }
+        },
+        "paragraph_2": {
+          "type": "paragraph",
+          "settings": {
+            "heading": "Men's kilts for every occasion",
+            "text": "<p>Traditional kilts are cut from a full length of cloth with deep knife pleats and a fringed apron edge — the silhouette for weddings, ceremonies and formal Highland dress. Casual-weight tartan kilts keep the same sett in a lighter build for everyday wear.</p>"
+          }
+        },
+        "paragraph_3": {
+          "type": "paragraph",
+          "settings": {
+            "heading": "Utility, leather and hybrid kilts",
+            "text": "<p>Utility kilts swap wool for cotton canvas, add cargo pockets and belt loops, and are made to be worn hard. Leather kilts bring structure and shine to the same silhouette. Hybrid kilts sit in between: tartan pleats with a plain canvas apron.</p>"
+          }
+        },
+        "paragraph_4": {
+          "type": "paragraph",
+          "settings": {
+            "heading": "Choosing a Scottish tartan",
+            "text": "<p>Universal tartans such as Black Watch can be worn by anyone. Clan tartans carry family associations. Our Tartan Finder sorts the range by colour and family so the choice is easier.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "paragraph_1",
+        "paragraph_2",
+        "paragraph_3",
+        "paragraph_4"
+      ]
+    },
+    "sk2_newsletter": {
+      "type": "sk2-newsletter",
+      "settings": {
+        "heading": "Join the SCOTKILT List",
+        "subheading": "Discover new tartans, kilt styles, inspiration and special offers.",
+        "button_text": "Join the List",
+        "disclaimer": "Unsubscribe at any time. See our Privacy policy."
       }
     }
   },
   "order": [
-    "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "sk2_hero",
+    "sk2_trending_tartans",
+    "sk2_kilt_types",
+    "sk2_popular_kilts",
+    "sk2_shop_by_tartan",
+    "sk2_featured_split",
+    "sk2_why_scotkilt",
+    "sk2_kilt_finder",
+    "sk2_size_guide",
+    "sk2_brand_story",
+    "sk2_reviews",
+    "sk2_faq",
+    "sk2_seo_content",
+    "sk2_newsletter"
   ]
 }

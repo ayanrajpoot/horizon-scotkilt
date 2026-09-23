@@ -1,0 +1,143 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 RELATED COLLECTIONS (SCOTKILT — pages.html `catRelated()`)
+----------------------------------------------------------------------------------------------------------------------
+"Shop kilts by style" — a row of collection tiles with the label over a
+gradient. Which collections are shown comes from a collection metafield when
+the collection sets one (a list of collection references), otherwise from the
+section's own list, so one section serves every collection.
+
+The collection being viewed is always left out of its own row.
+{%- endcomment -%}
+
+{{ 'sk2-home.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign ns = section.settings.metafield_namespace | default: 'custom'
+  assign key = section.settings.metafield_key | default: 'related_collections'
+  assign entries = collection.metafields[ns][key].value
+
+  if entries == blank or entries.size == 0
+    assign entries = section.settings.collections
+  endif
+-%}
+
+{%- if entries != blank and entries.size > 0 -%}
+  <div class="sk2">
+    <section class="cat-related" aria-labelledby="sk2-cat-related-title-{{ section.id }}">
+      <div class="sk2__container">
+        <div class="sk2__sec-head">
+          <div>
+            <h2 class="h3" id="sk2-cat-related-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+            {%- if section.settings.subheading != blank -%}<p class="lede" style="font-size:15px">{{ section.settings.subheading }}</p>{%- endif -%}
+          </div>
+          {%- if section.settings.link_text != blank -%}
+            <div class="sk2__sec-head__tools">
+              <a class="sk2__link" href="{{ section.settings.link_url | default: routes.all_products_collection_url }}">{{ section.settings.link_text | escape }}</a>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="cat-related__grid">
+          {%- assign shown = 0 -%}
+          {%- for entry in entries -%}
+            {%- if entry.handle != collection.handle and shown < section.settings.max_tiles -%}
+              {%- assign shown = shown | plus: 1 -%}
+              <a class="rcat" href="{{ entry.url }}">
+                {%- render 'sk2-visual',
+                  image: entry.image,
+                  alt: entry.title,
+                  color_1: '#3d3a35', color_2: '#2b2925', color_3: '#171614',
+                  ratio: '4/5', class: 'sk2-visual--zoom'
+                -%}
+                <div class="rcat__label">
+                  <h3>{{ entry.title | escape }}</h3>
+                  <span>{{ section.settings.tile_action | escape }}</span>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SK2 Related collections",
+  "class": "shopify-section--sk2-cat-related",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop kilts by style"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "All kilts"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_action",
+      "label": "Tile label",
+      "default": "Shop"
+    },
+    {
+      "type": "range",
+      "id": "max_tiles",
+      "label": "Tiles shown",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Collections"
+    },
+    {
+      "type": "paragraph",
+      "content": "A collection metafield of type \"list of collections\" overrides the list below for that collection. The collection being viewed is always left out."
+    },
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Fallback collections",
+      "limit": 8
+    },
+    {
+      "type": "text",
+      "id": "metafield_namespace",
+      "label": "Metafield namespace",
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "metafield_key",
+      "label": "Metafield key",
+      "default": "related_collections"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Related collections"
+    }
+  ]
+}
+{% endschema %}
