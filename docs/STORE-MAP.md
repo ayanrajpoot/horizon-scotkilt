@@ -71,6 +71,16 @@ mock bands are a configured `section`, not new code.
 
 ## 2. Section-by-section mapping
 
+> **Superseded.** This section recorded the plan to rebuild each band from
+> Horizon's native sections. The Prestige source turned out to carry a complete
+> `sk2-*` build of `pages.html`, so that layer was ported instead — see §8 for
+> what actually ships. The mapping below is kept as the record of what Horizon
+> natively offers, which is still the reference if any sk2 section is ever
+> replaced.
+
+### Original plan
+
+
 Legend — **Native**: configure an existing section, no new files.
 **Restyle**: existing section + namespaced CSS.
 **New**: needs `sections/xx-*.liquid`.
@@ -424,3 +434,89 @@ changes the plan in §2, which assumed building from Horizon's native sections.
 
 Nothing has been deleted. `config/settings_schema.json` and `layout/theme.liquid`
 are pure insertions; every other change is a new file.
+
+
+---
+
+## 8. What actually ships (supersedes §2)
+
+### Templates
+
+| Template | Sections, in order | Original kept as |
+|---|---|---|
+| `index.json` | sk2-hero · sk2-trending-tartans · sk2-kilt-types · sk2-popular-kilts · sk2-shop-by-tartan · sk2-featured-split · sk2-why-scotkilt · sk2-kilt-finder · sk2-size-guide · sk2-brand-story · sk2-reviews · sk2-faq · sk2-seo-content · sk2-newsletter — all 14 mock bands, 50 blocks | `index.old.json` |
+| `collection.json` | sk2-collection (hero + chips + filters + grid) · sk2-trending-tartans · sk2-seo-content · sk2-size-guide · sk2-cat-faq · sk2-cat-related · sk2-cat-cta | `collection.old.json` |
+| `product.json` | sk2-product (12 blocks: 3 assurance, 4 facts, 3 accordions, tartan picker, complementary) · sk2-product-rail | `product.old.json` |
+| `header-group.json` | sk2-announcement · sk2-header | `header-group.old.json` |
+| `footer-group.json` | sk2-footer | `footer-group.old.json` |
+
+Templates were generated from each section's preset, so the mock's copy lands
+verbatim. The stock Horizon header, announcements, footer and utilities sections
+are **retained inside the group files but left out of `order`** — not rendered,
+still revertable from the theme editor.
+
+### Global chrome — the only band written from scratch
+
+Prestige used its own header and footer, so `sk2-announcement`, `sk2-header` and
+`sk2-footer` are new, written against `pages.html` directly, with
+`assets/sk2-chrome.{css,js}`.
+
+* The mega panel stays a child of `.nav__item`, which is `position: static`, so
+  it resolves against the sticky `.header` and spans the viewport — the
+  full-width dropdown trap from the brief. Making `.nav__item` relative would
+  collapse it to the link's width.
+* The cart is **delegated, not reimplemented**: the trigger copies
+  `snippets/header-actions.liquid` (`on:click="#cart-drawer/toggle"` plus
+  `aria-controls`), and the count renders Horizon's live `cart-bubble`, skinned
+  to the mock's `.count`.
+* Menus are link-list driven, so the mega menu is empty until the navigation is
+  built in Admin (§5, item 1).
+
+### The seam: `assets/sk2-horizon-bridge.css`
+
+`sk2-home.css` re-skins the host theme's variant picker, quantity selector and
+buy buttons — but targets *Prestige's* class names. The bridge re-applies the
+same skin to Horizon's names (`.variant-option`,
+`.variant-option__button-label__text`, `.quantity-minus`, …) so `sk2-home.css`
+stays byte-identical to the source and remains diffable.
+
+### Product page: four Prestige snippets replaced
+
+`sk2-product` was written against Prestige's buy-side snippets. Rather than
+porting them and their form-primitive dependency chains, three are
+Horizon-native, so variant resolution, cart events and recommendation loading
+are the theme's own machinery:
+
+| Prestige | Here | Note |
+|---|---|---|
+| `pdp-eyebrow` | `sk2-pdp-eyebrow` | copied verbatim, zero dependencies |
+| `variant-picker` | `sk2-variant-picker` | wraps Horizon's `variant-main-picker` |
+| `buy-buttons` | `sk2-buy-buttons` | `product-form-component` + `add-to-cart-button` |
+| `complementary-products` | `sk2-complementary-products` | Horizon's `<product-recommendations>`, complementary intent |
+
+Each keeps the Prestige call signature, so `sk2-product.liquid` changed only in
+the snippet names. Prestige-only arguments are documented as ignored where
+Horizon owns that behaviour.
+
+### Locales
+
+The sk2 sections use `general.*`, `product.*` and `collection.*` namespaces that
+Horizon does not have. Added to `en.default.json` with wording reused from
+Horizon's own strings, and mirrored **in English** to all 33 other locale files
+so `MatchingTranslations` passes. Those are untranslated placeholders — translate
+them in Admin if the store runs other languages.
+
+### Theme check
+
+**0 errors, 13 warnings** (baseline 0 errors, 6 warnings). The 7 new warnings:
+
+* `ExcessiveSettingsCount` ×4 — large ported sections and `blocks/tartan-picker.liquid`
+* `RemoteAsset` ×6 — the Google Fonts links in `sk2-hero` and `sk2-header`.
+  `pages.html` requires Cormorant Garamond and Manrope, and Manrope is not in
+  Shopify's font library, so they are loaded exactly as the mock does. This also
+  settles the open font question from the audit: **no substitute font is used.**
+
+### Still not verified
+
+No store is linked, so nothing in this build has been seen in a browser. Every
+page needs the visual pass once a dev store exists.
