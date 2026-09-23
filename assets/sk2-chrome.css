@@ -1,0 +1,164 @@
+/* ==========================================================================
+   SCOTKILT — global chrome (announcement bar, header, mega menu, search
+   overlay, mobile drawer, footer).
+
+   Lifted from pages.html verbatim, then scoped under .sk2-chrome and
+   re-pointed at the --sk2-* tokens that assets/sk2-home.css already defines,
+   so the chrome uses one palette with the rest of the sk2 layer.
+
+   Unlike the sk2 page sections this is NOT a copy from the source theme —
+   Prestige used its own header and footer, so this band had no sk2 build.
+   ========================================================================== */
+.sk2-chrome{
+  /* The header and footer sit outside .sk2, so the tokens are declared here
+     rather than inherited. Values are pages.html's, unchanged. */
+  --ink:#1c1b19; --ink-2:#2b2925; --ink-3:#3d3a35;
+  --ivory:#f3efe7; --ivory-2:#ebe5da; --ivory-3:#e2dbcd;
+  --stone:#cbc2b1; --stone-2:#b3a893;
+  --grey:#7a7469; --grey-2:#a59e91;
+  --red:#8c2a2f; --brass:#a88a55; --brass-2:#c9ab72;
+  --serif:'Cormorant Garamond','Iowan Old Style','Palatino Linotype',Georgia,serif;
+  --sans:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --gutter:clamp(20px,4vw,64px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --container:1440px; --header-h:72px; --announce-h:34px;
+  font-family:var(--sans); font-size:16px; line-height:1.6; color:var(--ink);
+}
+.sk2-chrome *,.sk2-chrome *::before,.sk2-chrome *::after{ box-sizing:border-box }
+.sk2-chrome img,.sk2-chrome svg{ max-width:100%; display:block }
+.sk2-chrome :where(a){ color:inherit; text-decoration:none }
+.sk2-chrome :where(button){ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer }
+.sk2-chrome :where(h1,h2,h3,h4){ margin:0; font-family:var(--serif); font-weight:500; line-height:1.05; letter-spacing:-.01em }
+.sk2-chrome :where(p){ margin:0 }
+.sk2-chrome :where(ul){ list-style:none; margin:0; padding:0 }
+.sk2-chrome .container{ max-width:var(--container); margin:0 auto; padding:0 var(--gutter) }
+.sk2-chrome .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+.sk2-chrome :focus-visible{ outline:2px solid var(--brass); outline-offset:3px }
+.sk2-chrome .link{ font-weight:600; font-size:14px; letter-spacing:.02em; position:relative; padding-bottom:3px; display:inline-block }
+.sk2-chrome .link::after{ content:""; position:absolute; left:0; bottom:0; width:100%; height:1px; background:currentColor; transform:scaleX(1); transform-origin:left; transition:transform .35s var(--ease) }
+.sk2-chrome .link:hover::after{ transform:scaleX(0); transform-origin:right }
+
+
+/* --- Announcement + header + mega menu + search overlay ---------- */
+.sk2-chrome .announce{ background:var(--ink); color:var(--stone); font-size:12px; letter-spacing:.14em; text-transform:uppercase; text-align:center; height:var(--announce-h); display:flex; align-items:center; justify-content:center; padding:0 16px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.sk2-chrome .announce b{ color:var(--ivory); font-weight:600 }
+.sk2-chrome .header{ position:sticky; top:env(safe-area-inset-top,0px); z-index:100; background:var(--ivory); border-bottom:1px solid rgba(28,27,25,.08); transition:box-shadow .3s }
+.sk2-chrome .header.is-scrolled{ box-shadow:0 10px 30px -18px rgba(28,27,25,.35) }
+.sk2-chrome .header__bar{ height:var(--header-h); display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px }
+.sk2-chrome .logo{ font-family:var(--serif); font-size:30px; font-weight:600; letter-spacing:.14em; line-height:1; display:inline-flex; align-items:baseline; gap:2px }
+.sk2-chrome .logo small{ font-family:var(--sans); font-size:10px; font-weight:700; letter-spacing:.32em; color:var(--brass); margin-left:10px; position:relative; top:-3px; white-space:nowrap }
+.sk2-chrome .footer .logo small{ display:none }
+.sk2-chrome .nav{ display:flex; gap:6px; justify-self:center }
+.sk2-chrome .nav__item{ position:static }
+.sk2-chrome .nav__link{ display:inline-flex; align-items:center; height:var(--header-h); padding:0 16px; font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; position:relative }
+.sk2-chrome .nav__link::after{ content:""; position:absolute; left:16px; right:16px; bottom:22px; height:1px; background:var(--ink); transform:scaleX(0); transform-origin:left; transition:transform .3s var(--ease) }
+.sk2-chrome .nav__item.is-open .nav__link::after, .sk2-chrome .nav__link:hover::after{ transform:scaleX(1) }
+.sk2-chrome .header__tools{ display:flex; justify-content:flex-end; gap:2px }
+.sk2-chrome .header__tools .ibtn{ color:var(--ink) }
+.sk2-chrome .burger{ display:none }
+.sk2-chrome .header--mobile-only{ display:none }
+
+/* mega menu */
+.sk2-chrome .mega{ position:absolute; left:0; right:0; top:100%; background:var(--ivory); border-top:1px solid rgba(28,27,25,.08); box-shadow:0 30px 50px -30px rgba(28,27,25,.45); opacity:0; visibility:hidden; transform:translateY(-6px); transition:opacity .28s var(--ease),transform .28s var(--ease),visibility 0s .28s; z-index:99 }
+.sk2-chrome .nav__item.is-open .mega{ opacity:1; visibility:visible; transform:none; transition-delay:0s }
+.sk2-chrome .mega__inner{ display:flex; gap:clamp(48px,6vw,96px); padding:40px var(--gutter) 44px }
+.sk2-chrome .mega__col{ min-width:180px }
+.sk2-chrome .mega__feat{ margin-left:auto }
+.sk2-chrome .mega__col h4{ font-family:var(--sans); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--grey); margin-bottom:16px; font-weight:700 }
+.sk2-chrome .mega__col li{ margin:0 0 9px }
+.sk2-chrome .mega__col a{ font-size:15px; font-weight:500; display:inline-block; padding:2px 0; position:relative; transition:color .2s }
+.sk2-chrome .mega__col a:hover{ color:var(--red) }
+.sk2-chrome .mega__col a.is-accent{ color:var(--red); font-weight:600 }
+.sk2-chrome .mega__feat{ width:300px; display:block }
+.sk2-chrome .mega__feat .kv, .sk2-chrome .mega__feat .swatch{ aspect-ratio:4/3; border-radius:2px }
+.sk2-chrome .mega__feat p{ margin-top:12px; font-size:13px; color:var(--grey) }
+.sk2-chrome .mega__feat strong{ display:block; font-family:var(--serif); font-size:20px; font-weight:500; color:var(--ink); margin-top:2px }
+.sk2-chrome .mega__feat:hover strong{ color:var(--red) }
+
+/* search overlay */
+.sk2-chrome .search{ position:absolute; left:0; right:0; top:100%; background:var(--ivory); border-top:1px solid rgba(28,27,25,.08); box-shadow:0 30px 50px -30px rgba(28,27,25,.45); display:none; z-index:99 }
+.sk2-chrome .search.is-open{ display:block }
+.sk2-chrome .search__inner{ padding:28px var(--gutter) 32px }
+.sk2-chrome .search__field{ display:flex; align-items:center; gap:14px; border-bottom:1px solid var(--ink); padding-bottom:10px }
+.sk2-chrome .search__field svg{ width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.5; flex-shrink:0 }
+.sk2-chrome .search__field input{ flex:1; border:0; background:none; font:500 clamp(20px,2.4vw,30px)/1.2 var(--serif); color:var(--ink); outline:none; min-width:0; -webkit-appearance:none; appearance:none }
+.sk2-chrome .search__field input::-webkit-search-cancel-button, .sk2-chrome .search__field input::-webkit-search-decoration{ -webkit-appearance:none; display:none }
+.sk2-chrome .search__field input::placeholder{ color:var(--grey-2) }
+.sk2-chrome .search__results{ margin-top:22px; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px 32px }
+.sk2-chrome .search__results a{ display:flex; align-items:center; gap:12px; font-size:14px; font-weight:500; padding:6px 0 }
+.sk2-chrome .search__results .swatch, .sk2-chrome .search__results .kv{ width:44px; height:44px; flex-shrink:0; border-radius:2px }
+.sk2-chrome .search__results small{ display:block; color:var(--grey); font-weight:400; font-size:12px }
+.sk2-chrome .search__empty{ margin-top:22px; color:var(--grey); font-size:14px }
+.sk2-chrome .search__hint{ margin-top:16px; font-size:13px; color:var(--grey) }
+.sk2-chrome .search__hint a{ font-weight:600; color:var(--ink); margin-right:16px }
+
+/* --- Mobile drawer ----------------------------------------------- */
+.sk2-chrome .drawer-backdrop{ position:fixed; inset:0; background:rgba(28,27,25,.45); z-index:150; opacity:0; visibility:hidden; transition:opacity .3s,visibility 0s .3s }
+.sk2-chrome .drawer-backdrop.is-open{ opacity:1; visibility:visible; transition-delay:0s }
+.sk2-chrome .mnav{ position:fixed; top:0; bottom:0; left:0; width:min(400px,88vw); background:var(--ivory); z-index:160; transform:translateX(-102%); transition:transform .38s var(--ease); display:flex; flex-direction:column; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px) }
+.sk2-chrome .mnav.is-open{ transform:none }
+.sk2-chrome .mnav__head{ display:flex; align-items:center; justify-content:space-between; padding:14px 12px 14px 24px; border-bottom:1px solid rgba(28,27,25,.08) }
+.sk2-chrome .mnav__body{ flex:1; overflow-y:auto; padding:8px 0 }
+.sk2-chrome .macc__btn{ width:100%; display:flex; align-items:center; justify-content:space-between; padding:18px 24px; font-size:15px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; text-align:left }
+.sk2-chrome .macc__btn svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.5; transition:transform .3s var(--ease) }
+.sk2-chrome .macc.is-open .macc__btn svg{ transform:rotate(180deg) }
+.sk2-chrome .macc__panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s var(--ease) }
+.sk2-chrome .macc.is-open .macc__panel{ grid-template-rows:1fr }
+.sk2-chrome .macc__panel > div{ overflow:hidden }
+.sk2-chrome .macc__panel ul{ padding:2px 24px 14px 36px }
+.sk2-chrome .macc__panel li a{ display:block; padding:11px 0; font-size:15px; font-weight:500; border-bottom:1px solid rgba(28,27,25,.06) }
+.sk2-chrome .macc__panel li a.is-accent{ color:var(--red); font-weight:600 }
+.sk2-chrome .macc__panel h5{ margin:14px 0 4px; font:700 11px/1 var(--sans); letter-spacing:.2em; text-transform:uppercase; color:var(--grey) }
+.sk2-chrome .mnav__foot{ padding:16px 24px 20px; border-top:1px solid rgba(28,27,25,.08); display:flex; gap:20px; font-size:14px; font-weight:600 }
+.sk2-chrome .mnav__foot a{ display:flex; align-items:center; gap:8px }
+.sk2-chrome .mnav__foot svg{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.5 }
+.sk2-chrome .mnav__feat{ margin:12px 24px 8px; display:block }
+.sk2-chrome .mnav__feat .kv{ aspect-ratio:16/9; border-radius:2px }
+.sk2-chrome .mnav__feat span{ display:block; margin-top:8px; font-size:13px; color:var(--grey) }
+.sk2-chrome .mnav__feat strong{ font-family:var(--serif); font-size:20px; font-weight:500; color:var(--ink) }
+
+/* --- Footer ------------------------------------------------------ */
+.sk2-chrome .footer{ background:var(--ivory-2); border-top:1px solid rgba(28,27,25,.08); padding:clamp(48px,6vw,80px) 0 0 }
+.sk2-chrome .footer__grid{ display:grid; grid-template-columns:1.4fr repeat(4,1fr); gap:32px }
+.sk2-chrome .footer h4{ font-family:var(--sans); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--grey); margin-bottom:18px; font-weight:700 }
+.sk2-chrome .footer li{ margin-bottom:10px }
+.sk2-chrome .footer li a{ font-size:14.5px; font-weight:500; transition:color .2s }
+.sk2-chrome .footer li a:hover{ color:var(--red) }
+.sk2-chrome .footer__brand p{ color:var(--grey); font-size:14px; max-width:34ch; margin:14px 0 22px }
+.sk2-chrome .footer__swatches{ display:flex; gap:6px }
+.sk2-chrome .footer__swatches .swatch{ width:34px; height:34px; border-radius:2px; --tile:90px }
+.sk2-chrome .footer__bottom{ margin-top:clamp(36px,5vw,64px); border-top:1px solid rgba(28,27,25,.1); padding:22px 0 calc(22px + env(safe-area-inset-bottom,0px)); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; font-size:13px; color:var(--grey) }
+.sk2-chrome .footer__legal{ display:flex; gap:20px; flex-wrap:wrap }
+.sk2-chrome .footer__legal a:hover{ color:var(--ink) }
+.sk2-chrome .social{ display:flex; gap:6px }
+.sk2-chrome .social a{ width:38px; height:38px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(28,27,25,.15); transition:.2s }
+.sk2-chrome .social a:hover{ background:var(--ink); color:var(--ivory); border-color:var(--ink) }
+.sk2-chrome .social svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.5 }
+
+/* --- Responsive (from pages.html's own breakpoints) --------------------- */
+@media (max-width:1200px){
+  .sk2-chrome .footer__grid{ grid-template-columns:1.2fr repeat(4,1fr) }
+  .sk2-chrome .mega__feat{ width:240px }
+}
+@media (max-width:1023px){
+  .sk2-chrome{ --header-h:62px }
+  .sk2-chrome .nav,.sk2-chrome .header--desktop-only{ display:none }
+  .sk2-chrome .header__bar{ grid-template-columns:auto 1fr auto }
+  .sk2-chrome .burger{ display:inline-flex }
+  .sk2-chrome .logo{ font-size:24px; justify-self:center }
+  .sk2-chrome .logo small{ display:none }
+  .sk2-chrome .header__tools .ibtn--desk{ display:none }
+  .sk2-chrome .footer__grid{ grid-template-columns:repeat(2,1fr) }
+  .sk2-chrome .footer__brand{ grid-column:1/-1 }
+}
+@media (max-width:767px){
+  .sk2-chrome{ --gutter:20px; --announce-h:30px }
+  .sk2-chrome .announce{ font-size:10.5px; letter-spacing:.1em }
+  .sk2-chrome .footer__grid{ grid-template-columns:1fr 1fr; gap:28px 20px }
+  .sk2-chrome .footer__bottom{ flex-direction:column; align-items:flex-start }
+}
+@media (prefers-reduced-motion:reduce){
+  .sk2-chrome *,.sk2-chrome *::before,.sk2-chrome *::after{
+    animation-duration:.01ms!important; transition-duration:.01ms!important }
+}
+

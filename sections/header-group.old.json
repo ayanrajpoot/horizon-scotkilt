@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "type": "header",
   "name": "t:names.header",
   "sections": {
@@ -98,35 +99,10 @@
         "enable_transparent_header_product": false,
         "enable_transparent_header_collection": false
       }
-    },
-    "sk2_announcement": {
-      "type": "sk2-announcement",
-      "settings": {},
-      "blocks": {
-        "announcement_1": {
-          "type": "announcement",
-          "settings": {
-            "text": "Premium Kilts • Scottish Tartans • Worldwide Style"
-          }
-        }
-      },
-      "block_order": [
-        "announcement_1"
-      ]
-    },
-    "sk2_header": {
-      "type": "sk2-header",
-      "settings": {
-        "menu": "main-menu",
-        "wordmark": "SCOTKILT",
-        "tagline": "KILTS + TARTANS",
-        "search_placeholder": "Search kilts and tartans",
-        "search_hints": "<p>Try Black Watch, utility kilt or leather kilt</p>"
-      }
     }
   },
   "order": [
-    "sk2_announcement",
-    "sk2_header"
+    "header_announcements_9jGBFp",
+    "header_section"
   ]
 }

@@ -1,0 +1,298 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 HEADER (SCOTKILT — pages.html `Header()`, `MegaMenu()`, `MobileNav()`)
+----------------------------------------------------------------------------------------------------------------------
+Sticky ivory header, 72px, three-column grid: burger / logo / nav, with tools
+right. A top-level menu item that has children renders a full-width mega menu;
+the panel is a child of .nav__item, which pages.html keeps position:static so
+the panel resolves against .header and spans the viewport. Do not make
+.nav__item relative.
+
+Menus come from Admin > Navigation. Column titles are the second-level items,
+links are their children; a two-level menu renders one column per child.
+
+Cart count and cart opening are delegated to Horizon's own cart drawer rather
+than reimplemented.
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+{{ 'sk2-chrome.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-horizon-bridge.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sk2-chrome.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+  assign wordmark = section.settings.wordmark | default: shop.name
+-%}
+
+{%- capture logo -%}
+  <a class="logo" href="{{ routes.root_url }}" aria-label="{{ wordmark | escape }} home">
+    {%- if section.settings.logo != blank -%}
+      {{ section.settings.logo | image_url: width: 400 | image_tag: loading: 'eager', alt: wordmark }}
+    {%- else -%}
+      {{- wordmark -}}
+      {%- if section.settings.tagline != blank -%}
+        <small>{{ section.settings.tagline }}</small>
+      {%- endif -%}
+    {%- endif -%}
+  </a>
+{%- endcapture -%}
+
+<div class="sk2-chrome" data-sk2-chrome>
+  <header class="header" id="sk2-header">
+    <div class="container header__bar">
+      <button
+        class="ibtn burger"
+        data-sk2-action="nav-open"
+        data-sk2-nav-open
+        aria-label="{{ 'accessibility.menu' | t }}"
+        aria-controls="sk2-mnav"
+        aria-expanded="false"
+      >
+        {%- render 'sk2-icons', icon: 'menu' -%}
+      </button>
+
+      {{ logo }}
+
+      <nav class="nav" aria-label="{{ 'accessibility.header_navigation_label' | t }}">
+        {%- for link in menu.links -%}
+          <div class="nav__item">
+            <a
+              class="nav__link"
+              href="{{ link.url }}"
+              {% if link.links.size > 0 %}
+                aria-haspopup="true" aria-expanded="false"
+              {% endif %}
+            >
+              {{- link.title -}}
+            </a>
+
+            {%- if link.links.size > 0 -%}
+              <div class="mega" role="region" aria-label="{{ link.title | escape }} menu">
+                <div class="mega__inner">
+                  {%- for child in link.links -%}
+                    <div class="mega__col">
+                      <h4>{{ child.title }}</h4>
+                      <ul>
+                        {%- if child.links.size > 0 -%}
+                          {%- for grandchild in child.links -%}
+                            <li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
+                          {%- endfor -%}
+                        {%- else -%}
+                          <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                        {%- endif -%}
+                      </ul>
+                    </div>
+                  {%- endfor -%}
+
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'feature' and block.settings.menu_item == link.title -%}
+                      <a class="mega__feat" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+                        {%- render 'sk2-visual',
+                          image: block.settings.image,
+                          alt: block.settings.title,
+                          ratio: '4/3'
+                        -%}
+                        <p>
+                          {{- block.settings.label -}}
+                          <strong>{{ block.settings.title }}</strong>
+                        </p>
+                      </a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </nav>
+
+      <div class="header__tools">
+        <button
+          class="ibtn"
+          data-sk2-action="search-toggle"
+          data-sk2-search-toggle
+          aria-label="Search"
+          aria-expanded="false"
+        >
+          {%- render 'sk2-icons', icon: 'search' -%}
+        </button>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a
+            class="ibtn ibtn--desk"
+            href="{{ routes.account_url }}"
+            aria-label="{{ 'accessibility.account' | t }}"
+          >
+            {%- render 'sk2-icons', icon: 'user' -%}
+          </a>
+        {%- endif -%}
+
+        {%- comment -%}
+          Cart: Horizon's own drawer, opened exactly as snippets/header-actions.liquid
+          does, so its focus handling and live count keep working. Falls back to the
+          cart page when the drawer is off or we are already on it.
+        {%- endcomment -%}
+        {%- if settings.cart_type == 'drawer' and template.name != 'cart' -%}
+          <button
+            class="ibtn"
+            on:click="#cart-drawer/toggle"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="cart-drawer"
+            aria-label="{{ 'accessibility.cart' | t }}"
+          >
+            {%- render 'sk2-icons', icon: 'bag' -%}
+            {%- render 'cart-bubble' -%}
+          </button>
+        {%- else -%}
+          <a class="ibtn" href="{{ routes.cart_url }}" aria-label="{{ 'accessibility.cart' | t }}">
+            {%- render 'sk2-icons', icon: 'bag' -%}
+            {%- render 'cart-bubble' -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%}Search overlay — full width, anchored to the header.{%- endcomment -%}
+    <div class="search" data-sk2-search>
+      <div class="container search__inner">
+        <form class="search__field" action="{{ routes.search_url }}" method="get" role="search">
+          {%- render 'sk2-icons', icon: 'search' -%}
+          <input
+            type="search"
+            name="q"
+            placeholder="{{ section.settings.search_placeholder }}"
+            aria-label="{{ section.settings.search_placeholder }}"
+            autocomplete="off"
+          >
+          <button
+            type="button"
+            class="ibtn"
+            data-sk2-action="search-close"
+            aria-label="Close"
+          >
+            {%- render 'sk2-icons', icon: 'close' -%}
+          </button>
+        </form>
+
+        {%- if section.settings.search_hints != blank -%}
+          <div class="search__hint">{{ section.settings.search_hints }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </header>
+
+  {%- comment -%}Mobile drawer.{%- endcomment -%}
+  <div class="drawer-backdrop" data-sk2-backdrop data-sk2-action="close-all"></div>
+
+  <aside class="mnav" id="sk2-mnav" aria-label="{{ 'accessibility.menu' | t }}" aria-hidden="true" data-sk2-mnav>
+    <div class="mnav__head">
+      {{ logo }}
+      <button class="ibtn" data-sk2-action="close-all" aria-label="Close">
+        {%- render 'sk2-icons', icon: 'close' -%}
+      </button>
+    </div>
+
+    <div class="mnav__body">
+      {%- for link in menu.links -%}
+        {%- if link.links.size > 0 -%}
+          <div class="macc">
+            <button class="macc__btn" data-sk2-action="macc" aria-expanded="false">
+              {{- link.title -}}
+              {%- render 'sk2-icons', icon: 'chevron' -%}
+            </button>
+            <div class="macc__panel">
+              <div>
+                <ul>
+                  {%- for child in link.links -%}
+                    {%- if child.links.size > 0 -%}
+                      {%- if link.links.size > 1 -%}<h5>{{ child.title }}</h5>{%- endif -%}
+                      {%- for grandchild in child.links -%}
+                        <li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
+                      {%- endfor -%}
+                    {%- else -%}
+                      <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {%- else -%}
+          <a class="macc__btn" href="{{ link.url }}">{{ link.title }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if shop.customer_accounts_enabled -%}
+      <div class="mnav__foot">
+        <a href="{{ routes.account_url }}">
+          {%- render 'sk2-icons', icon: 'user' -%}
+          {{- 'accessibility.account' | t -}}
+        </a>
+      </div>
+    {%- endif -%}
+  </aside>
+</div>
+
+{% stylesheet %}
+  body.sk2-no-scroll {
+    overflow: hidden;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SK2 Header",
+  "class": "sk2-header-section",
+  "enabled_on": { "groups": ["header"] },
+  "max_blocks": 6,
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    { "type": "image_picker", "id": "logo", "label": "Logo image", "info": "Leave empty to use the wordmark below." },
+    { "type": "text", "id": "wordmark", "label": "Wordmark", "default": "SCOTKILT" },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "KILTS + TARTANS" },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search kilts and tartans"
+    },
+    {
+      "type": "richtext",
+      "id": "search_hints",
+      "label": "Search hints",
+      "default": "<p>Try Black Watch, utility kilt or leather kilt</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Mega menu feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "Show under this menu item",
+          "info": "Must match the top-level menu item's title exactly, e.g. Kilts."
+        },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Featured kilt" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

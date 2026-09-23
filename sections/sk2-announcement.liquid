@@ -1,0 +1,96 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+SK2 ANNOUNCEMENT BAR (SCOTKILT — pages.html `Announcement()`)
+----------------------------------------------------------------------------------------------------------------------
+Ink bar above the header: 34px tall, 12px uppercase at .14em, stone text with
+any <b> in ivory. Rotates between blocks when there is more than one.
+{%- endcomment -%}
+
+{{ 'sk2-chrome.css' | asset_url | stylesheet_tag }}
+
+<div class="sk2-chrome" data-sk2-announcement>
+  {%- if section.blocks.size > 0 -%}
+    <div
+      class="announce"
+      role="region"
+      aria-label="Announcement"
+    >
+      {%- for block in section.blocks -%}
+        <span
+          class="announce__item{% unless forloop.first %} is-hidden{% endunless %}"
+          data-sk2-announce-item
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+          {%- else -%}
+            {{ block.settings.text }}
+          {%- endif -%}
+        </span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .sk2-chrome .announce__item.is-hidden {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  // Rotates the bar when a merchant adds more than one announcement.
+  // Single announcement: nothing runs, the markup is already static.
+  (() => {
+    const bar = document.querySelector('[data-sk2-announcement] .announce');
+    if (!bar) return;
+    const items = [...bar.querySelectorAll('[data-sk2-announce-item]')];
+    if (items.length < 2) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let index = 0;
+    setInterval(() => {
+      items[index].classList.add('is-hidden');
+      index = (index + 1) % items.length;
+      items[index].classList.remove('is-hidden');
+    }, 5000);
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "SK2 Announcement bar",
+  "class": "sk2-announcement-section",
+  "enabled_on": { "groups": ["header"] },
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Premium Kilts • Scottish Tartans • Worldwide Style",
+          "info": "Wrap words in bold to pick them out in ivory, as pages.html does."
+        },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SK2 Announcement bar",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Premium Kilts • Scottish Tartans • Worldwide Style"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

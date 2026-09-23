@@ -1,0 +1,164 @@
+/* ==========================================================================
+   SCOTKILT — sk2 <-> Horizon class bridge
+
+   assets/sk2-home.css re-skins the host theme's native variant picker,
+   quantity selector and buy buttons into pages.html's option rows — but it
+   targets Prestige's class names, because that is the theme it was written
+   against. Horizon emits different names for the same parts.
+
+   Rather than editing sk2-home.css (which would break diffability against the
+   source), this re-applies the same skin to Horizon's names. Values are
+   pages.html's, matching the rules in sk2-home.css they mirror.
+
+   Prestige                          Horizon
+   .variant-picker__option        -> .variant-option
+   .variant-picker__option-info   -> .variant-option > legend wrapper
+   .variant-picker__option-values -> .variant-option__values / swatches list
+   .block-swatch                  -> .variant-option__button-label__text|__pill
+   .color-swatch / .thumbnail-swatch -> .variant-option__swatch-value, .swatch
+   .select                        -> .variant-option__select
+   .quantity-selector__button     -> .quantity-minus / .quantity-plus
+   .quantity-selector__input      -> .quantity-selector input
+   ========================================================================== */
+
+/* --- option rows -------------------------------------------------------- */
+.sk2 .variant-option {
+  border: 0;
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid rgb(28 27 25 / 0.12);
+}
+
+.sk2 .variant-option legend {
+  font-family: var(--sk2-sans);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+/* --- button-style values ------------------------------------------------ */
+.sk2 .variant-option__button-label__text,
+.sk2 .variant-option__button-label__pill {
+  min-width: 64px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgb(28 27 25 / 0.22);
+  border-radius: 2px;
+  font-family: var(--sk2-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  background: none;
+  color: var(--sk2-ink);
+  transition: 0.15s;
+}
+
+.sk2 .variant-option__button-label__text:hover,
+.sk2 .variant-option__button-label__pill:hover {
+  border-color: var(--sk2-ink);
+}
+
+.sk2 input:checked + .variant-option__button-label__text,
+.sk2 input:checked + .variant-option__button-label__pill {
+  background: var(--sk2-ink);
+  color: var(--sk2-ivory);
+  border-color: var(--sk2-ink);
+}
+
+.sk2 input:disabled + .variant-option__button-label__text,
+.sk2 input:disabled + .variant-option__button-label__pill {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+/* --- swatch values ------------------------------------------------------ */
+.sk2 .variant-option__swatch-value,
+.sk2 .variant-option .swatch {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid transparent;
+  padding: 2px;
+  display: block;
+  background-size: cover;
+  background-position: center;
+  transition: 0.2s;
+}
+
+.sk2 .variant-option__swatch-value:hover,
+.sk2 .variant-option .swatch:hover {
+  border-color: var(--sk2-stone-2);
+}
+
+.sk2 input:checked + .variant-option__swatch-value,
+.sk2 input:checked + .swatch {
+  border-color: var(--sk2-ink);
+}
+
+/* --- dropdown ----------------------------------------------------------- */
+.sk2 .variant-option__select,
+.sk2 .variant-option__select-wrapper select {
+  height: 44px;
+  border: 1px solid rgb(28 27 25 / 0.22);
+  border-radius: 2px;
+  padding: 0 14px;
+  font-family: var(--sk2-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  background: none;
+  color: var(--sk2-ink);
+}
+
+/* --- quantity ----------------------------------------------------------- */
+.sk2 .quantity-minus,
+.sk2 .quantity-plus {
+  width: 40px;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sk2 .quantity-selector input {
+  min-width: 40px;
+  width: 44px;
+  text-align: center;
+  font-family: var(--sk2-sans);
+  font-weight: 600;
+  font-size: 14px;
+  border: 0;
+  background: none;
+}
+
+/* --- cart bubble in the header ------------------------------------------
+   pages.html's .count, applied to Horizon's live-updating .cart-bubble so the
+   count stays wired to the cart without reimplementing it. */
+.sk2-chrome .cart-bubble {
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--ink);
+  color: var(--ivory);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.sk2-chrome .cart-bubble.visually-hidden {
+  display: none;
+}

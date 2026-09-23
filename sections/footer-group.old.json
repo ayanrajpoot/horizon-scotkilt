@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
@@ -228,77 +229,10 @@
         "padding-block-start": 12,
         "padding-block-end": 16
       }
-    },
-    "sk2_footer": {
-      "type": "sk2-footer",
-      "settings": {
-        "wordmark": "SCOTKILT",
-        "blurb": "A specialist international destination for kilts and the tartans that make them.",
-        "domain": "scotkilt.com"
-      },
-      "blocks": {
-        "menu_1": {
-          "type": "menu",
-          "settings": {
-            "heading": "Shop"
-          }
-        },
-        "menu_2": {
-          "type": "menu",
-          "settings": {
-            "heading": "Tartans"
-          }
-        },
-        "menu_3": {
-          "type": "menu",
-          "settings": {
-            "heading": "Help"
-          }
-        },
-        "menu_4": {
-          "type": "menu",
-          "settings": {
-            "heading": "About"
-          }
-        },
-        "social_5": {
-          "type": "social",
-          "settings": {
-            "network": "instagram"
-          }
-        },
-        "social_6": {
-          "type": "social",
-          "settings": {
-            "network": "facebook"
-          }
-        },
-        "social_7": {
-          "type": "social",
-          "settings": {
-            "network": "youtube"
-          }
-        },
-        "social_8": {
-          "type": "social",
-          "settings": {
-            "network": "tiktok"
-          }
-        }
-      },
-      "block_order": [
-        "menu_1",
-        "menu_2",
-        "menu_3",
-        "menu_4",
-        "social_5",
-        "social_6",
-        "social_7",
-        "social_8"
-      ]
     }
   },
   "order": [
-    "sk2_footer"
+    "footer",
+    "utilities"
   ]
 }
