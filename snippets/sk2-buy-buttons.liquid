@@ -1,0 +1,87 @@
+{%- doc -%}
+  Buy buttons for the sk2 product page.
+
+  Stands in for Prestige's `snippets/buy-buttons.liquid`, which `sk2-product`
+  was written against. That snippet pulls in Prestige's `button` / `input` /
+  `checkbox` form primitives; this one renders Horizon's `add-to-cart-button`
+  instead, inside the `.buy-buttons` wrapper the sk2 CSS already styles as
+  pages.html's `.btn--ink`.
+
+  `<product-form-component>` is what makes Horizon's cart drawer, fly-to-cart
+  and add-to-cart events fire, so it wraps the form here exactly as
+  `blocks/buy-buttons.liquid` does.
+
+  `sk2-product.liquid` also passes `atc_button_background`,
+  `atc_button_text_color`, `payment_button_background`,
+  `payment_button_text_color` and `show_gift_card_recipient`. They are
+  deliberately not consumed: `assets/sk2-home.css` styles
+  `.sk2 .buy-buttons .button` outright — its `.sk2 :where(button)` reset strips
+  the theme's button chrome at equal specificity — so colour overrides could not
+  reach these buttons anyway, and Horizon renders the gift-card recipient form
+  from its own block. Liquid ignores unknown render arguments, so the call site
+  in `sk2-product.liquid` needs no edit beyond the snippet name.
+
+  @param {object} product - The product being sold.
+  @param {string} form_id - The id to give the product form.
+  @param {boolean} [show_payment_button] - Render the dynamic checkout button.
+{%- enddoc -%}
+
+{%- liquid
+  assign buy_product = product
+  if buy_product == blank
+    assign buy_product = closest.product
+  endif
+
+  assign current_variant = buy_product.selected_or_first_available_variant
+
+  assign can_add_to_cart = false
+  if current_variant.available and buy_product.available
+    assign can_add_to_cart = true
+  endif
+
+  if can_add_to_cart
+    assign atc_text = 'actions.add_to_cart' | t
+  else
+    assign atc_text = 'products.product.sold_out' | t
+  endif
+
+  assign payment_form_id = form_id | append: '-payment'
+-%}
+
+{%- unless buy_product == blank -%}
+  <div class="buy-buttons">
+    <product-form-component
+      data-section-id="{{ section.id }}"
+      data-product-id="{{ buy_product.id }}"
+    >
+      {%- form 'product', buy_product, id: form_id, data-type: 'add-to-cart-form', novalidate: 'novalidate' -%}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ current_variant.id }}"
+          disabled
+          ref="variantId"
+        >
+
+        {%- render 'add-to-cart-button',
+          can_add_to_cart: can_add_to_cart,
+          add_to_cart_text: atc_text,
+          product: buy_product,
+          show_icon: false
+        -%}
+      {%- endform -%}
+    </product-form-component>
+
+    {%- if show_payment_button and can_add_to_cart -%}
+      {%- form 'product',
+        buy_product,
+        id: payment_form_id,
+        data-type: 'add-to-cart-form',
+        novalidate: 'novalidate'
+      -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {{ form | payment_button }}
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+{%- endunless -%}

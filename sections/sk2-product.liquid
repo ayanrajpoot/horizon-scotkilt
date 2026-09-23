@@ -109,11 +109,12 @@ templates.
         {%- endif -%}
       </div>
 
-      {%- comment -%}------- buy box (re-rendered on variant change) -------{%- endcomment -%}
+      {%- comment -%}PORT: Prestige snippet -> Horizon-native sk2-* equivalent, same call signature.{%- endcomment -%}
+  {%- comment -%}------- buy box (re-rendered on variant change) -------{%- endcomment -%}
       <product-rerender id="sk2-pdp-buy-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
         <div class="pdp-buy">
 
-          {%- render 'pdp-eyebrow', product: product, context: 'main_product' -%}
+          {%- render 'sk2-pdp-eyebrow', product: product, context: 'main_product' -%}
 
           <h1>{{ product.title }}</h1>
 
@@ -140,7 +141,7 @@ templates.
             <div class="pdp-buy__short">{{ short_description }}</div>
           {%- endif -%}
 
-          {%- render 'variant-picker',
+          {%- render 'sk2-variant-picker',
             product: product,
             form_id: product_form_id,
             context: 'main_product',
@@ -164,7 +165,7 @@ templates.
 
           <div class="pdp-cta" data-sk2-cta>
             {%- render 'quantity-selector', variant: variant, form: product_form_id -%}
-            {%- render 'buy-buttons',
+            {%- render 'sk2-buy-buttons',
               product: product,
               form_id: product_form_id,
               show_payment_button: section.settings.show_payment_button,
@@ -279,7 +280,7 @@ templates.
   {%- if complementary != blank -%}
     <section class="sk2__section sk2__section--tight sk2__section--ivory2" {{ complementary.shopify_attributes }}>
       <div class="sk2__container">
-        {%- render 'complementary-products', product: product, block: complementary -%}
+        {%- render 'sk2-complementary-products', product: product, block: complementary -%}
       </div>
     </section>
   {%- endif -%}
@@ -380,7 +381,7 @@ The "Recently viewed" section reads the list the script below writes.
           <div class="sk2-qv__text">{{ quick_view_text }}</div>
         {%- endif -%}
 
-        {%- render 'variant-picker',
+        {%- render 'sk2-variant-picker',
           product: product,
           form_id: quick_buy_form_id,
           context: 'quick_buy',
@@ -388,7 +389,7 @@ The "Recently viewed" section reads the list the script below writes.
           swatch_selector_style: 'block_swatch'
         -%}
 
-        {%- render 'buy-buttons',
+        {%- render 'sk2-buy-buttons',
           product: product,
           form_id: quick_buy_form_id,
           show_payment_button: false,

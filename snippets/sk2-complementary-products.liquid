@@ -1,0 +1,42 @@
+{%- doc -%}
+  "Complete the look" row for the sk2 product page.
+
+  Stands in for Prestige's `snippets/complementary-products.liquid`, which
+  `sk2-product` was written against. That snippet renders Prestige's own
+  `product-card` / `product-card-horizontal`.
+
+  `recommendations` is only populated when a section is requested through
+  `routes.product_recommendations_url`, so this renders Horizon's
+  `<product-recommendations>` element instead and lets
+  `assets/product-recommendations.js` fetch and swap the content in — the
+  theme's real lazy-loading path. Products come from Shopify's `complementary`
+  intent, i.e. the ones a merchant links in Search & Discovery; the element
+  stays empty when there are none rather than padding the row with unrelated
+  products.
+
+  @param {object} product - The product to find complements for.
+  @param {object} [block] - The section block, for its heading and limit settings.
+{%- enddoc -%}
+
+{%- liquid
+  assign source_product = product
+  if source_product == blank
+    assign source_product = closest.product
+  endif
+
+  assign limit = block.settings.products_to_show | default: 4
+  assign heading = block.settings.heading | default: 'Complete the look'
+-%}
+
+{%- unless source_product == blank -%}
+  {%- if heading != blank -%}
+    <div class="sk2__sec-head">
+      <div><h2 class="h2">{{ heading }}</h2></div>
+    </div>
+  {%- endif -%}
+
+  <product-recommendations
+    class="sk2-complementary"
+    data-url="{{ routes.product_recommendations_url }}?section_id=product-recommendations&product_id={{ source_product.id }}&limit={{ limit }}&intent=complementary"
+  ></product-recommendations>
+{%- endunless -%}

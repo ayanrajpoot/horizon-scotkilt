@@ -1,0 +1,14 @@
+{%- comment -%}
+Small category link above the product title, matching pages.html's .pdp-buy__eyebrow.
+* product: the product to render the eyebrow for
+* context: only rendered when this is 'main_product'
+{%- endcomment -%}
+{%- if context == 'main_product' and product != blank -%}
+  {%- if product.collections.first != blank -%}
+    <div class="pdp-eyebrow">
+      <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+    </div>
+  {%- elsif product.type != blank -%}
+    <div class="pdp-eyebrow"><span>{{ product.type }}</span></div>
+  {%- endif -%}
+{%- endif -%}

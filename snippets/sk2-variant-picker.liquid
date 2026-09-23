@@ -1,0 +1,45 @@
+{%- doc -%}
+  Variant picker for the sk2 product page.
+
+  Stands in for Prestige's `snippets/variant-picker.liquid`, which `sk2-product`
+  was written against. Rather than porting that snippet and its `option-value` /
+  `select` / `icon` dependency chain, this renders Horizon's own
+  `variant-main-picker` — so variant resolution, availability, swatches and the
+  URL/section-rendering behaviour are all the theme's real machinery.
+
+  The class names differ between the two themes; `assets/sk2-horizon-bridge.css`
+  re-applies the sk2 skin to Horizon's names, so `assets/sk2-home.css` stays
+  byte-identical to the source.
+
+  `sk2-product.liquid` also passes `form_id`, `context`, `selector_style`,
+  `swatch_selector_style` and `hide_sold_out_variants`. Those are Prestige-only
+  concepts — Horizon's picker owns the form wiring itself and drives swatch
+  style from Theme settings > Swatches. Liquid ignores unknown render arguments,
+  so the call site needs no edit beyond the snippet name.
+
+  @param {object} product - The product to render options for.
+  @param {object} [size_chart_page] - Page linked under the options.
+{%- enddoc -%}
+
+{%- liquid
+  assign variant_product = product
+  if variant_product == blank
+    assign variant_product = closest.product
+  endif
+-%}
+
+{%- unless variant_product == blank or variant_product.has_only_default_variant -%}
+  <div class="sk2-variant-picker" data-sk2-variant-picker>
+    {%- render 'variant-main-picker',
+      product_resource: variant_product,
+      section: section,
+      product: variant_product
+    -%}
+
+    {%- if size_chart_page != blank and size_chart_page.url != blank -%}
+      <p class="opt__hint">
+        <a href="{{ size_chart_page.url }}">{{ size_chart_page.title }}</a>
+      </p>
+    {%- endif -%}
+  </div>
+{%- endunless -%}
