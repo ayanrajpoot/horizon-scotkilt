@@ -1299,21 +1299,146 @@
   "name": "t:names.header",
   "tag": "header",
   "class": "header-section",
-  "blocks": [{"type": "sk2-mega-feature"}],
+  "blocks": [
+    {
+      "type": "sk2-mega-feature"
+    }
+  ],
   "settings": [
-    {"type": "header", "content": "SCOTKILT chrome"},
-    {"type": "checkbox", "id": "sk2_chrome", "label": "Use the SCOTKILT chrome", "default": true, "info": "Renders the pages.html design. Untick to fall back to the theme's own section."},
-    {"type": "link_list", "id": "sk2_menu", "label": "Menu", "default": "main-menu", "info": "Second-level items become mega-menu column headings, their children the links."},
-    {"type": "image_picker", "id": "sk2_logo", "label": "Logo image", "info": "Leave empty to use the wordmark."},
-    {"type": "text", "id": "sk2_wordmark", "label": "Wordmark", "default": "SCOTKILT"},
-    {"type": "text", "id": "sk2_tagline", "label": "Tagline", "default": "KILTS + TARTANS"},
-    {"type": "text", "id": "sk2_search_placeholder", "label": "Search placeholder", "default": "Search kilts and tartans"},
-    {"type": "richtext", "id": "sk2_search_hints", "label": "Search hints", "default": "<p>Try Black Watch, utility kilt or leather kilt</p>"},
-    {"type": "checkbox", "id": "sk2_predictive_search", "label": "Use predictive search", "default": false, "info": "Opens the theme's predictive search dialog instead of the pages.html overlay."},
-    {"type": "select", "id": "sk2_menu_trigger", "label": "Open the mega menu on", "default": "hover", "options": [{"value": "hover", "label": "Hover"}, {"value": "click", "label": "Click"}]},
-    {"type": "image_picker", "id": "sk2_logo_transparent", "label": "Transparent-header logo", "info": "Used on templates below where \"Inverse logo\" is ticked."},
-    {"type": "range", "id": "sk2_logo_width", "label": "Logo width", "min": 60, "max": 400, "step": 5, "unit": "px", "default": 180},
-    {"type": "range", "id": "sk2_logo_mobile_width", "label": "Logo width (mobile)", "min": 50, "max": 250, "step": 5, "unit": "px", "default": 120},
+    {
+      "type": "header",
+      "content": "SCOTKILT chrome"
+    },
+    {
+      "type": "select",
+      "id": "enable_sticky_header",
+      "label": "t:settings.sticky_header",
+      "options": [
+        {
+          "value": "always",
+          "label": "t:options.always"
+        },
+        {
+          "value": "scroll-up",
+          "label": "t:options.on_scroll_up"
+        },
+        {
+          "value": "never",
+          "label": "t:options.never"
+        }
+      ],
+      "default": "always"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "t:settings.border_width",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "bottom_border_color",
+      "label": "t:settings.bottom_border_color",
+      "placeholder": "t:settings.default",
+      "visible_if": "{{ section.settings.border_width > 0 }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "sk2_chrome",
+      "label": "Use the SCOTKILT chrome",
+      "default": true,
+      "info": "Renders the pages.html design. Untick to fall back to the theme's own section."
+    },
+    {
+      "type": "link_list",
+      "id": "sk2_menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Second-level items become mega-menu column headings, their children the links."
+    },
+    {
+      "type": "image_picker",
+      "id": "sk2_logo",
+      "label": "Logo image",
+      "info": "Leave empty to use the wordmark."
+    },
+    {
+      "type": "text",
+      "id": "sk2_wordmark",
+      "label": "Wordmark",
+      "default": "SCOTKILT"
+    },
+    {
+      "type": "text",
+      "id": "sk2_tagline",
+      "label": "Tagline",
+      "default": "KILTS + TARTANS"
+    },
+    {
+      "type": "text",
+      "id": "sk2_search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search kilts and tartans"
+    },
+    {
+      "type": "richtext",
+      "id": "sk2_search_hints",
+      "label": "Search hints",
+      "default": "<p>Try Black Watch, utility kilt or leather kilt</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "sk2_predictive_search",
+      "label": "Use predictive search",
+      "default": false,
+      "info": "Opens the theme's predictive search dialog instead of the pages.html overlay."
+    },
+    {
+      "type": "select",
+      "id": "sk2_menu_trigger",
+      "label": "Open the mega menu on",
+      "default": "hover",
+      "options": [
+        {
+          "value": "hover",
+          "label": "Hover"
+        },
+        {
+          "value": "click",
+          "label": "Click"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "sk2_logo_transparent",
+      "label": "Transparent-header logo",
+      "info": "Used on templates below where \"Inverse logo\" is ticked."
+    },
+    {
+      "type": "range",
+      "id": "sk2_logo_width",
+      "label": "Logo width",
+      "min": 60,
+      "max": 400,
+      "step": 5,
+      "unit": "px",
+      "default": 180
+    },
+    {
+      "type": "range",
+      "id": "sk2_logo_mobile_width",
+      "label": "Logo width (mobile)",
+      "min": 50,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "default": 120
+    },
     {
       "type": "header",
       "content": "t:content.logo"
@@ -1584,26 +1709,6 @@
       "default": "standard"
     },
     {
-      "type": "select",
-      "id": "enable_sticky_header",
-      "label": "t:settings.sticky_header",
-      "options": [
-        {
-          "value": "always",
-          "label": "t:options.always"
-        },
-        {
-          "value": "scroll-up",
-          "label": "t:options.on_scroll_up"
-        },
-        {
-          "value": "never",
-          "label": "t:options.never"
-        }
-      ],
-      "default": "always"
-    },
-    {
       "type": "range",
       "id": "divider_width",
       "label": "t:settings.divider_thickness",
@@ -1636,23 +1741,6 @@
       "label": "t:settings.divider_color",
       "placeholder": "t:settings.default",
       "visible_if": "{{ section.settings.divider_width > 0 and section.settings.menu_row == 'bottom' or section.settings.localization_row == 'bottom' or section.settings.search_row == 'bottom' }}"
-    },
-    {
-      "type": "range",
-      "id": "border_width",
-      "label": "t:settings.border_width",
-      "min": 0,
-      "max": 5,
-      "step": 0.5,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "color",
-      "id": "bottom_border_color",
-      "label": "t:settings.bottom_border_color",
-      "placeholder": "t:settings.default",
-      "visible_if": "{{ section.settings.border_width > 0 }}"
     },
     {
       "type": "header",
