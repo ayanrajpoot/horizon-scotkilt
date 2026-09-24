@@ -2,10 +2,22 @@
 SK2 HEADER -- the "add a section" entry point for the SCOTKILT header.
 
 The markup lives in snippets/sk2-chrome-header.liquid, which sections/header.liquid
-renders too. Horizon's header group does not accept added sections in the theme
-editor, so header.liquid is the path that actually ships; this stays for themes
-or groups where a section can be added.
+renders too. This is the section the store's header group actually uses, so its
+settings are the ones the theme editor shows.
 {%- endcomment -%}
+
+{%- liquid
+  comment
+    Transparent-over-hero is per template, same three templates Prestige offers.
+  endcomment
+  if section.settings.transparent_home and template.name == 'index'
+    assign sk2_transparent = true
+  elsif section.settings.transparent_product and template.name == 'product'
+    assign sk2_transparent = true
+  elsif section.settings.transparent_collection and template.name == 'collection'
+    assign sk2_transparent = true
+  endif
+-%}
 
 {%- render 'sk2-chrome-header',
   menu: linklists[section.settings.menu],
@@ -14,7 +26,20 @@ or groups where a section can be added.
   logo: section.settings.logo,
   search_placeholder: section.settings.search_placeholder,
   search_hints: section.settings.search_hints,
-  feature_blocks: section.blocks
+  feature_blocks: section.blocks,
+  form_id: section.id,
+  sticky: section.settings.sticky,
+  transparent: sk2_transparent,
+  transparent_text: section.settings.transparent_text,
+  transparent_logo: section.settings.logo_transparent,
+  show_country: section.settings.show_country,
+  show_language: section.settings.show_language,
+  predictive_search: section.settings.predictive_search,
+  logo_width: section.settings.logo_width,
+  logo_mobile_width: section.settings.logo_mobile_width,
+  border_width: section.settings.border_width,
+  border_color: section.settings.border_color,
+  menu_trigger: section.settings.menu_trigger
 -%}
 
 {% stylesheet %}
@@ -32,10 +57,44 @@ or groups where a section can be added.
   "settings": [
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
     {
+      "type": "select",
+      "id": "sticky",
+      "label": "Sticky header",
+      "default": "always",
+      "options": [
+        { "value": "always", "label": "Always" },
+        { "value": "scroll-up", "label": "On scroll up" },
+        { "value": "", "label": "Never" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "menu_trigger",
+      "label": "Open the mega menu on",
+      "default": "hover",
+      "options": [
+        { "value": "hover", "label": "Hover" },
+        { "value": "click", "label": "Click" }
+      ]
+    },
+    { "type": "range", "id": "border_width", "label": "Bottom border", "min": 0, "max": 5, "step": 1, "unit": "px", "default": 1 },
+    { "type": "color", "id": "border_color", "label": "Bottom border colour" },
+    { "type": "header", "content": "Transparent header" },
+    { "type": "checkbox", "id": "transparent_home", "label": "Transparent on the home page", "default": false },
+    { "type": "checkbox", "id": "transparent_product", "label": "Transparent on product pages", "default": false },
+    { "type": "checkbox", "id": "transparent_collection", "label": "Transparent on collection pages", "default": false },
+    { "type": "color", "id": "transparent_text", "label": "Text colour while transparent" },
+    { "type": "image_picker", "id": "logo_transparent", "label": "Transparent-header logo", "info": "Optional light version of the logo." },
+    { "type": "header", "content": "Localization" },
+    { "type": "checkbox", "id": "show_country", "label": "Show the country selector", "default": true, "info": "Only appears once Markets has more than one country." },
+    { "type": "checkbox", "id": "show_language", "label": "Show the language selector", "default": true, "info": "Only appears once more than one language is published." },
+    {
       "type": "header",
       "content": "Logo"
     },
     { "type": "image_picker", "id": "logo", "label": "Logo image", "info": "Leave empty to use the wordmark below." },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 400, "step": 5, "unit": "px", "default": 180 },
+    { "type": "range", "id": "logo_mobile_width", "label": "Logo width (mobile)", "min": 50, "max": 250, "step": 5, "unit": "px", "default": 120 },
     { "type": "text", "id": "wordmark", "label": "Wordmark", "default": "SCOTKILT" },
     { "type": "text", "id": "tagline", "label": "Tagline", "default": "KILTS + TARTANS" },
     {
@@ -48,6 +107,7 @@ or groups where a section can be added.
       "label": "Search placeholder",
       "default": "Search kilts and tartans"
     },
+    { "type": "checkbox", "id": "predictive_search", "label": "Use predictive search", "default": false, "info": "Opens the theme's predictive search dialog instead of the pages.html overlay." },
     {
       "type": "richtext",
       "id": "search_hints",

@@ -119,7 +119,8 @@
       "settings": {
         "heading": "Which tartan can I wear?",
         "subheading": "<p>There is no law about who may wear a tartan — but most people choose one that tells their family's story.</p>"
-      }
+      },
+      "disabled": true
     },
     "sk2-custom-tartan": {
       "type": "sk2-cat-cta",
@@ -133,7 +134,8 @@
         "metafield_namespace": "custom",
         "heading_key": "cta_heading",
         "text_key": "cta_text"
-      }
+      },
+      "disabled": true
     },
     "sk2-tartan-faq": {
       "type": "sk2-faq",
@@ -184,7 +186,8 @@
       "settings": {
         "heading": "Everything about tartans",
         "subheading": "<p>More questions? <a href=\"/pages/contact\" title=\"Contact\">Ask our tartan experts</a>.</p>"
-      }
+      },
+      "disabled": true
     },
     "sk2-newsletter": {
       "type": "sk2-newsletter",
@@ -193,7 +196,8 @@
         "subheading": "New tartans, Highland style guides and 10% off your first order.",
         "button_text": "Join the List",
         "disclaimer": "Unsubscribe at any time. See our Privacy policy."
-      }
+      },
+      "disabled": true
     },
     "main": {
       "type": "main-page",

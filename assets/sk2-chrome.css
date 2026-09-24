@@ -227,3 +227,8 @@
 @media (max-width:1023px){
   .sk2-chrome .logo img{ max-width:var(--sk2-logo-w-m,120px) }
 }
+
+/* Footer tartan strip: the procedural fallback tiles are 34px, so scale the
+   plaid down to read as a sett rather than three flat bands. */
+.sk2-chrome .footer__swatches .sk2-visual{ width:34px; height:34px; flex:none; border-radius:2px }
+.sk2-chrome .footer__swatches .sk2-visual__fallback{ background-size:18px 18px,18px 18px }

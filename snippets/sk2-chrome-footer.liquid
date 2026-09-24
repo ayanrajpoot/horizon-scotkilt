@@ -78,13 +78,29 @@
             <div class="social">{{ footer_social }}</div>
           {%- endif -%}
 
-          {%- if swatch_1 != blank or swatch_2 != blank or swatch_3 != blank -%}
-            <div class="footer__swatches" aria-hidden="true">
+          {%- comment -%}
+            pages.html weaves six tartan swatches here from its own sett data.
+            With no swatch images uploaded, fall back to the same six tartans as
+            plaid tiles (their dominant colours, drawn by sk2-visual's fallback)
+            so the strip is never empty.
+
+            ponytail: three hex codes per tartan, not the real sett -- the
+            canvas weaver in assets/tartan-picker.js is 2000 lines we would have
+            to load on every page for a 34px tile.
+          {%- endcomment -%}
+          <div class="footer__swatches" aria-hidden="true">
+            {%- if swatch_1 != blank or swatch_2 != blank or swatch_3 != blank -%}
               {%- if swatch_1 != blank -%}{{ swatch_1 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
               {%- if swatch_2 != blank -%}{{ swatch_2 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
               {%- if swatch_3 != blank -%}{{ swatch_3 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
-            </div>
-          {%- endif -%}
+            {%- else -%}
+              {%- assign sk_tartans = '#1f3252|#12331f|#0f0f0f,#a3182a|#1b1b1b|#e8dcc0,#17324a|#12472f|#c0392b,#6f7377|#3a4c63|#1a1a1a,#8c1f25|#141414|#d8c37a,#141414|#f1efe9|#6d6d6d' | split: ',' -%}
+              {%- for trio in sk_tartans -%}
+                {%- assign c = trio | split: '|' -%}
+                {%- render 'sk2-visual', ratio: '1/1', class: 'footer__swatch', color_1: c[0], color_2: c[1], color_3: c[2], alt: '' -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
         </div>
 
         {%- if menu_1 != blank -%}
