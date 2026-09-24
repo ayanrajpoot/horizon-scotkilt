@@ -94,6 +94,7 @@ product-recommendations.sk2,recently-viewed-products.sk2{ display:block }
 .sk2 .buybar.is-on{ opacity:1; visibility:visible; transform:none; transition-delay:0s }
 .sk2 .buybar__inner{ display:flex; align-items:center; gap:16px; height:64px }
 .sk2 .buybar img{ width:40px; height:50px; object-fit:cover; border-radius:2px; flex-shrink:0 }
+.sk2 .buybar__text{ flex:1; min-width:0 }
 .sk2 .buybar__name{ font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
 .sk2 .buybar__meta{ font-size:12px; color:var(--sk2-grey) }
 .sk2 .buybar__price{ margin-left:auto; font-family:var(--sk2-serif); font-size:22px; white-space:nowrap }

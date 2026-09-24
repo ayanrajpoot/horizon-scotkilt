@@ -23,6 +23,21 @@
   @param {object} [feature_blocks] - the section's blocks, of which those typed
     `feature` render a mega-menu feature card. Omitted by the native header
     section, which has no block type that can hold one.
+  @param {string} [sticky] - 'always', 'scroll-up' (hides going down, returns
+    coming up) or blank for a header that scrolls away
+  @param {boolean} [transparent] - lay the bar over the first section
+  @param {string} [transparent_text] - text colour while transparent
+  @param {object} [transparent_logo] - logo image used while transparent
+  @param {boolean} [show_country] - country/region selector
+  @param {boolean} [show_language] - language selector
+  @param {boolean} [predictive_search] - open Horizon's predictive search dialog
+    instead of the pages.html overlay
+  @param {number} [logo_width] - logo image cap, px
+  @param {number} [logo_mobile_width]
+  @param {number} [border_width] - bottom separation border, px
+  @param {string} [border_color]
+  @param {string} [menu_trigger] - 'hover' (default) or 'click'
+  @param {string} [form_id] - unique id for the localization forms
 {%- enddoc -%}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,12 +49,45 @@
 
 {%- liquid
   assign sk_wordmark = wordmark | default: shop.name
+  assign sk_localize = false
+  if show_country or show_language
+    assign sk_localize = true
+  endif
+  assign sk_form_id = form_id | default: 'sk2-header'
+  assign sk_form_id_drawer = sk_form_id | append: '-drawer'
+
+  comment
+    Transparent mode swaps the logo and repaints the bar through one custom
+    property, so the colour scheme stays the single source of truth elsewhere.
+  endcomment
+  assign sk_logo_image = logo
+  if transparent and transparent_logo != blank
+    assign sk_logo_image = transparent_logo
+  endif
+
+  capture sk_header_style
+    if logo_width != blank
+      echo '--sk2-logo-w:' | append: logo_width | append: 'px;'
+    endif
+    if logo_mobile_width != blank
+      echo '--sk2-logo-w-m:' | append: logo_mobile_width | append: 'px;'
+    endif
+    if border_width != blank
+      echo '--sk2-header-border:' | append: border_width | append: 'px;'
+    endif
+    if border_color != blank
+      echo '--sk2-header-border-color:' | append: border_color | append: ';'
+    endif
+    if transparent and transparent_text != blank
+      echo '--sk2-header-on:' | append: transparent_text | append: ';'
+    endif
+  endcapture
 -%}
 
 {%- capture sk_logo -%}
   <a class="logo" href="{{ routes.root_url }}" aria-label="{{ sk_wordmark | escape }} home">
-    {%- if logo != blank -%}
-      {{ logo | image_url: width: 400 | image_tag: loading: 'eager', alt: sk_wordmark }}
+    {%- if sk_logo_image != blank -%}
+      {{ sk_logo_image | image_url: width: 600 | image_tag: loading: 'eager', alt: sk_wordmark }}
     {%- else -%}
       {{- sk_wordmark -}}
       {%- if tagline != blank -%}
@@ -50,7 +98,13 @@
 {%- endcapture -%}
 
 <div class="sk2-chrome" data-sk2-chrome>
-  <header class="header" id="sk2-header">
+  <header
+    class="header{% if transparent %} header--transparent{% endif %}"
+    id="sk2-header"
+    data-sk2-sticky="{{ sticky | default: 'always' }}"
+    data-sk2-trigger="{{ menu_trigger | default: 'hover' }}"
+    {% if sk_header_style != blank %}style="{{ sk_header_style }}"{% endif %}
+  >
     <div class="container header__bar">
       <button
         class="ibtn burger"
@@ -119,15 +173,37 @@
       </nav>
 
       <div class="header__tools">
-        <button
-          class="ibtn"
-          data-sk2-action="search-toggle"
-          data-sk2-search-toggle
-          aria-label="Search"
-          aria-expanded="false"
-        >
-          {%- render 'sk2-icons', icon: 'search' -%}
-        </button>
+        {%- comment -%}
+          Predictive mode hands the click to `snippets/search-modal.liquid`,
+          which layout/theme.liquid already renders on every page -- no second
+          search implementation to keep in step.
+        {%- endcomment -%}
+        {%- if predictive_search -%}
+          <button class="ibtn" on:click="#search-modal/showDialog" aria-label="{{ 'content.search' | t }}">
+            {%- render 'sk2-icons', icon: 'search' -%}
+          </button>
+        {%- else -%}
+          <button
+            class="ibtn"
+            data-sk2-action="search-toggle"
+            data-sk2-search-toggle
+            aria-label="Search"
+            aria-expanded="false"
+          >
+            {%- render 'sk2-icons', icon: 'search' -%}
+          </button>
+        {%- endif -%}
+
+        {%- if sk_localize -%}
+          <div class="header__localize header--desktop-only">
+            {%- render 'localization-form',
+              show_country: show_country,
+              show_language: show_language,
+              localization_style: 'dropdown',
+              form_id: sk_form_id
+            -%}
+          </div>
+        {%- endif -%}
 
         {%- if shop.customer_accounts_enabled -%}
           <a
@@ -236,12 +312,24 @@
       {%- endfor -%}
     </div>
 
-    {%- if shop.customer_accounts_enabled -%}
+    {%- if shop.customer_accounts_enabled or sk_localize -%}
       <div class="mnav__foot">
-        <a href="{{ routes.account_url }}">
-          {%- render 'sk2-icons', icon: 'user' -%}
-          {{- 'accessibility.account' | t -}}
-        </a>
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{{ routes.account_url }}">
+            {%- render 'sk2-icons', icon: 'user' -%}
+            {{- 'accessibility.account' | t -}}
+          </a>
+        {%- endif -%}
+        {%- if sk_localize -%}
+          <div class="header__localize">
+            {%- render 'localization-form',
+              show_country: show_country,
+              show_language: show_language,
+              localization_style: 'dropdown',
+              form_id: sk_form_id_drawer
+            -%}
+          </div>
+        {%- endif -%}
       </div>
     {%- endif -%}
   </aside>

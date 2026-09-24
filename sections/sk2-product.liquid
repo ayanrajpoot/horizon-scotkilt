@@ -321,7 +321,7 @@ templates.
           {%- if product.featured_media != blank -%}
             {{ product.featured_media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
           {%- endif -%}
-          <div>
+          <div class="buybar__text">
             <div class="buybar__name">{{ product.title }}</div>
             {%- unless product.has_only_default_variant -%}
               <div class="buybar__meta">{{ variant.title }}</div>

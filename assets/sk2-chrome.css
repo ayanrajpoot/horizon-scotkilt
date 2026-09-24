@@ -191,3 +191,33 @@
     animation-duration:.01ms!important; transition-duration:.01ms!important }
 }
 
+
+/* --- Header options -------------------------------------------------------
+   Sticky mode, transparent-over-hero, logo cap and the separation border, all
+   driven by the header section's own settings. Transparent mode lifts the whole
+   header group out of flow so the first section starts at y=0; sk2-chrome.js
+   pins it and swaps the solid skin back in once the hero has scrolled past.
+   ------------------------------------------------------------------------- */
+.sk2-chrome .header{ border-bottom-width:var(--sk2-header-border,1px); border-bottom-color:var(--sk2-header-border-color,rgba(28,27,25,.08)) }
+.sk2-chrome .header[data-sk2-sticky=""]{ position:relative }
+.sk2-chrome .header[data-sk2-sticky="scroll-up"]{ transition:transform .35s var(--ease),box-shadow .3s }
+.sk2-chrome .header.is-away{ transform:translateY(-100%) }
+.sk2-chrome .logo img{ width:auto; max-width:var(--sk2-logo-w,180px); max-height:calc(var(--header-h) - 20px); object-fit:contain }
+.sk2-chrome .header__localize{ display:flex; align-items:center; margin-right:6px }
+.sk2-chrome .header__localize .localization-selector{ font-size:12px; letter-spacing:.1em; text-transform:uppercase }
+
+#header-group:has(.header--transparent){ position:absolute; left:0; right:0; z-index:100 }
+#header-group.sk2-pinned{ position:fixed; top:0 }
+.sk2-chrome .header--transparent{ position:relative; background:transparent; border-bottom-color:transparent; box-shadow:none; color:var(--sk2-header-on,var(--ivory)) }
+.sk2-chrome .header--transparent .logo,
+.sk2-chrome .header--transparent .nav__link,
+.sk2-chrome .header--transparent .header__tools .ibtn,
+.sk2-chrome .header--transparent .header__localize{ color:inherit }
+.sk2-chrome .header--transparent .nav__link::after{ background:currentColor }
+.sk2-chrome .header--transparent .ibtn:hover{ background:rgba(255,255,255,.14) }
+.sk2-chrome .header--transparent.is-solid{ background:var(--ivory); color:var(--ink); border-bottom-color:var(--sk2-header-border-color,rgba(28,27,25,.08)) }
+.sk2-chrome .header--transparent.is-solid .ibtn:hover{ background:var(--ivory-2) }
+
+@media (max-width:1023px){
+  .sk2-chrome .logo img{ max-width:var(--sk2-logo-w-m,120px) }
+}

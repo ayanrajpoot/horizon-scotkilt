@@ -4,13 +4,50 @@
   in the theme editor to put it back. Nothing was removed.
 {%- endcomment -%}
 {%- unless section.settings.sk2_chrome == false -%}
+  {%- comment -%}
+    The chrome reads the section's own transparent / sticky / localization
+    settings, so those keep meaning the same thing whichever branch renders.
+  {%- endcomment -%}
+  {%- liquid
+    if section.settings.enable_transparent_header_home and template.name == 'index'
+      assign sk2_transparent = true
+      assign sk2_transparent_text = section.settings.text_color_transparent_home
+      assign sk2_inverse = section.settings.home_inverse_logo
+    elsif section.settings.enable_transparent_header_product and template.name == 'product'
+      assign sk2_transparent = true
+      assign sk2_transparent_text = section.settings.text_color_transparent_product
+      assign sk2_inverse = section.settings.product_inverse_logo
+    elsif section.settings.enable_transparent_header_collection and template.name == 'collection'
+      assign sk2_transparent = true
+      assign sk2_transparent_text = section.settings.text_color_transparent_collection
+      assign sk2_inverse = section.settings.collection_inverse_logo
+    endif
+
+    if sk2_inverse and section.settings.sk2_logo_transparent != blank
+      assign sk2_logo_transparent = section.settings.sk2_logo_transparent
+    endif
+  -%}
   {%- render 'sk2-chrome-header',
     menu: linklists[section.settings.sk2_menu],
     wordmark: section.settings.sk2_wordmark,
     tagline: section.settings.sk2_tagline,
     logo: section.settings.sk2_logo,
     search_placeholder: section.settings.sk2_search_placeholder,
-    search_hints: section.settings.sk2_search_hints
+    search_hints: section.settings.sk2_search_hints,
+    feature_blocks: section.blocks,
+    form_id: section.id,
+    sticky: section.settings.enable_sticky_header,
+    transparent: sk2_transparent,
+    transparent_text: sk2_transparent_text,
+    transparent_logo: sk2_logo_transparent,
+    show_country: section.settings.show_country,
+    show_language: section.settings.show_language,
+    predictive_search: section.settings.sk2_predictive_search,
+    logo_width: section.settings.sk2_logo_width,
+    logo_mobile_width: section.settings.sk2_logo_mobile_width,
+    border_width: section.settings.border_width,
+    border_color: section.settings.bottom_border_color,
+    menu_trigger: section.settings.sk2_menu_trigger
   -%}
 {%- else -%}
 {% liquid
@@ -1262,6 +1299,19 @@
   "name": "t:names.header",
   "tag": "header",
   "class": "header-section",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Mega menu feature",
+      "settings": [
+        {"type": "text", "id": "menu_item", "label": "Show under this menu item", "info": "Must match the top-level menu item's title exactly, e.g. Kilts."},
+        {"type": "image_picker", "id": "image", "label": "Image"},
+        {"type": "text", "id": "label", "label": "Label", "default": "Featured kilt"},
+        {"type": "text", "id": "title", "label": "Title"},
+        {"type": "url", "id": "link", "label": "Link"}
+      ]
+    }
+  ],
   "settings": [
     {"type": "header", "content": "SCOTKILT chrome"},
     {"type": "checkbox", "id": "sk2_chrome", "label": "Use the SCOTKILT chrome", "default": true, "info": "Renders the pages.html design. Untick to fall back to the theme's own section."},
@@ -1271,6 +1321,11 @@
     {"type": "text", "id": "sk2_tagline", "label": "Tagline", "default": "KILTS + TARTANS"},
     {"type": "text", "id": "sk2_search_placeholder", "label": "Search placeholder", "default": "Search kilts and tartans"},
     {"type": "richtext", "id": "sk2_search_hints", "label": "Search hints", "default": "<p>Try Black Watch, utility kilt or leather kilt</p>"},
+    {"type": "checkbox", "id": "sk2_predictive_search", "label": "Use predictive search", "default": false, "info": "Opens the theme's predictive search dialog instead of the pages.html overlay."},
+    {"type": "select", "id": "sk2_menu_trigger", "label": "Open the mega menu on", "default": "hover", "options": [{"value": "hover", "label": "Hover"}, {"value": "click", "label": "Click"}]},
+    {"type": "image_picker", "id": "sk2_logo_transparent", "label": "Transparent-header logo", "info": "Used on templates below where \"Inverse logo\" is ticked."},
+    {"type": "range", "id": "sk2_logo_width", "label": "Logo width", "min": 60, "max": 400, "step": 5, "unit": "px", "default": 180},
+    {"type": "range", "id": "sk2_logo_mobile_width", "label": "Logo width (mobile)", "min": 50, "max": 250, "step": 5, "unit": "px", "default": 120},
     {
       "type": "header",
       "content": "t:content.logo"

@@ -15,9 +15,36 @@
   const mnav = root.querySelector('[data-sk2-mnav]');
   const backdrop = root.querySelector('[data-sk2-backdrop]');
 
-  /* --- header scroll shadow ---------------------------------------------- */
+  /* --- header scroll shadow, sticky mode, transparent pinning ------------
+     One scroll listener does all three. `scroll-up` hides the bar going down
+     and brings it back coming up; a transparent header sits over the first
+     section until it has scrolled past, then pins and takes its solid skin. */
   if (header) {
-    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 4);
+    const group = document.getElementById('header-group');
+    const transparent = header.classList.contains('header--transparent');
+    const sticky = header.dataset.sk2Sticky || 'always';
+    let last = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      header.classList.toggle('is-scrolled', y > 4);
+
+      if (sticky === 'scroll-up') {
+        // ponytail: 8px deadband, otherwise trackpad jitter flaps the bar
+        const down = y > last + 8;
+        const up = y < last - 8;
+        if (down && y > header.offsetHeight) header.classList.add('is-away');
+        else if (up) header.classList.remove('is-away');
+        if (down || up) last = y;
+      }
+
+      if (transparent) {
+        const past = y > (group?.offsetHeight ?? header.offsetHeight);
+        header.classList.toggle('is-solid', past);
+        if (sticky !== '') group?.classList.toggle('sk2-pinned', past);
+      }
+    };
+
     addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
@@ -45,15 +72,32 @@
     item.querySelector('.nav__link')?.setAttribute('aria-expanded', 'true');
   };
 
+  const clickTrigger = header?.dataset.sk2Trigger === 'click';
+
   root.querySelectorAll('.nav__item').forEach((item) => {
     if (!item.querySelector('.mega')) return;
-    item.addEventListener('pointerenter', () => { clearTimeout(megaTimer); openMega(item); });
-    item.addEventListener('pointerleave', () => { megaTimer = setTimeout(() => closeMega(item), 180); });
+    if (clickTrigger) {
+      item.querySelector('.nav__link')?.addEventListener('click', (e) => {
+        // First tap opens the panel; the link still works on the second.
+        if (item.classList.contains('is-open')) return;
+        e.preventDefault();
+        openMega(item);
+      });
+    } else {
+      item.addEventListener('pointerenter', () => { clearTimeout(megaTimer); openMega(item); });
+      item.addEventListener('pointerleave', () => { megaTimer = setTimeout(() => closeMega(item), 180); });
+    }
     item.addEventListener('focusin', () => { clearTimeout(megaTimer); openMega(item); });
     item.addEventListener('focusout', (e) => {
       if (!item.contains(e.relatedTarget)) closeMega(item);
     });
   });
+
+  if (clickTrigger) {
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav__item')) closeMega();
+    });
+  }
 
   /* --- search overlay ----------------------------------------------------- */
   const setSearch = (open) => {
