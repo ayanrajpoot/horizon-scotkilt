@@ -11,27 +11,6 @@
   "sections": {
     "main": {
       "type": "sk2-product",
-      "settings": {
-        "tax_notice": "Taxes and shipping calculated at checkout.",
-        "hide_sold_out_variants": false,
-        "size_hint": "Measure at the navel. Between sizes? Take the larger — the straps adjust.",
-        "show_sku": true,
-        "facts_title": "At a glance",
-        "show_payment_button": true,
-        "show_gift_card_recipient": true,
-        "show_sticky_add_to_cart": true,
-        "link_1_text": "Not sure about the style?",
-        "show_copy_link": true,
-        "copy_link_text": "Copy link",
-        "link_2_text": "Ask a question",
-        "details_title": "Details",
-        "details_text": "Cloth, construction, sizing and care.",
-        "description_title": "Description",
-        "size_chart_page": "",
-        "link_1_url": "",
-        "link_2_url": "",
-        "specs_title": "Specifications"
-      },
       "blocks": {
         "assurance_1": {
           "type": "assurance",
@@ -81,98 +60,6 @@
             "text": "Leather straps and buckles"
           }
         },
-        "accordion_1": {
-          "type": "accordion",
-          "settings": {
-            "title": "Size &amp; fit",
-            "content": "<p>Order by your <strong>waist</strong> measurement taken at the navel, not your trouser size — most people need two to three inches more than their jeans. Pick the <strong>length</strong> closest to your waist-to-knee measurement. Between sizes? Take the larger — the straps adjust by about an inch either way.</p>",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "accordion_2": {
-          "type": "accordion",
-          "settings": {
-            "title": "How to wear it",
-            "content": "<p>A kilt sits at the navel, with the bottom edge at the middle of the kneecap. The apron wraps right over left, flat at the front, with the pleats at the back.</p><ul><li>Sporran — worn on a chain at the front, it carries what the kilt has no pockets for.</li><li>Kilt hose and flashes — folded below the knee.</li><li>Ghillie brogues or plain black shoes.</li></ul>",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "accordion_3": {
-          "type": "accordion",
-          "settings": {
-            "title": "Care",
-            "content": "<p>Dry clean only. Never tumble-dry a pleated kilt. Store it hanging by the straps, or folded along the pleats with the apron outermost, away from direct sunlight.</p>",
-            "page": "",
-            "open_by_default": false
-          }
-        },
-        "tartan_picker_1": {
-          "type": "tartan_picker",
-          "settings": {
-            "visibility": "all",
-            "include_tags": "tartan-picker",
-            "tag_match": "any",
-            "metafield_key": "custom.show_tartan_picker",
-            "tartan_scope": "all",
-            "scope_tag_prefix": "tartan-group:",
-            "scope_metafield_key": "custom.tartans",
-            "label": "Choose your tartan",
-            "show_search": true,
-            "search_placeholder": "Search your clan or surname (e.g. MacDonald, Stewart)",
-            "inline_source": "popular",
-            "inline_count": 14,
-            "browse_text": "Browse all",
-            "show_total": true,
-            "property_name": "Tartan",
-            "store_handle": true,
-            "required": true,
-            "required_message": "Please choose your tartan",
-            "guard_payment_button": true,
-            "remember_selection": true,
-            "url_param": true,
-            "enable_colourways": true,
-            "default_colourway": "modern",
-            "price_mode": "surcharge_display",
-            "modal_title": "Browse all tartans",
-            "default_view": "grid",
-            "show_popular_filter": true,
-            "show_category_filter": true,
-            "show_colour_filter": true,
-            "show_availability_filter": true,
-            "show_alphabet": true,
-            "show_preview": true,
-            "show_surcharge": true,
-            "no_results_text": "No tartans match your search.",
-            "request_text": "Don't see your clan? Request a custom tartan",
-            "swatch_shape": "rounded",
-            "swatch_size": 48,
-            "image_fit": "cover",
-            "tile_size": 80,
-            "enable_zoom": true,
-            "sk_custom_padding": false,
-            "sk_text_size_d": 100,
-            "sk_padding_top_d": 0,
-            "sk_padding_bottom_d": 0,
-            "sk_margin_top_d": 0,
-            "sk_margin_bottom_d": 0,
-            "sk_text_size_m": 100,
-            "sk_padding_top_m": 0,
-            "sk_padding_bottom_m": 0,
-            "sk_margin_top_m": 0,
-            "sk_margin_bottom_m": 0
-          }
-        },
-        "complementary_products_1": {
-          "type": "complementary_products",
-          "settings": {
-            "title": "Complete the look",
-            "products_count": 4,
-            "stack_products": false,
-            "show_quick_buy": true
-          }
-        },
         "spec_1": {
           "type": "spec",
           "settings": {
@@ -215,6 +102,33 @@
             "value": "Dry clean only"
           }
         },
+        "accordion_1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Size &amp; fit",
+            "content": "<p>Order by your <strong>waist</strong> measurement taken at the navel, not your trouser size — most people need two to three inches more than their jeans. Pick the <strong>length</strong> closest to your waist-to-knee measurement. Between sizes? Take the larger — the straps adjust by about an inch either way.</p>",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "accordion_2": {
+          "type": "accordion",
+          "settings": {
+            "title": "How to wear it",
+            "content": "<p>A kilt sits at the navel, with the bottom edge at the middle of the kneecap. The apron wraps right over left, flat at the front, with the pleats at the back.</p><ul><li>Sporran — worn on a chain at the front, it carries what the kilt has no pockets for.</li><li>Kilt hose and flashes — folded below the knee.</li><li>Ghillie brogues or plain black shoes.</li></ul>",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "accordion_3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Care",
+            "content": "<p>Dry clean only. Never tumble-dry a pleated kilt. Store it hanging by the straps, or folded along the pleats with the apron outermost, away from direct sunlight.</p>",
+            "page": "",
+            "open_by_default": false
+          }
+        },
         "accordion_4": {
           "type": "accordion",
           "settings": {
@@ -222,6 +136,79 @@
             "content": "<p>Shipping options, delivery estimates and any duties for your destination are shown at checkout before you pay. Returns and exchange conditions are set out on our returns page — read them before ordering if you are unsure about sizing.</p>",
             "page": "",
             "open_by_default": false
+          }
+        },
+        "tartan_picker_1": {
+          "type": "tartan_picker",
+          "settings": {
+            "visibility": "all",
+            "include_tags": "tartan-picker",
+            "tag_match": "any",
+            "product_types": "",
+            "vendors": "",
+            "collection_handles": "",
+            "products": [],
+            "metafield_key": "custom.show_tartan_picker",
+            "exclude_tags": "",
+            "tartan_scope": "all",
+            "scope_groups": "",
+            "scope_tag_prefix": "tartan-group:",
+            "scope_metafield_key": "custom.tartans",
+            "label": "Choose your tartan",
+            "show_search": true,
+            "search_placeholder": "Search your clan or surname (e.g. MacDonald, Stewart)",
+            "inline_source": "popular",
+            "inline_count": 14,
+            "browse_text": "Browse all",
+            "show_total": true,
+            "property_name": "Tartan",
+            "store_handle": true,
+            "required": true,
+            "required_message": "Please choose your tartan",
+            "guard_payment_button": true,
+            "remember_selection": true,
+            "url_param": true,
+            "enable_colourways": true,
+            "default_colourway": "modern",
+            "price_mode": "surcharge_display",
+            "modal_title": "Browse all tartans",
+            "default_view": "grid",
+            "show_popular_filter": true,
+            "show_category_filter": true,
+            "show_colour_filter": true,
+            "show_availability_filter": true,
+            "show_alphabet": true,
+            "show_preview": true,
+            "show_surcharge": true,
+            "no_results_text": "No tartans match your search.",
+            "request_text": "Don't see your clan? Request a custom tartan",
+            "request_url": "",
+            "swatch_shape": "rounded",
+            "swatch_size": 48,
+            "image_fit": "cover",
+            "tile_size": 80,
+            "enable_zoom": true,
+            "sk_custom_padding": false,
+            "sk_text_size_d": 100,
+            "sk_padding_top_d": 0,
+            "sk_padding_bottom_d": 0,
+            "sk_margin_top_d": 0,
+            "sk_margin_bottom_d": 0,
+            "sk_text_size_m": 100,
+            "sk_padding_top_m": 0,
+            "sk_padding_bottom_m": 0,
+            "sk_margin_top_m": 0,
+            "sk_margin_bottom_m": 0
+          }
+        },
+        "complementary_products_1": {
+          "type": "complementary_products",
+          "disabled": true,
+          "settings": {
+            "title": "Complete the look",
+            "products_count": 4,
+            "stack_products": false,
+            "show_quick_buy": true
           }
         }
       },
@@ -245,19 +232,33 @@
         "accordion_4",
         "tartan_picker_1",
         "complementary_products_1"
-      ]
-    },
-    "related_rail": {
-      "type": "sk2-product-rail",
+      ],
       "settings": {
-        "source": "recommendations",
-        "products_count": 8,
-        "layout": "rail",
-        "background": "ivory",
-        "heading": "You may also like",
-        "subheading": "More from the same collection.",
-        "link_text": "All kilts",
-        "link_url": "/collections/all"
+        "gallery_note": "",
+        "short_description": "",
+        "tax_notice": "Taxes and shipping calculated at checkout.",
+        "hide_sold_out_variants": false,
+        "size_chart_page": "",
+        "size_hint": "Measure at the navel. Between sizes? Take the larger — the straps adjust.",
+        "show_sku": true,
+        "facts_title": "At a glance",
+        "show_payment_button": true,
+        "show_gift_card_recipient": true,
+        "atc_button_background": "",
+        "atc_button_text_color": "",
+        "payment_button_background": "",
+        "payment_button_text_color": "",
+        "show_sticky_add_to_cart": true,
+        "link_1_text": "Not sure about the style?",
+        "link_1_url": "",
+        "show_copy_link": true,
+        "copy_link_text": "Copy link",
+        "link_2_text": "Ask a question",
+        "link_2_url": "",
+        "details_title": "Details",
+        "details_text": "Cloth, construction, sizing and care.",
+        "description_title": "Description",
+        "specs_title": "Specifications"
       }
     },
     "siblings_rail": {
@@ -274,10 +275,22 @@
         "link_url": "/collections/all"
       }
     },
+    "related_rail": {
+      "type": "sk2-product-rail",
+      "settings": {
+        "source": "recommendations",
+        "collection": "",
+        "products_count": 8,
+        "layout": "rail",
+        "background": "ivory",
+        "heading": "You may also like",
+        "subheading": "More from the same collection.",
+        "link_text": "All kilts",
+        "link_url": "/collections/all"
+      }
+    },
     "reviews": {
       "type": "sk2-reviews",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "heading": "Reviews",
         "subheading": "<p>Verified reviews are collected through our reviews provider after delivery.</p>",
