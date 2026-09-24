@@ -3,7 +3,7 @@
   markup is kept intact in the else branch -- untick "Use the SCOTKILT chrome"
   in the theme editor to put it back. Nothing was removed.
 {%- endcomment -%}
-{%- if section.settings.sk2_chrome -%}
+{%- unless section.settings.sk2_chrome == false -%}
   {%- render 'sk2-chrome-footer-bottom',
     wordmark: section.settings.sk2_wordmark,
     domain: section.settings.sk2_domain,
@@ -35,7 +35,7 @@
     {% content_for 'blocks' %}
   </div>
 </div>
-{%- endif -%}
+{%- endunless -%}
 
 {% stylesheet %}
   .utilities {

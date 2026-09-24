@@ -3,7 +3,7 @@
   markup is kept intact in the else branch -- untick "Use the SCOTKILT chrome"
   in the theme editor to put it back. Nothing was removed.
 {%- endcomment -%}
-{%- if section.settings.sk2_chrome -%}
+{%- unless section.settings.sk2_chrome == false -%}
   {%- render 'sk2-chrome-announce',
     text: section.settings.sk2_text,
     link: section.settings.sk2_link
@@ -48,7 +48,7 @@
     </div>
   </announcement-bar-component>
 </aside>
-{%- endif -%}
+{%- endunless -%}
 
 {% stylesheet %}
   .announcement-bar {

@@ -3,7 +3,7 @@
   markup is kept intact in the else branch -- untick "Use the SCOTKILT chrome"
   in the theme editor to put it back. Nothing was removed.
 {%- endcomment -%}
-{%- if section.settings.sk2_chrome -%}
+{%- unless section.settings.sk2_chrome == false -%}
   {%- render 'sk2-chrome-header',
     menu: linklists[section.settings.sk2_menu],
     wordmark: section.settings.sk2_wordmark,
@@ -498,7 +498,7 @@
   src="{{ 'header.js' | asset_url }}"
   type="module"
 ></script>
-{%- endif -%}
+{%- endunless -%}
 
 {% stylesheet %}
   body {
