@@ -258,9 +258,11 @@ never renders empty.
                                   echo filter.min_value.param_name
                                   echo '='
                                   echo lo
-                                  echo '&'
                                 endif
                                 if i < 4
+                                  if lo > 0
+                                    echo '&'
+                                  endif
                                   echo filter.max_value.param_name
                                   echo '='
                                   echo hi
