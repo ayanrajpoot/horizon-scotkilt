@@ -201,7 +201,10 @@
 .sk2-chrome .header{ border-bottom-width:var(--sk2-header-border,1px); border-bottom-color:var(--sk2-header-border-color,rgba(28,27,25,.08)) }
 /* The sticky header lives inside its own .shopify-section, which is exactly as
    tall as it is -- position:sticky on the header alone can never move, so the
-   section wrapper is what sticks. Horizon does the same for its own header. */
+   section wrapper is what sticks. #header-group is the next box up and just as
+   short, so it is dropped with display:contents. Both are what Horizon does for
+   its own header. Transparent mode keeps the group box: it positions it. */
+#header-group:has(.sk2-chrome .header):not(:has(.header--transparent)){ display:contents }
 .shopify-section:has(> .sk2-chrome > .header){ position:sticky; top:env(safe-area-inset-top,0px); z-index:100 }
 .shopify-section:has(> .sk2-chrome > .header[data-sk2-sticky=""]){ position:relative }
 .sk2-chrome .header[data-sk2-sticky=""]{ position:relative }
