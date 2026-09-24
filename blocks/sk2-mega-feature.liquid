@@ -1,0 +1,20 @@
+{%- comment -%}
+  SCOTKILT mega-menu feature card.
+
+  A theme block that only carries settings: `snippets/sk2-chrome-header.liquid`
+  loops the header section's blocks and draws the card inside the mega panel it
+  belongs to, so nothing is emitted here.
+{%- endcomment -%}
+
+{% schema %}
+{
+  "name": "Mega menu feature",
+  "settings": [
+    {"type": "text", "id": "menu_item", "label": "Show under this menu item", "info": "Must match the top-level menu item's title exactly, e.g. Kilts."},
+    {"type": "image_picker", "id": "image", "label": "Image"},
+    {"type": "text", "id": "label", "label": "Label", "default": "Featured kilt"},
+    {"type": "text", "id": "title", "label": "Title"},
+    {"type": "url", "id": "link", "label": "Link"}
+  ]
+}
+{% endschema %}

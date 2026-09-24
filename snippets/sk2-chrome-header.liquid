@@ -151,7 +151,12 @@
                   {%- endfor -%}
 
                   {%- for block in feature_blocks -%}
-                    {%- if block.type == 'feature' and block.settings.menu_item == link.title -%}
+                    {%- comment -%}
+                      `feature` on sections/sk2-header.liquid (section block),
+                      `sk2-mega-feature` on sections/header.liquid, which uses
+                      theme blocks and so cannot define its own.
+                    {%- endcomment -%}
+                    {%- if block.settings.menu_item == link.title and block.settings.menu_item != blank -%}
                       <a class="mega__feat" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
                         {%- render 'sk2-visual',
                           image: block.settings.image,

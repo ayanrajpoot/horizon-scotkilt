@@ -1299,19 +1299,7 @@
   "name": "t:names.header",
   "tag": "header",
   "class": "header-section",
-  "blocks": [
-    {
-      "type": "feature",
-      "name": "Mega menu feature",
-      "settings": [
-        {"type": "text", "id": "menu_item", "label": "Show under this menu item", "info": "Must match the top-level menu item's title exactly, e.g. Kilts."},
-        {"type": "image_picker", "id": "image", "label": "Image"},
-        {"type": "text", "id": "label", "label": "Label", "default": "Featured kilt"},
-        {"type": "text", "id": "title", "label": "Title"},
-        {"type": "url", "id": "link", "label": "Link"}
-      ]
-    }
-  ],
+  "blocks": [{"type": "sk2-mega-feature"}],
   "settings": [
     {"type": "header", "content": "SCOTKILT chrome"},
     {"type": "checkbox", "id": "sk2_chrome", "label": "Use the SCOTKILT chrome", "default": true, "info": "Renders the pages.html design. Untick to fall back to the theme's own section."},
