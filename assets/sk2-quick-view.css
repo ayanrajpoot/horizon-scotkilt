@@ -1,0 +1,13 @@
+/* SCOTKILT — quick view.
+   The PDP's top block inside Horizon's quick-add dialog: two columns on
+   desktop, stacked and scrollable on a phone. Everything else it needs comes
+   from sk2-product.css, which loads alongside this file. */
+.sk2-quickview{ padding:28px clamp(16px,3vw,32px) 32px; max-height:min(86vh,900px); overflow:auto }
+.sk2-quickview .sk2-pdp__top{ margin:0 }
+.sk2-quickview .pdp-gallery__note,
+.sk2-quickview .pdp-buy__sku{ display:none }
+.sk2-quickview__full{ display:inline-block; margin-top:18px; font-size:13px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-decoration:underline; text-underline-offset:4px }
+
+@media (max-width:767px){
+  .sk2-quickview{ padding:20px 16px 28px }
+}

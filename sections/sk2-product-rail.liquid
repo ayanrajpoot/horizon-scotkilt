@@ -17,7 +17,9 @@ only the cards are the pages.html ones (snippets/sk2-product-card.liquid).
 
 {{ 'sk2-home.css' | asset_url | stylesheet_tag }}
 {{ 'sk2-product.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-quick-view.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'sk2-product.js' | asset_url }}" defer></script>
+<script src="{{ 'sk2-quick-view.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign source = section.settings.source

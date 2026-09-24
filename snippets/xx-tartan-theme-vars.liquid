@@ -9,6 +9,8 @@
   and border, so those are aliased; button and background colours are not, so
   they are emitted from the global settings.
 
+  Skips `.sk2-tf__app`: the SCOTKILT finder declares the same properties itself.
+
   Scoped to the picker/finder roots rather than `:root` on purpose: inside a
   section with a custom `background_color`, `contrast-override.liquid` has
   already redefined `--color-foreground-rgb` on the `.color-custom-<id>`
@@ -21,9 +23,9 @@
 {% enddoc %}
 
 {% style %}
-  .tartan-picker,
-  .tartan-finder,
-  .tp-modal {
+  .tartan-picker:not(.sk2-tf__app),
+  .tartan-finder:not(.sk2-tf__app),
+  .tp-modal:not(.sk2-tf__app *) {
     /* Colour — triplets, because the source CSS wraps them in rgb() */
     --text-color: var(--color-foreground-rgb);
     --border-color: var(--color-border-rgb);
@@ -42,4 +44,10 @@
     --text-xs: var(--font-size--xs);
     --text-sm: var(--font-size--sm);
   }
+
+  /* The SCOTKILT finder brings its own palette on .sk2-tf__app (the same values
+     Prestige gave it), so the aliases above skip it -- they sit on the very
+     element and on .tp-modal inside it, and would otherwise win. Only the
+     sticky offset is the host theme's to supply. */
+  .sk2-tf__app { --sticky-area-height: var(--header-h, 0px); }
 {% endstyle %}

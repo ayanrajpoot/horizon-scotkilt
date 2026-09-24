@@ -20,7 +20,12 @@ never renders empty.
 
 {{ 'sk2-home.css' | asset_url | stylesheet_tag }}
 {{ 'sk2-collection.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-product.css' | asset_url | stylesheet_tag }}
+{{ 'sk2-quick-view.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'sk2-home.js' | asset_url }}" defer></script>
+{%- comment -%} Quick view reuses the product page's own markup, so it needs the PDP's css and its delegated behaviours. {%- endcomment -%}
+<script src="{{ 'sk2-product.js' | asset_url }}" defer></script>
+<script src="{{ 'sk2-quick-view.js' | asset_url }}" defer></script>
 <script src="{{ 'sk2-collection.js' | asset_url }}" defer></script>
 
 {%- liquid
