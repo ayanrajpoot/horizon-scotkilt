@@ -3,13 +3,14 @@
    Horizon's own quick add fetches the product page and looks for
    [data-product-grid-content]; the SK2 product page doesn't emit that, so its
    Choose/Add button has nothing to open. This wires the card's Quick view
-   button to the same dialog instead: fetch the PDP, lift its gallery + buy
-   column, drop them into Horizon's quick-add dialog. The dialog, the scroll
-   lock, the add-to-cart form component and the cart refresh all stay the
-   theme's.
+   button to Horizon's dialog instead, showing the very block the SK2 product
+   page already builds for this: its #quick-buy-content template -- image,
+   badge, title, rating, price, short description, options, add to cart, view
+   details. The dialog, the scroll lock, the add-to-cart form component and the
+   cart refresh all stay the theme's.
 
-   sk2-product.js delegates from the document, so the injected gallery and
-   variant rows work without re-binding.
+   sk2-product.js delegates from the document, so the injected variant rows and
+   tartan picker work without re-binding.
 
    ponytail: one fetch per product, cached for the life of the page. No hover
    prefetch -- add it if the fetch ever reads as slow. */
@@ -44,23 +45,19 @@
     load(url).then(function (doc) {
       button.removeAttribute('aria-busy');
 
-      var top = doc.querySelector('.sk2-pdp__top');
+      var tpl = doc.getElementById('quick-buy-content');
       // Nothing to show is not worth a broken dialog -- just go to the product.
-      if (!top) { window.location.href = url; return; }
+      if (!tpl) { window.location.href = url; return; }
 
-      var wrap = document.createElement('div');
-      wrap.className = 'sk2 sk2-quickview';
-      // Clone: appending would move the node out of the cached document, and the
-      // second look at that product would find nothing.
-      wrap.appendChild(top.cloneNode(true));
+      // importNode copies, so the cached document keeps its template for the
+      // next open, and the copy belongs to this document from the start.
+      var frag = document.importNode(tpl.content, true);
+      // The template opens with the modal header Prestige slots in; Horizon's
+      // dialog has no slots, so it would land as a stray paragraph.
+      var header = frag.querySelector('[slot="header"]');
+      if (header) header.remove();
 
-      var full = document.createElement('a');
-      full.className = 'sk2-quickview__full';
-      full.href = url;
-      full.textContent = 'View full details';
-      wrap.appendChild(full);
-
-      slot.replaceChildren(wrap);
+      slot.replaceChildren(frag);
       dialog.showDialog();
     }, function () {
       button.removeAttribute('aria-busy');

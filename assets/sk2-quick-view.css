@@ -1,22 +1,44 @@
 /* SCOTKILT — quick view.
-   The PDP's top block inside Horizon's quick-add dialog: two columns on
-   desktop, stacked and scrollable on a phone. Everything else it needs comes
-   from sk2-product.css, which loads alongside this file. */
-/* The dialog's own content slot is a 4-column grid built for Horizon's product
-   markup; the SK2 block brings its own layout, so it gets a plain block box. */
-#quick-add-modal-content:has(.sk2-quickview){ display:block; padding:0; overflow:visible }
 
-.sk2-quickview{ padding:28px clamp(16px,3vw,32px) 32px; max-height:min(86vh,900px); overflow:auto }
-.sk2-quickview .sk2-pdp__top{ margin:0 }
-/* Quick view is title, price, options and buy -- the assurance and fact blocks
-   are the long tail of the product page and belong on it. */
-.sk2-quickview .pdp-gallery__note,
-.sk2-quickview .pdp-buy__sku,
-.sk2-quickview .assure,
-.sk2-quickview .facts{ display:none }
-.sk2-quickview .pdp-buy h1{ font-size:clamp(26px,3vw,36px) }
-.sk2-quickview__full{ display:inline-block; margin-top:18px; font-size:13px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-decoration:underline; text-underline-offset:4px }
+   The SK2 product page's #quick-buy-content template was written against
+   Prestige's quick-buy modal, so it carries that modal's wrapper classes and
+   two of its custom elements. Horizon's dialog supplies none of them. This is
+   the handful of rules that make the block sit in Horizon's dialog the way it
+   sat in Prestige's. Everything else comes from sk2-home.css and
+   sk2-product.css, which load alongside this file. */
 
-@media (max-width:767px){
-  .sk2-quickview{ padding:20px 16px 28px }
+/* Horizon's slot is a 4-column grid built for its own product markup, and it is
+   the scroller. Prestige's equivalent was the dialog's body part, so it is the
+   one that carries the padding variables .sk2-qv__media pulls itself back out
+   over -- a negative margin into a padding area stays inside the scrollport. */
+#quick-add-modal-content:has(.sk2-qv){ display:block; padding:0 }
+
+@media (min-width:700px){
+  #quick-add-modal-content:has(.sk2-qv){
+    --modal-body-padding-inline:3.125rem;
+    --modal-body-padding-block:3.125rem;
+    padding:var(--modal-body-padding-block) var(--modal-body-padding-inline);
+  }
+}
+
+@media (max-width:699px){
+  #quick-add-modal-content:has(.sk2-qv){ padding:24px 16px 28px }
+}
+
+/* product-rerender re-fetched the block on variant change and dialog-close-button
+   closed the modal; Horizon does both itself, so they are pure wrappers here and
+   must not sit between the grid and its columns. */
+#quick-add-modal-content .sk2-qv > product-rerender,
+#quick-add-modal-content dialog-close-button{ display:contents }
+/* Horizon's dialog draws its own close button. */
+#quick-add-modal-content .quick-buy-modal__close-button{ display:none }
+
+.quick-buy-modal__content{ display:grid; grid-template-columns:minmax(0,1fr) }
+
+@media (min-width:700px){
+  .quick-buy-modal__content{
+    grid-template-columns:minmax(0,.9fr) minmax(0,1fr);
+    align-items:center;
+    column-gap:2.5rem;
+  }
 }
