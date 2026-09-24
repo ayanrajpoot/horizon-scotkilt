@@ -199,15 +199,47 @@
           </button>
         {%- endif -%}
 
+        {%- comment -%}
+          The form has to sit inside `dropdown-localization-component` (from
+          assets/localization.js, loaded globally by snippets/scripts.liquid) or
+          it renders as a bare country list. Country present = button + panel;
+          language on its own is small enough to sit inline.
+        {%- endcomment -%}
         {%- if sk_localize -%}
-          <div class="header__localize header--desktop-only">
-            {%- render 'localization-form',
-              show_country: show_country,
-              show_language: show_language,
-              localization_style: 'dropdown',
-              form_id: sk_form_id
-            -%}
-          </div>
+          {%- if show_country -%}
+            <dropdown-localization-component class="header__localize header--desktop-only">
+              <button
+                type="button"
+                class="header__localize-btn"
+                aria-expanded="false"
+                aria-controls="dropdown-localization-results"
+                ref="button"
+                on:click="/toggleSelector"
+              >
+                <span>{{ localization.country.currency.iso_code }}</span>
+                {%- if show_language -%}<span aria-hidden="true">/</span><span>{{ localization.language.iso_code | upcase }}</span>{%- endif -%}
+                <span class="visually-hidden">{{ 'accessibility.localization_region_and_language' | t }}</span>
+                {%- render 'sk2-icons', icon: 'chevron' -%}
+              </button>
+              <div class="localization-wrapper right-bound color-custom-popover" hidden ref="panel">
+                {%- render 'localization-form',
+                  show_country: show_country,
+                  show_language: show_language,
+                  localization_style: 'dropdown',
+                  form_id: sk_form_id
+                -%}
+              </div>
+            </dropdown-localization-component>
+          {%- else -%}
+            <div class="header__localize dropdown-localization header--desktop-only">
+              {%- render 'localization-form',
+                show_country: false,
+                show_language: true,
+                localization_style: 'dropdown',
+                form_id: sk_form_id
+              -%}
+            </div>
+          {%- endif -%}
         {%- endif -%}
 
         {%- if shop.customer_accounts_enabled -%}
@@ -326,14 +358,29 @@
           </a>
         {%- endif -%}
         {%- if sk_localize -%}
-          <div class="header__localize">
-            {%- render 'localization-form',
-              show_country: show_country,
-              show_language: show_language,
-              localization_style: 'dropdown',
-              form_id: sk_form_id_drawer
-            -%}
-          </div>
+          <dropdown-localization-component class="header__localize">
+            <button
+              type="button"
+              class="header__localize-btn"
+              aria-expanded="false"
+              aria-controls="dropdown-localization-results"
+              ref="button"
+              on:click="/toggleSelector"
+            >
+              {%- if show_country -%}<span>{{ localization.country.name }}</span>{%- endif -%}
+              {%- if show_country and show_language -%}<span aria-hidden="true">/</span>{%- endif -%}
+              {%- if show_language -%}<span>{{ localization.language.endonym_name }}</span>{%- endif -%}
+              {%- render 'sk2-icons', icon: 'chevron' -%}
+            </button>
+            <div class="localization-wrapper color-custom-popover" hidden ref="panel">
+              {%- render 'localization-form',
+                show_country: show_country,
+                show_language: show_language,
+                localization_style: 'dropdown',
+                form_id: sk_form_id_drawer
+              -%}
+            </div>
+          </dropdown-localization-component>
         {%- endif -%}
       </div>
     {%- endif -%}

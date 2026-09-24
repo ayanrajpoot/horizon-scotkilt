@@ -203,8 +203,14 @@
 .sk2-chrome .header[data-sk2-sticky="scroll-up"]{ transition:transform .35s var(--ease),box-shadow .3s }
 .sk2-chrome .header.is-away{ transform:translateY(-100%) }
 .sk2-chrome .logo img{ width:auto; max-width:var(--sk2-logo-w,180px); max-height:calc(var(--header-h) - 20px); object-fit:contain }
-.sk2-chrome .header__localize{ display:flex; align-items:center; margin-right:6px }
-.sk2-chrome .header__localize .localization-selector{ font-size:12px; letter-spacing:.1em; text-transform:uppercase }
+.sk2-chrome .header__localize{ position:relative; display:flex; align-items:center; margin-right:6px }
+.sk2-chrome .header__localize-btn{ display:inline-flex; align-items:center; gap:5px; height:40px; padding:0 10px; border-radius:2px; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:inherit; background:none; border:0; cursor:pointer }
+.sk2-chrome .header__localize-btn:hover{ background:var(--ivory-2) }
+.sk2-chrome .header__localize-btn svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.6 }
+.sk2-chrome .header__localize .localization-wrapper{ position:absolute; top:calc(100% + 6px); right:0; z-index:120; min-width:240px; max-height:60vh; overflow:auto; background:var(--ivory); border:1px solid rgba(28,27,25,.14); border-radius:2px; box-shadow:0 30px 50px -30px rgba(28,27,25,.45); padding:8px }
+.sk2-chrome .header__localize .localization-wrapper[hidden]{ display:none }
+.sk2-chrome .mnav__foot .header__localize{ margin:0 }
+.sk2-chrome .mnav__foot .localization-wrapper{ right:auto; left:0 }
 
 #header-group:has(.header--transparent){ position:absolute; left:0; right:0; z-index:100 }
 #header-group.sk2-pinned{ position:fixed; top:0 }
