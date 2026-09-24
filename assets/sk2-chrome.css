@@ -156,6 +156,14 @@
 .sk2-chrome .social a:hover{ background:var(--ink); color:var(--ivory); border-color:var(--ink) }
 .sk2-chrome .social svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.5 }
 
+/* The store's footer group renders the band as two sections -- `footer` (grid)
+   then `footer-utilities` (bottom bar). These stitch the halves back into the
+   single band pages.html draws. */
+.sk2-chrome .footer--top{ padding-bottom:clamp(36px,5vw,64px) }
+.sk2-chrome .footer--bottom{ padding-top:0; border-top:0 }
+.sk2-chrome .footer--bottom .footer__bottom{ margin-top:0 }
+
+
 /* --- Responsive (from pages.html's own breakpoints) --------------------- */
 @media (max-width:1200px){
   .sk2-chrome .footer__grid{ grid-template-columns:1.2fr repeat(4,1fr) }

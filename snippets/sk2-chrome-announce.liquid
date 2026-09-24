@@ -1,0 +1,24 @@
+{%- doc -%}
+  SCOTKILT announcement bar — pages.html `Announcement()`.
+
+  Ink band above the header: 34px, 12px uppercase at .14em, stone text with any
+  bold picked out in ivory. Rendered by both `sections/header-announcements.liquid`
+  (the section the store's header group already carries) and `sections/sk2-announcement.liquid`.
+
+  @param {string} text - the announcement, inline richtext
+  @param {string} [link] - optional destination for the whole band
+{%- enddoc -%}
+
+{{ 'sk2-chrome.css' | asset_url | stylesheet_tag }}
+
+{%- if text != blank -%}
+  <div class="sk2-chrome">
+    <div class="announce" role="region" aria-label="Announcement">
+      {%- if link != blank -%}
+        <a href="{{ link }}">{{ text }}</a>
+      {%- else -%}
+        {{ text }}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

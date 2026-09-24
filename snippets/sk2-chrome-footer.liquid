@@ -1,0 +1,98 @@
+{%- doc -%}
+  SCOTKILT footer, top band -- pages.html `Footer()`.
+
+  Ivory-2 band on a 1.4fr + 4x1fr grid: a brand column (wordmark, blurb, tartan
+  swatch strip) then up to four menu columns. The bottom bar is a separate
+  snippet, `sk2-chrome-footer-bottom`, because the store's footer group splits
+  the two across `footer` and `footer-utilities`.
+
+  Rendered by `sections/footer.liquid` and by `sections/sk2-footer.liquid`.
+
+  @param {string} wordmark
+  @param {string} [blurb]
+  @param {object} [swatch_1] - tartan swatch image
+  @param {object} [swatch_2]
+  @param {object} [swatch_3]
+  @param {string} [heading_1] - column heading; falls back to the menu's own title
+  @param {object} [menu_1] - a linklist
+  @param {string} [heading_2]
+  @param {object} [menu_2]
+  @param {string} [heading_3]
+  @param {object} [menu_3]
+  @param {string} [heading_4]
+  @param {object} [menu_4]
+{%- enddoc -%}
+
+{{ 'sk2-chrome.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sk_wordmark = wordmark | default: shop.name
+-%}
+
+<div class="sk2-chrome">
+  <div class="footer footer--top">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a class="logo" href="{{ routes.root_url }}">{{ sk_wordmark }}</a>
+
+          {%- if blurb != blank -%}
+            <p>{{ blurb }}</p>
+          {%- endif -%}
+
+          {%- if swatch_1 != blank or swatch_2 != blank or swatch_3 != blank -%}
+            <div class="footer__swatches" aria-hidden="true">
+              {%- if swatch_1 != blank -%}{{ swatch_1 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+              {%- if swatch_2 != blank -%}{{ swatch_2 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+              {%- if swatch_3 != blank -%}{{ swatch_3 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if menu_1.links.size > 0 -%}
+          <div>
+            <h4>{{ heading_1 | default: menu_1.title }}</h4>
+            <ul>
+              {%- for link in menu_1.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- if menu_2.links.size > 0 -%}
+          <div>
+            <h4>{{ heading_2 | default: menu_2.title }}</h4>
+            <ul>
+              {%- for link in menu_2.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- if menu_3.links.size > 0 -%}
+          <div>
+            <h4>{{ heading_3 | default: menu_3.title }}</h4>
+            <ul>
+              {%- for link in menu_3.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- if menu_4.links.size > 0 -%}
+          <div>
+            <h4>{{ heading_4 | default: menu_4.title }}</h4>
+            <ul>
+              {%- for link in menu_4.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

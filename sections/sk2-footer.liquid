@@ -1,98 +1,70 @@
 {%- comment -%}
-----------------------------------------------------------------------------------------------------------------------
-SK2 FOOTER (SCOTKILT — pages.html `Footer()`)
-----------------------------------------------------------------------------------------------------------------------
-Ivory-2 footer on a 1.4fr + 4x1fr grid: brand column (wordmark, blurb, tartan
-swatch strip) then up to four menu columns, over a bottom bar carrying the
-legal links, copyright and circular social icons.
+SK2 FOOTER -- the "add a section" entry point for the SCOTKILT footer.
 
-Menu columns come from Admin > Navigation, one link list per block.
+The markup lives in snippets/sk2-chrome-footer.liquid and
+snippets/sk2-chrome-footer-bottom.liquid, which sections/footer.liquid and
+sections/footer-utilities.liquid render too. Horizon's footer group does not
+accept added sections in the theme editor, so those are the paths that actually
+ship; this stays for themes or groups where a section can be added. Menu columns
+and social links come from this section's blocks rather than settings.
 {%- endcomment -%}
 
-{{ 'sk2-chrome.css' | asset_url | stylesheet_tag }}
-
 {%- liquid
-  assign wordmark = section.settings.wordmark | default: shop.name
   assign menu_blocks = section.blocks | where: 'type', 'menu'
   assign social_blocks = section.blocks | where: 'type', 'social'
+
+  for block in menu_blocks limit: 4
+    case forloop.index
+      when 1
+        assign h1 = block.settings.heading
+        assign m1 = linklists[block.settings.menu]
+      when 2
+        assign h2 = block.settings.heading
+        assign m2 = linklists[block.settings.menu]
+      when 3
+        assign h3 = block.settings.heading
+        assign m3 = linklists[block.settings.menu]
+      when 4
+        assign h4 = block.settings.heading
+        assign m4 = linklists[block.settings.menu]
+    endcase
+  endfor
+
+  for block in social_blocks
+    case block.settings.network
+      when 'instagram'
+        assign instagram_url = block.settings.url
+      when 'facebook'
+        assign facebook_url = block.settings.url
+      when 'youtube'
+        assign youtube_url = block.settings.url
+      when 'tiktok'
+        assign tiktok_url = block.settings.url
+    endcase
+  endfor
 -%}
 
-<div class="sk2-chrome">
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__grid">
-        <div class="footer__brand">
-          <a class="logo" href="{{ routes.root_url }}">{{ wordmark }}</a>
+{%- render 'sk2-chrome-footer',
+  wordmark: section.settings.wordmark,
+  blurb: section.settings.blurb,
+  swatch_1: section.settings.swatch_image_1,
+  swatch_2: section.settings.swatch_image_2,
+  swatch_3: section.settings.swatch_image_3,
+  heading_1: h1, menu_1: m1,
+  heading_2: h2, menu_2: m2,
+  heading_3: h3, menu_3: m3,
+  heading_4: h4, menu_4: m4
+-%}
 
-          {%- if section.settings.blurb != blank -%}
-            <p>{{ section.settings.blurb }}</p>
-          {%- endif -%}
-
-          {%- if section.settings.swatch_image_1 != blank
-              or section.settings.swatch_image_2 != blank
-              or section.settings.swatch_image_3 != blank
-          -%}
-            <div class="footer__swatches" aria-hidden="true">
-              {%- for i in (1..3) -%}
-                {%- assign key = 'swatch_image_' | append: i -%}
-                {%- assign swatch_image = section.settings[key] -%}
-                {%- if swatch_image != blank -%}
-                  {{ swatch_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
-        </div>
-
-        {%- for block in menu_blocks -%}
-          {%- assign menu = linklists[block.settings.menu] -%}
-          {%- if menu.links.size > 0 -%}
-            <div {{ block.shopify_attributes }}>
-              <h4>{{ block.settings.heading | default: menu.title }}</h4>
-              <ul>
-                {%- for link in menu.links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-
-      <div class="footer__bottom">
-        {%- assign legal = linklists[section.settings.legal_menu] -%}
-        {%- if legal.links.size > 0 -%}
-          <div class="footer__legal">
-            {%- for link in legal.links -%}
-              <a href="{{ link.url }}">{{ link.title }}</a>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-        <div>
-          &copy; {{ 'now' | date: '%Y' }} {{ wordmark }}
-          {%- if section.settings.domain != blank %} · {{ section.settings.domain }}{% endif -%}
-        </div>
-
-        {%- if social_blocks.size > 0 -%}
-          <div class="social">
-            {%- for block in social_blocks -%}
-              {%- if block.settings.url != blank -%}
-                <a
-                  href="{{ block.settings.url }}"
-                  aria-label="{{ block.settings.network | capitalize }}"
-                  {{ block.shopify_attributes }}
-                >
-                  {%- render 'sk2-icons', icon: block.settings.network -%}
-                </a>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-      </div>
-    </div>
-  </footer>
-</div>
+{%- render 'sk2-chrome-footer-bottom',
+  wordmark: section.settings.wordmark,
+  domain: section.settings.domain,
+  legal_menu: linklists[section.settings.legal_menu],
+  instagram_url: instagram_url,
+  facebook_url: facebook_url,
+  youtube_url: youtube_url,
+  tiktok_url: tiktok_url
+-%}
 
 {% stylesheet %}
   .sk2-chrome .footer__swatches img {

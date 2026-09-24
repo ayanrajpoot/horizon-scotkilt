@@ -520,3 +520,49 @@ them in Admin if the store runs other languages.
 
 No store is linked, so nothing in this build has been seen in a browser. Every
 page needs the visual pass once a dev store exists.
+
+## 9. The chrome ships through the theme's own sections (supersedes the group-file swap)
+
+Horizon's theme editor does not let a merchant add or remove sections inside the
+Header and Footer groups, and `sections/*-group.json` is editor-owned under the
+two-way sync -- the store kept its stock `order` even after the repo changed it.
+So the chrome no longer depends on the group files at all.
+
+`sections/header-announcements.liquid`, `header.liquid`, `footer.liquid` and
+`footer-utilities.liquid` each now open with:
+
+    {%- if section.settings.sk2_chrome -%}  ...render the SCOTKILT snippet...
+    {%- else -%}                            ...the theme's original markup...
+    {%- endif -%}
+
+Nothing was removed. The checkbox **Use the SCOTKILT chrome** (default on) is the
+revert switch, and it is in the theme editor where the merchant can reach it.
+
+| Section | Renders | pages.html band |
+|---|---|---|
+| `header-announcements` | `snippets/sk2-chrome-announce` | `.announce` |
+| `header` | `snippets/sk2-chrome-header` | `.header`, `.mega`, `.search`, `.mnav` |
+| `footer` | `snippets/sk2-chrome-footer` | `.footer__grid` |
+| `footer-utilities` | `snippets/sk2-chrome-footer-bottom` | `.footer__bottom` |
+
+The footer band is split across two sections because the store's footer group is.
+`.footer--top` / `.footer--bottom` in `assets/sk2-chrome.css` stitch them back
+into the single band the mock draws.
+
+`sections/sk2-header.liquid` and `sk2-footer.liquid` now render the same snippets
+rather than carrying their own copy of the markup. They stay as the "add a
+section" entry point for any group that accepts one; they are not what ships.
+
+Settings the snippets need were **appended** to each stock schema with an `sk2_`
+prefix; no existing setting was changed or removed, so the store's saved values
+still resolve.
+
+`assets/sk2-chrome.js` now also writes `--header-height` and
+`--header-group-height`, which Horizon's own `header.js` would otherwise set and
+which nothing else updates while the SCOTKILT header is rendering.
+
+### Still needed in Admin
+
+The mega menu is entirely link-list driven. Until Navigation has a menu whose
+items have children, the header renders its bar with no nav links. Set
+**Header > Menu** in the theme editor to that menu.

@@ -1,3 +1,19 @@
+{%- comment -%}
+  SCOTKILT: this section now renders the pages.html chrome. The theme's own
+  markup is kept intact in the else branch -- untick "Use the SCOTKILT chrome"
+  in the theme editor to put it back. Nothing was removed.
+{%- endcomment -%}
+{%- if section.settings.sk2_chrome -%}
+  {%- render 'sk2-chrome-footer-bottom',
+    wordmark: section.settings.sk2_wordmark,
+    domain: section.settings.sk2_domain,
+    legal_menu: linklists[section.settings.sk2_legal_menu],
+    instagram_url: section.settings.sk2_instagram_url,
+    facebook_url: section.settings.sk2_facebook_url,
+    youtube_url: section.settings.sk2_youtube_url,
+    tiktok_url: section.settings.sk2_tiktok_url
+  -%}
+{%- else -%}
 {% liquid
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
@@ -19,6 +35,7 @@
     {% content_for 'blocks' %}
   </div>
 </div>
+{%- endif -%}
 
 {% stylesheet %}
   .utilities {
@@ -105,6 +122,15 @@
     "groups": ["footer"]
   },
   "settings": [
+    {"type": "header", "content": "SCOTKILT chrome"},
+    {"type": "checkbox", "id": "sk2_chrome", "label": "Use the SCOTKILT chrome", "default": true, "info": "Renders the pages.html design. Untick to fall back to the theme's own section."},
+    {"type": "text", "id": "sk2_wordmark", "label": "Wordmark", "default": "SCOTKILT"},
+    {"type": "text", "id": "sk2_domain", "label": "Domain", "default": "scotkilt.com"},
+    {"type": "link_list", "id": "sk2_legal_menu", "label": "Legal menu", "info": "Privacy, Terms, Shipping, Returns. Falls back to the shop's policy pages."},
+    {"type": "url", "id": "sk2_instagram_url", "label": "Instagram"},
+    {"type": "url", "id": "sk2_facebook_url", "label": "Facebook"},
+    {"type": "url", "id": "sk2_youtube_url", "label": "YouTube"},
+    {"type": "url", "id": "sk2_tiktok_url", "label": "TikTok"},
     {
       "type": "select",
       "id": "section_width",

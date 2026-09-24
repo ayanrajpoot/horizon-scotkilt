@@ -98,6 +98,25 @@
     }
   });
 
+
+  /**
+   * Horizon's own header writes --header-height / --header-group-height from
+   * sections/header.liquid and header.js. Neither runs while the SCOTKILT chrome
+   * is rendering instead, so the 60px fallback would be stale and anything that
+   * offsets itself under the header (sticky bars, scroll-margin) would sit wrong.
+   * Measuring keeps them honest across the 72px/62px breakpoint.
+   */
+  const syncHeaderHeights = () => {
+    const header = root.querySelector('.header');
+    if (!header) return;
+    const group = document.getElementById('header-group') || header.parentElement;
+    document.body.style.setProperty('--header-height', header.offsetHeight + 'px');
+    document.body.style.setProperty('--header-group-height', (group?.offsetHeight ?? header.offsetHeight) + 'px');
+  };
+
+  syncHeaderHeights();
+  addEventListener('resize', syncHeaderHeights);
+
   backdrop?.addEventListener('click', closeAll);
 
   addEventListener('keydown', (event) => {

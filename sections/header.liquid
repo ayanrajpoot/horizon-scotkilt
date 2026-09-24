@@ -1,3 +1,18 @@
+{%- comment -%}
+  SCOTKILT: this section now renders the pages.html chrome. The theme's own
+  markup is kept intact in the else branch -- untick "Use the SCOTKILT chrome"
+  in the theme editor to put it back. Nothing was removed.
+{%- endcomment -%}
+{%- if section.settings.sk2_chrome -%}
+  {%- render 'sk2-chrome-header',
+    menu: linklists[section.settings.sk2_menu],
+    wordmark: section.settings.sk2_wordmark,
+    tagline: section.settings.sk2_tagline,
+    logo: section.settings.sk2_logo,
+    search_placeholder: section.settings.sk2_search_placeholder,
+    search_hints: section.settings.sk2_search_hints
+  -%}
+{%- else -%}
 {% liquid
   assign order = 'logo,menu,localization,search,drawer_search,actions'
 
@@ -483,6 +498,7 @@
   src="{{ 'header.js' | asset_url }}"
   type="module"
 ></script>
+{%- endif -%}
 
 {% stylesheet %}
   body {
@@ -1247,6 +1263,14 @@
   "tag": "header",
   "class": "header-section",
   "settings": [
+    {"type": "header", "content": "SCOTKILT chrome"},
+    {"type": "checkbox", "id": "sk2_chrome", "label": "Use the SCOTKILT chrome", "default": true, "info": "Renders the pages.html design. Untick to fall back to the theme's own section."},
+    {"type": "link_list", "id": "sk2_menu", "label": "Menu", "default": "main-menu", "info": "Second-level items become mega-menu column headings, their children the links."},
+    {"type": "image_picker", "id": "sk2_logo", "label": "Logo image", "info": "Leave empty to use the wordmark."},
+    {"type": "text", "id": "sk2_wordmark", "label": "Wordmark", "default": "SCOTKILT"},
+    {"type": "text", "id": "sk2_tagline", "label": "Tagline", "default": "KILTS + TARTANS"},
+    {"type": "text", "id": "sk2_search_placeholder", "label": "Search placeholder", "default": "Search kilts and tartans"},
+    {"type": "richtext", "id": "sk2_search_hints", "label": "Search hints", "default": "<p>Try Black Watch, utility kilt or leather kilt</p>"},
     {
       "type": "header",
       "content": "t:content.logo"

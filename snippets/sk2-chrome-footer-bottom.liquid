@@ -1,0 +1,66 @@
+{%- doc -%}
+  SCOTKILT footer, bottom bar -- pages.html `.footer__bottom`.
+
+  Legal links, copyright and circular social marks on the same ivory-2 band as
+  the top grid, separated by a hairline. Split out from `sk2-chrome-footer`
+  because the store's footer group renders the two halves as separate sections
+  (`footer` then `footer-utilities`); together they read as one band.
+
+  @param {string} wordmark
+  @param {string} [domain] - appended after the copyright
+  @param {object} [legal_menu] - a linklist; falls back to the shop's policies
+  @param {string} [instagram_url]
+  @param {string} [facebook_url]
+  @param {string} [youtube_url]
+  @param {string} [tiktok_url]
+{%- enddoc -%}
+
+{{ 'sk2-chrome.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sk_wordmark = wordmark | default: shop.name
+-%}
+
+<div class="sk2-chrome">
+  <div class="footer footer--bottom">
+    <div class="container">
+      <div class="footer__bottom">
+        <div class="footer__legal">
+          {%- if legal_menu.links.size > 0 -%}
+            {%- for link in legal_menu.links -%}
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for policy in shop.policies -%}
+              {%- if policy != blank -%}
+                <a href="{{ policy.url }}">{{ policy.title }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+        <div>
+          &copy; {{ 'now' | date: '%Y' }} {{ sk_wordmark }}
+          {%- if domain != blank %} &middot; {{ domain }}{% endif -%}
+        </div>
+
+        {%- if instagram_url != blank or facebook_url != blank or youtube_url != blank or tiktok_url != blank -%}
+          <div class="social">
+            {%- if instagram_url != blank -%}
+              <a href="{{ instagram_url }}" aria-label="Instagram">{%- render 'sk2-icons', icon: 'instagram' -%}</a>
+            {%- endif -%}
+            {%- if facebook_url != blank -%}
+              <a href="{{ facebook_url }}" aria-label="Facebook">{%- render 'sk2-icons', icon: 'facebook' -%}</a>
+            {%- endif -%}
+            {%- if youtube_url != blank -%}
+              <a href="{{ youtube_url }}" aria-label="YouTube">{%- render 'sk2-icons', icon: 'youtube' -%}</a>
+            {%- endif -%}
+            {%- if tiktok_url != blank -%}
+              <a href="{{ tiktok_url }}" aria-label="TikTok">{%- render 'sk2-icons', icon: 'tiktok' -%}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
