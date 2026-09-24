@@ -566,3 +566,23 @@ which nothing else updates while the SCOTKILT header is rendering.
 The mega menu is entirely link-list driven. Until Navigation has a menu whose
 items have children, the header renders its bar with no nav links. Set
 **Header > Menu** in the theme editor to that menu.
+
+### Open: `sections/footer.liquid` is not reaching the store
+
+Commit `591182d` patched four sections identically. On scotkilt-dev,
+`header-announcements`, `header` and `footer-utilities` all render the SCOTKILT
+branch; `footer` still renders the theme's own markup.
+
+It is not the Liquid. A one-line HTML comment pushed to the top of
+`sections/footer.liquid`, outside every branch, never appeared on the store, and
+the section's rendered length stayed byte-identical across three pushes. The
+store is simply not applying that one file from the GitHub connection.
+
+So the footer's bottom bar is the SCOTKILT one and its top grid is Horizon's,
+until the sync for that file is unblocked.
+
+**Action needed in Admin:** Online Store > Themes > `horizon-scotkilt/main` >
+check the GitHub connection for a sync error on `sections/footer.liquid`. If
+there is none, disconnecting and reconnecting the branch, or pasting the file's
+contents once through the Shopify code editor, will unstick it. Everything else
+in the chrome is already live.
