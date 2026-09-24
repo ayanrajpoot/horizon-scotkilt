@@ -54,7 +54,6 @@ never renders empty.
   endcomment
   assign current_lookup = '+' | append: current_path | append: '+'
 
-  assign active_count = current_tags.size
 
   comment
     A group is only worth a column if at least one of its options survives the
@@ -92,6 +91,30 @@ never renders empty.
         endif
     endcase
   endfor
+
+  comment
+    Shopify's own storefront filters (Search & Discovery) need no setup here:
+    whatever the merchant turns on in the admin renders as another group in
+    the same sidebar, next to the tag-group blocks.
+  endcomment
+  assign native_active = 0
+  for filter in collection.filters
+    if filter.type == 'price_range'
+      if filter.range_max > 0
+        assign filter_groups = filter_groups | plus: 1
+        if filter.min_value.value or filter.max_value.value
+          assign native_active = native_active | plus: 1
+        endif
+      endif
+    else
+      if filter.values.size > 0
+        assign filter_groups = filter_groups | plus: 1
+        assign native_active = native_active | plus: filter.active_values.size
+      endif
+    endif
+  endfor
+
+  assign active_count = current_tags.size | plus: native_active
 -%}
 
 {%- capture icon_chevron -%}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>{%- endcapture -%}
@@ -186,6 +209,105 @@ never renders empty.
                 <button type="button" class="filters__close" data-sk2-filters-close aria-label="Close filters">{{ icon_close }}</button>
               </div>
             </div>
+
+            {%- comment -%}------- Shopify's own filters -------{%- endcomment -%}
+            {%- for filter in collection.filters -%}
+              {%- case filter.type -%}
+
+                {%- when 'price_range' -%}
+                  {%- liquid
+                    comment
+                      The mock offers price as four bands rather than a slider,
+                      so the range is quartered and each band is a plain link --
+                      no form, and it swaps like every other filter link.
+                    endcomment
+                    assign band_max = filter.range_max | divided_by: 100
+                    assign band_step = band_max | divided_by: 4
+                    assign price_join = '?'
+                    if filter.url_to_remove contains '?'
+                      assign price_join = '&'
+                    endif
+                    assign cur_lo = filter.min_value.value | default: 0
+                    assign cur_hi = filter.max_value.value | default: filter.range_max
+                  -%}
+                  {%- if band_step > 0 -%}
+                    <div class="fgroup is-open">
+                      <button type="button" class="fgroup__btn" data-sk2-fgroup aria-expanded="true">
+                        {{ filter.label | escape }}{{ icon_chevron }}
+                      </button>
+                      <div class="fgroup__panel"><div>
+                        {%- for i in (1..4) -%}
+                          {%- liquid
+                            assign lo = i | minus: 1 | times: band_step
+                            assign hi = i | times: band_step
+                            if i == 4
+                              assign hi = band_max
+                            endif
+                            assign lo_cents = lo | times: 100
+                            assign hi_cents = hi | times: 100
+                            assign is_on = false
+                            if cur_lo == lo_cents and cur_hi == hi_cents
+                              assign is_on = true
+                            endif
+
+                            capture band_url
+                              echo filter.url_to_remove
+                              unless is_on
+                                echo price_join
+                                if lo > 0
+                                  echo filter.min_value.param_name
+                                  echo '='
+                                  echo lo
+                                  echo '&'
+                                endif
+                                if i < 4
+                                  echo filter.max_value.param_name
+                                  echo '='
+                                  echo hi
+                                endif
+                              endunless
+                            endcapture
+                          -%}
+                          <a class="fopt2{% if is_on %} is-on{% endif %}" href="{{ band_url }}" rel="nofollow"{% if is_on %} aria-current="true"{% endif %}>
+                            <span class="fopt2__box">{{ icon_check }}</span>
+                            {%- if i == 1 -%}
+                              Under {{ hi_cents | money }}
+                            {%- elsif i == 4 -%}
+                              {{ lo_cents | money }} and up
+                            {%- else -%}
+                              {{ lo_cents | money }} &ndash; {{ hi_cents | money }}
+                            {%- endif -%}
+                          </a>
+                        {%- endfor -%}
+                      </div></div>
+                    </div>
+                  {%- endif -%}
+
+                {%- else -%}
+                  {%- if filter.values.size > 0 -%}
+                    <div class="fgroup is-open">
+                      <button type="button" class="fgroup__btn" data-sk2-fgroup aria-expanded="true">
+                        {{ filter.label | escape }}{{ icon_chevron }}
+                      </button>
+                      <div class="fgroup__panel"><div>
+                        {%- for value in filter.values -%}
+                          {%- unless value.count == 0 and value.active == false -%}
+                            <a class="fopt2{% if value.active %} is-on{% endif %}" href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}" rel="nofollow"{% if value.active %} aria-current="true"{% endif %}>
+                              <span class="fopt2__box">{{ icon_check }}</span>
+                              {%- if value.swatch.color -%}
+                                <span class="fopt2__dot" style="background:{{ value.swatch.color }}"></span>
+                              {%- endif -%}
+                              {{ value.label | escape }}
+                              <small>{{ value.count }}</small>
+                            </a>
+                          {%- endunless -%}
+                        {%- endfor -%}
+                      </div></div>
+                    </div>
+                  {%- endif -%}
+
+              {%- endcase -%}
+            {%- endfor -%}
 
             {%- for block in section.blocks -%}
               {%- case block.type -%}
@@ -345,6 +467,17 @@ never renders empty.
               {%- assign parts = tag | split: ':' -%}
               {%- if parts.size > 1 -%}{%- assign label = parts[1] | strip -%}{%- else -%}{%- assign label = tag -%}{%- endif -%}
               <a href="{{ remove_url }}" rel="nofollow">{{ label | escape }}{{ icon_close }}</a>
+            {%- endfor -%}
+            {%- for filter in collection.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value or filter.max_value.value -%}
+                  <a href="{{ filter.url_to_remove }}" rel="nofollow">{{ filter.label | escape }}{{ icon_close }}</a>
+                {%- endif -%}
+              {%- else -%}
+                {%- for value in filter.active_values -%}
+                  <a href="{{ value.url_to_remove }}" rel="nofollow">{{ value.label | escape }}{{ icon_close }}</a>
+                {%- endfor -%}
+              {%- endif -%}
             {%- endfor -%}
           </div>
 

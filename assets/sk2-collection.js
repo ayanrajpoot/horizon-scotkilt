@@ -122,8 +122,11 @@
   document.addEventListener('change', function (e) {
     var select = e.target.closest('[data-sk2-sort]');
     if (!select) return;
-    var url = new URL(select.getAttribute('data-sk2-base'), window.location.origin);
+    // Off the current URL, not the section's base: it already carries the tag
+    // path AND any filter.* params, and swap() keeps it in step via pushState.
+    var url = new URL(window.location.href);
     url.searchParams.set('sort_by', select.value);
+    url.searchParams.delete('page');
     var root = select.closest('.sk2-cat');
     if (root && root.getAttribute('data-sk2-section')) swap(url.toString(), root);
     else window.location.href = url.toString();
