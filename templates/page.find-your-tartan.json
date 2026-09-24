@@ -1,0 +1,220 @@
+{
+  "sections": {
+    "sk2-tartan-finder": {
+      "type": "sk2-tartan-finder",
+      "blocks": {
+        "link-1": {
+          "type": "shop_link",
+          "settings": {
+            "label": "Shop kilts in this tartan",
+            "url": "/collections/kilts",
+            "style": "solid",
+            "link_type": "tagged",
+            "tag_word": "tartan",
+            "single_product": true,
+            "hide_without_products": true,
+            "display": "carousel",
+            "products_limit": 12
+          }
+        },
+        "link-2": {
+          "type": "shop_link",
+          "settings": {
+            "label": "Shop accessories in this tartan",
+            "url": "/collections/kilt-accessories",
+            "style": "outline",
+            "link_type": "url"
+          },
+          "disabled": true
+        },
+        "link-3": {
+          "type": "shop_link",
+          "settings": {
+            "label": "Order a swatch",
+            "url": "/collections/tartan-swatches",
+            "style": "outline",
+            "link_type": "url"
+          },
+          "disabled": true
+        }
+      },
+      "block_order": [
+        "link-1",
+        "link-2",
+        "link-3"
+      ],
+      "settings": {
+        "panel_title": "",
+        "search_placeholder": "Search by surname, clan, region or colour",
+        "height_desktop": 1000,
+        "height_mobile": 85,
+        "default_view": "grid",
+        "show_popular_filter": true,
+        "show_category_filter": true,
+        "show_colour_filter": true,
+        "show_availability_filter": true,
+        "show_alphabet": true,
+        "show_surcharge": true,
+        "url_param": true,
+        "scope_groups": "",
+        "no_results_text": "No tartans match your search.",
+        "empty_text": "Our tartan library is coming soon.",
+        "request_text": "Don't see your clan? Request a custom tartan",
+        "request_url": "/pages/contact",
+        "swatch_shape": "rounded",
+        "image_fit": "cover",
+        "tile_size": 80,
+        "enable_zoom": true,
+        "enable_colourways": true,
+        "default_colourway": "modern",
+        "show_breadcrumb": true,
+        "eyebrow": "Tartans",
+        "heading": "Tartan Finder",
+        "subheading": "<p>Browse every tartan we weave by colour, family and clan name. Search by surname, region or colour, open any tartan to see the sett up close, then shop the kilts and accessories made in it.</p>",
+        "heading_size": "h1"
+      }
+    },
+    "sk2-tartan-types": {
+      "type": "sk2-why-scotkilt",
+      "blocks": {
+        "kind-1": {
+          "type": "feature",
+          "settings": {
+            "icon": "weave",
+            "title": "Clan and family tartans",
+            "text": "Tied to a Scottish clan or surname, including its septs — families that historically belonged to the clan."
+          }
+        },
+        "kind-2": {
+          "type": "feature",
+          "settings": {
+            "icon": "globe",
+            "title": "District tartans",
+            "text": "Linked to a place: a town, a region or a county. Anyone with a connection to the area can wear them."
+          }
+        },
+        "kind-3": {
+          "type": "feature",
+          "settings": {
+            "icon": "balance",
+            "title": "Universal tartans",
+            "text": "Black Watch, Royal Stewart, Pride of Scotland and the fashion setts — no family restriction, anyone can wear them."
+          }
+        },
+        "kind-4": {
+          "type": "feature",
+          "settings": {
+            "icon": "styles",
+            "title": "Modern, ancient and weathered",
+            "text": "Three colour versions of the same sett: deep and strong, light and soft, or muted as if aged by the weather."
+          }
+        }
+      },
+      "block_order": [
+        "kind-1",
+        "kind-2",
+        "kind-3",
+        "kind-4"
+      ],
+      "settings": {
+        "heading": "Which tartan can I wear?",
+        "subheading": "<p>There is no law about who may wear a tartan — but most people choose one that tells their family's story.</p>"
+      },
+      "disabled": true
+    },
+    "sk2-custom-tartan": {
+      "type": "sk2-cat-cta",
+      "settings": {
+        "heading": "Can't find your clan?",
+        "text": "<p>Send us your surname, the region your family came from, or an old photograph. Our tartan experts will track down the right sett — or have a custom tartan woven for your family.</p>",
+        "button_1_text": "Request a tartan",
+        "button_1_url": "/pages/contact",
+        "button_2_text": "Order a swatch",
+        "button_2_url": "/collections/tartan-swatches",
+        "metafield_namespace": "custom",
+        "heading_key": "cta_heading",
+        "text_key": "cta_text"
+      },
+      "disabled": true
+    },
+    "sk2-tartan-faq": {
+      "type": "sk2-faq",
+      "blocks": {
+        "q-1": {
+          "type": "question",
+          "settings": {
+            "question": "Can I wear a tartan if I'm not from that clan?",
+            "answer": "<p>Yes. Many people wear a tartan they love, or one with a family or place connection. Universal tartans such as Black Watch and Royal Stewart can be worn by anyone.</p>"
+          }
+        },
+        "q-2": {
+          "type": "question",
+          "settings": {
+            "question": "My surname isn't a clan name. How do I find my tartan?",
+            "answer": "<p>Many surnames are septs – families connected to a larger clan. Search your surname in the tartan finder above. If nothing shows up, <a href=\"/pages/contact\" title=\"Contact\">contact us</a> and we'll research it for you.</p>"
+          }
+        },
+        "q-3": {
+          "type": "question",
+          "settings": {
+            "question": "What do modern, ancient and weathered mean?",
+            "answer": "<p>They're colour versions of the same tartan. Modern uses deep, strong colours; ancient uses lighter, softer colours; weathered is muted to look aged by the elements.</p>"
+          }
+        },
+        "q-4": {
+          "type": "question",
+          "settings": {
+            "question": "Can I see the fabric before I order?",
+            "answer": "<p>Yes. Order a tartan swatch to check the colours and weight of the cloth before ordering your kilt.</p>"
+          }
+        },
+        "q-5": {
+          "type": "question",
+          "settings": {
+            "question": "Can you make a custom tartan?",
+            "answer": "<p>Yes. We can have a unique tartan designed and woven for your family, business or event. Get in touch for details and timings.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5"
+      ],
+      "settings": {
+        "heading": "Everything about tartans",
+        "subheading": "<p>More questions? <a href=\"/pages/contact\" title=\"Contact\">Ask our tartan experts</a>.</p>"
+      },
+      "disabled": true
+    },
+    "sk2-newsletter": {
+      "type": "sk2-newsletter",
+      "settings": {
+        "heading": "Join the clan",
+        "subheading": "New tartans, Highland style guides and 10% off your first order.",
+        "button_text": "Join the List",
+        "disclaimer": "Unsubscribe at any time. See our Privacy policy."
+      },
+      "disabled": true
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_title": true,
+        "page_width": "sm"
+      }
+    }
+  },
+  "order": [
+    "sk2-tartan-finder",
+    "sk2-tartan-types",
+    "sk2-custom-tartan",
+    "sk2-tartan-faq",
+    "sk2-newsletter",
+    "main"
+  ]
+}

@@ -10,6 +10,12 @@
 
   @param {string} wordmark
   @param {string} [blurb]
+  @param {string} [social_instagram] - social URLs; each renders an icon under
+    the blurb. Empty ones fall back to the store's Brand social links, and the
+    row is dropped when nothing is set.
+  @param {string} [social_facebook]
+  @param {string} [social_youtube]
+  @param {string} [social_tiktok]
   @param {object} [swatch_1] - tartan swatch image
   @param {object} [swatch_2]
   @param {object} [swatch_3]
@@ -28,6 +34,23 @@
 
 {%- liquid
   assign sk_wordmark = wordmark | default: shop.name
+
+  comment
+    One "icon|url" string per network so the markup is a single loop --
+    sk2-icons already carries these four and .social is already styled.
+  endcomment
+  assign brand_social = shop.brand.metafields.social_links
+  capture social_csv
+    echo 'instagram|'
+    echo social_instagram | default: brand_social.instagram
+    echo ',facebook|'
+    echo social_facebook | default: brand_social.facebook
+    echo ',youtube|'
+    echo social_youtube | default: brand_social.youtube
+    echo ',tiktok|'
+    echo social_tiktok | default: brand_social.tiktok
+  endcapture
+  assign social_pairs = social_csv | split: ','
 -%}
 
 <div class="sk2-chrome">
@@ -39,6 +62,20 @@
 
           {%- if blurb != blank -%}
             <p>{{ blurb }}</p>
+          {%- endif -%}
+
+          {%- capture footer_social -%}
+            {%- for pair in social_pairs -%}
+              {%- assign bits = pair | split: '|' -%}
+              {%- if bits[1] != blank -%}
+                <a href="{{ bits[1] }}" aria-label="{{ bits[0] | capitalize }}" target="_blank" rel="noopener">
+                  {%- render 'sk2-icons', icon: bits[0] -%}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if footer_social != blank -%}
+            <div class="social">{{ footer_social }}</div>
           {%- endif -%}
 
           {%- if swatch_1 != blank or swatch_2 != blank or swatch_3 != blank -%}
