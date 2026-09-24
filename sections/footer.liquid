@@ -4,16 +4,37 @@
   in the theme editor to put it back. Nothing was removed.
 {%- endcomment -%}
 {%- unless section.settings.sk2_chrome == false -%}
+  {%- comment -%}
+    Shopify allows a section schema exactly one `link_list` setting, so the four
+    footer columns come from one menu: each of its first four top-level items is
+    a column, its children the links. A menu link exposes `.title` and `.links`,
+    the same shape a linklist does, so it drops straight into the snippet.
+  {%- endcomment -%}
+  {%- liquid
+    assign footer_menu = linklists[section.settings.sk2_menu]
+    for link in footer_menu.links limit: 4
+      case forloop.index
+        when 1
+          assign col_1 = link
+        when 2
+          assign col_2 = link
+        when 3
+          assign col_3 = link
+        when 4
+          assign col_4 = link
+      endcase
+    endfor
+  -%}
   {%- render 'sk2-chrome-footer',
     wordmark: section.settings.sk2_wordmark,
     blurb: section.settings.sk2_blurb,
     swatch_1: section.settings.sk2_swatch_1,
     swatch_2: section.settings.sk2_swatch_2,
     swatch_3: section.settings.sk2_swatch_3,
-    heading_1: section.settings.sk2_heading_1, menu_1: linklists[section.settings.sk2_menu_1],
-    heading_2: section.settings.sk2_heading_2, menu_2: linklists[section.settings.sk2_menu_2],
-    heading_3: section.settings.sk2_heading_3, menu_3: linklists[section.settings.sk2_menu_3],
-    heading_4: section.settings.sk2_heading_4, menu_4: linklists[section.settings.sk2_menu_4]
+    heading_1: section.settings.sk2_heading_1, menu_1: col_1,
+    heading_2: section.settings.sk2_heading_2, menu_2: col_2,
+    heading_3: section.settings.sk2_heading_3, menu_3: col_3,
+    heading_4: section.settings.sk2_heading_4, menu_4: col_4
   -%}
 {%- else -%}
 {% liquid
@@ -175,14 +196,11 @@
     {"type": "image_picker", "id": "sk2_swatch_1", "label": "Tartan swatch 1"},
     {"type": "image_picker", "id": "sk2_swatch_2", "label": "Tartan swatch 2"},
     {"type": "image_picker", "id": "sk2_swatch_3", "label": "Tartan swatch 3"},
-    {"type": "text", "id": "sk2_heading_1", "label": "Column 1 heading", "default": "Shop"},
-    {"type": "link_list", "id": "sk2_menu_1", "label": "Column 1 menu"},
-    {"type": "text", "id": "sk2_heading_2", "label": "Column 2 heading", "default": "Tartans"},
-    {"type": "link_list", "id": "sk2_menu_2", "label": "Column 2 menu"},
-    {"type": "text", "id": "sk2_heading_3", "label": "Column 3 heading", "default": "Help"},
-    {"type": "link_list", "id": "sk2_menu_3", "label": "Column 3 menu"},
-    {"type": "text", "id": "sk2_heading_4", "label": "Column 4 heading", "default": "About"},
-    {"type": "link_list", "id": "sk2_menu_4", "label": "Column 4 menu"},
+    {"type": "link_list", "id": "sk2_menu", "label": "Footer menu", "info": "Its first four top-level items become the columns; their children become the links."},
+    {"type": "text", "id": "sk2_heading_1", "label": "Column 1 heading", "info": "Optional. Defaults to the menu item's own title.", "default": "Shop"},
+    {"type": "text", "id": "sk2_heading_2", "label": "Column 2 heading", "info": "Optional. Defaults to the menu item's own title.", "default": "Tartans"},
+    {"type": "text", "id": "sk2_heading_3", "label": "Column 3 heading", "info": "Optional. Defaults to the menu item's own title.", "default": "Help"},
+    {"type": "text", "id": "sk2_heading_4", "label": "Column 4 heading", "info": "Optional. Defaults to the menu item's own title.", "default": "About"},
     {
       "type": "select",
       "id": "section_width",

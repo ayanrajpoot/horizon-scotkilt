@@ -13,8 +13,9 @@
   @param {object} [swatch_1] - tartan swatch image
   @param {object} [swatch_2]
   @param {object} [swatch_3]
-  @param {string} [heading_1] - column heading; falls back to the menu's own title
-  @param {object} [menu_1] - a linklist
+  @param {string} [heading_1] - column heading; falls back to the source's title
+  @param {object} [menu_1] - a linklist, or a menu link whose children are the
+    column's links -- both expose `title` and `links`
   @param {string} [heading_2]
   @param {object} [menu_2]
   @param {string} [heading_3]
@@ -49,46 +50,62 @@
           {%- endif -%}
         </div>
 
-        {%- if menu_1.links.size > 0 -%}
+        {%- if menu_1 != blank -%}
           <div>
             <h4>{{ heading_1 | default: menu_1.title }}</h4>
             <ul>
-              {%- for link in menu_1.links -%}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-              {%- endfor -%}
+              {%- if menu_1.links.size > 0 -%}
+                {%- for link in menu_1.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              {%- else -%}
+                <li><a href="{{ menu_1.url }}">{{ menu_1.title }}</a></li>
+              {%- endif -%}
             </ul>
           </div>
         {%- endif -%}
 
-        {%- if menu_2.links.size > 0 -%}
+        {%- if menu_2 != blank -%}
           <div>
             <h4>{{ heading_2 | default: menu_2.title }}</h4>
             <ul>
-              {%- for link in menu_2.links -%}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-              {%- endfor -%}
+              {%- if menu_2.links.size > 0 -%}
+                {%- for link in menu_2.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              {%- else -%}
+                <li><a href="{{ menu_2.url }}">{{ menu_2.title }}</a></li>
+              {%- endif -%}
             </ul>
           </div>
         {%- endif -%}
 
-        {%- if menu_3.links.size > 0 -%}
+        {%- if menu_3 != blank -%}
           <div>
             <h4>{{ heading_3 | default: menu_3.title }}</h4>
             <ul>
-              {%- for link in menu_3.links -%}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-              {%- endfor -%}
+              {%- if menu_3.links.size > 0 -%}
+                {%- for link in menu_3.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              {%- else -%}
+                <li><a href="{{ menu_3.url }}">{{ menu_3.title }}</a></li>
+              {%- endif -%}
             </ul>
           </div>
         {%- endif -%}
 
-        {%- if menu_4.links.size > 0 -%}
+        {%- if menu_4 != blank -%}
           <div>
             <h4>{{ heading_4 | default: menu_4.title }}</h4>
             <ul>
-              {%- for link in menu_4.links -%}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-              {%- endfor -%}
+              {%- if menu_4.links.size > 0 -%}
+                {%- for link in menu_4.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              {%- else -%}
+                <li><a href="{{ menu_4.url }}">{{ menu_4.title }}</a></li>
+              {%- endif -%}
             </ul>
           </div>
         {%- endif -%}

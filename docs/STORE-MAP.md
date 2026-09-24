@@ -567,22 +567,23 @@ The mega menu is entirely link-list driven. Until Navigation has a menu whose
 items have children, the header renders its bar with no nav links. Set
 **Header > Menu** in the theme editor to that menu.
 
-### Open: `sections/footer.liquid` is not reaching the store
+### Resolved: why `sections/footer.liquid` would not sync
 
-Commit `591182d` patched four sections identically. On scotkilt-dev,
-`header-announcements`, `header` and `footer-utilities` all render the SCOTKILT
-branch; `footer` still renders the theme's own markup.
+The store's GitHub sync log gave the cause:
 
-It is not the Liquid. A one-line HTML comment pushed to the top of
-`sections/footer.liquid`, outside every branch, never appeared on the store, and
-the section's rendered length stayed byte-identical across three pushes. The
-store is simply not applying that one file from the GitHub connection.
+    Error: sections/footer.liquid, Validation failed: Invalid schema:
+    setting link_list type can only be inserted once in the settings.
 
-So the footer's bottom bar is the SCOTKILT one and its top grid is Horizon's,
-until the sync for that file is unblocked.
+A section schema may hold exactly one `link_list` setting. The footer's four
+columns had one each. Shopify rejected the whole file and kept the previous
+version -- which is why three of the four patched sections went live and this one
+never moved, and why a bare HTML comment pushed to the top of it never appeared.
 
-**Action needed in Admin:** Online Store > Themes > `horizon-scotkilt/main` >
-check the GitHub connection for a sync error on `sections/footer.liquid`. If
-there is none, disconnecting and reconnecting the branch, or pasting the file's
-contents once through the Shopify code editor, will unstick it. Everything else
-in the chrome is already live.
+The four columns now come from a single `sk2_menu`: its first four top-level
+items are the columns, their children the links. A menu link exposes `title` and
+`links`, the same shape a linklist does, so `snippets/sk2-chrome-footer.liquid`
+takes either -- `sections/sk2-footer.liquid` still passes real linklists from its
+blocks. The four `sk2_heading_*` settings stay as optional overrides.
+
+Worth remembering: the sync log in Admin is the only place this error surfaces.
+The storefront just keeps serving the old file, silently.
