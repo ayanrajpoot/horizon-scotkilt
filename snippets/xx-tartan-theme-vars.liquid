@@ -51,9 +51,29 @@
      sticky offset is the host theme's to supply. */
   .sk2-tf__app { --sticky-area-height: var(--header-h, 0px); }
 
-  /* Prestige resets form controls to the page's font; Horizon leaves them to
-     the browser, so the picker's buttons and inputs came out in Arial. */
-  .tartan-picker :is(button, input, select),
-  .tartan-finder :is(button, input, select),
-  .tp-modal :is(button, input, select) { font-family: inherit; }
+  /* Prestige ships a preflight-style reset that zeroes borders everywhere and
+     strips buttons back to transparent, padding-free, font-inheriting boxes.
+     Horizon has no equivalent, so every control the picker styles only
+     partially -- .tp-card__name is a <button> with nothing but a font size --
+     fell back to the browser's grey, bordered, Arial button chrome. These are
+     Prestige's own reset declarations, scoped to the picker's roots. The root
+     goes in :where() so the whole rule keeps element-level specificity, the way
+     it had in Prestige -- the picker's own classes must still win over it. */
+  :where(.tartan-picker, .tartan-finder, .tp-modal) :is(button, input, select, textarea) {
+    font: inherit;
+    font-size: 100%;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+  }
+
+  :where(.tartan-picker, .tartan-finder, .tp-modal) :is(button, [type='button'], [type='reset'], [type='submit']) {
+    background-color: transparent;
+    background-image: none;
+    border-width: 0;
+    border-style: solid;
+    cursor: pointer;
+  }
 {% endstyle %}
