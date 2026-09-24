@@ -49,8 +49,21 @@
 
 {%- liquid
   assign sk_wordmark = wordmark | default: shop.name
+  comment
+    Only offer a selector there is something to select: with one country and
+    one language Shopify leaves localization.js off the page (see
+    snippets/scripts.liquid), so the trigger would never open.
+  endcomment
+  assign sk_country = false
+  assign sk_language = false
+  if show_country and localization.available_countries.size > 1
+    assign sk_country = true
+  endif
+  if show_language and localization.available_languages.size > 1
+    assign sk_language = true
+  endif
   assign sk_localize = false
-  if show_country or show_language
+  if sk_country or sk_language
     assign sk_localize = true
   endif
   assign sk_form_id = form_id | default: 'sk2-header'
@@ -206,7 +219,7 @@
           language on its own is small enough to sit inline.
         {%- endcomment -%}
         {%- if sk_localize -%}
-          {%- if show_country -%}
+          {%- if sk_country -%}
             <dropdown-localization-component class="header__localize header--desktop-only">
               <button
                 type="button"
@@ -217,14 +230,14 @@
                 on:click="/toggleSelector"
               >
                 <span>{{ localization.country.currency.iso_code }}</span>
-                {%- if show_language -%}<span aria-hidden="true">/</span><span>{{ localization.language.iso_code | upcase }}</span>{%- endif -%}
+                {%- if sk_language -%}<span aria-hidden="true">/</span><span>{{ localization.language.iso_code | upcase }}</span>{%- endif -%}
                 <span class="visually-hidden">{{ 'accessibility.localization_region_and_language' | t }}</span>
                 {%- render 'sk2-icons', icon: 'chevron' -%}
               </button>
               <div class="localization-wrapper right-bound color-custom-popover" hidden ref="panel">
                 {%- render 'localization-form',
-                  show_country: show_country,
-                  show_language: show_language,
+                  show_country: sk_country,
+                  show_language: sk_language,
                   localization_style: 'dropdown',
                   form_id: sk_form_id
                 -%}
@@ -367,15 +380,15 @@
               ref="button"
               on:click="/toggleSelector"
             >
-              {%- if show_country -%}<span>{{ localization.country.name }}</span>{%- endif -%}
-              {%- if show_country and show_language -%}<span aria-hidden="true">/</span>{%- endif -%}
-              {%- if show_language -%}<span>{{ localization.language.endonym_name }}</span>{%- endif -%}
+              {%- if sk_country -%}<span>{{ localization.country.name }}</span>{%- endif -%}
+              {%- if sk_country and sk_language -%}<span aria-hidden="true">/</span>{%- endif -%}
+              {%- if sk_language -%}<span>{{ localization.language.endonym_name }}</span>{%- endif -%}
               {%- render 'sk2-icons', icon: 'chevron' -%}
             </button>
             <div class="localization-wrapper color-custom-popover" hidden ref="panel">
               {%- render 'localization-form',
-                show_country: show_country,
-                show_language: show_language,
+                show_country: sk_country,
+                show_language: sk_language,
                 localization_style: 'dropdown',
                 form_id: sk_form_id_drawer
               -%}
