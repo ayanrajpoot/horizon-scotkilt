@@ -50,4 +50,10 @@
      element and on .tp-modal inside it, and would otherwise win. Only the
      sticky offset is the host theme's to supply. */
   .sk2-tf__app { --sticky-area-height: var(--header-h, 0px); }
+
+  /* Prestige resets form controls to the page's font; Horizon leaves them to
+     the browser, so the picker's buttons and inputs came out in Arial. */
+  .tartan-picker :is(button, input, select),
+  .tartan-finder :is(button, input, select),
+  .tp-modal :is(button, input, select) { font-family: inherit; }
 {% endstyle %}
