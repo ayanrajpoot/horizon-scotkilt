@@ -2,10 +2,19 @@
    The PDP's top block inside Horizon's quick-add dialog: two columns on
    desktop, stacked and scrollable on a phone. Everything else it needs comes
    from sk2-product.css, which loads alongside this file. */
+/* The dialog's own content slot is a 4-column grid built for Horizon's product
+   markup; the SK2 block brings its own layout, so it gets a plain block box. */
+#quick-add-modal-content:has(.sk2-quickview){ display:block; padding:0; overflow:visible }
+
 .sk2-quickview{ padding:28px clamp(16px,3vw,32px) 32px; max-height:min(86vh,900px); overflow:auto }
 .sk2-quickview .sk2-pdp__top{ margin:0 }
+/* Quick view is title, price, options and buy -- the assurance and fact blocks
+   are the long tail of the product page and belong on it. */
 .sk2-quickview .pdp-gallery__note,
-.sk2-quickview .pdp-buy__sku{ display:none }
+.sk2-quickview .pdp-buy__sku,
+.sk2-quickview .assure,
+.sk2-quickview .facts{ display:none }
+.sk2-quickview .pdp-buy h1{ font-size:clamp(26px,3vw,36px) }
 .sk2-quickview__full{ display:inline-block; margin-top:18px; font-size:13px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-decoration:underline; text-underline-offset:4px }
 
 @media (max-width:767px){
