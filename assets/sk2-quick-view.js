@@ -50,7 +50,9 @@
 
       var wrap = document.createElement('div');
       wrap.className = 'sk2 sk2-quickview';
-      wrap.appendChild(top);
+      // Clone: appending would move the node out of the cached document, and the
+      // second look at that product would find nothing.
+      wrap.appendChild(top.cloneNode(true));
 
       var full = document.createElement('a');
       full.className = 'sk2-quickview__full';
